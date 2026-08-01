@@ -8,7 +8,7 @@
     "build": "vite build",
     "test": "node --test src/*.test.js",
     "preview": "vite preview",
-    "prepare": "cd .. && husky client/.husky"
+    "prepare": "node -e \"import('node:child_process').then(({execSync:e})=>e('husky client/.husky',{stdio:'inherit',cwd:e('git rev-parse --show-toplevel',{encoding:'utf8'}).trim()}))\""
   },
   "dependencies": {
     "marked": "^17.0.1",
