@@ -1,15 +1,43 @@
+# IDE
 .idea/
-.DS_Store
+.vscode/settings.json
+.history/
 *.iml
+
+# OS
+.DS_Store
+
+# Env / secrets
 .env
 .env.*
 !.env.example
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Temp files
+*.tmp
+*.bak
+*.swp
+
+# Personal notes (not for public repo)
+docs/interview-qa-*.md
+
+# Build outputs
 server/target/
 client/node_modules/
 client/dist/
+
+# Data volumes (docker)
 mysql/data/
 mysql/logs/
 redis/data/
 qdrant/data/
 minio/data/
- 
