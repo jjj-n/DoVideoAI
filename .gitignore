@@ -27,8 +27,9 @@ coverage/
 *.bak
 *.swp
 
-# Personal notes (not for public repo)
-docs/interview-qa-*.md
+# docs/ 下只保留 images/ 子目录，其余文档不上传
+docs/*
+!docs/images/
 
 # Build outputs
 server/target/
