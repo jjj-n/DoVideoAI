@@ -1,7 +1,6 @@
 <div align="center">
   <h2>DoVideoAI</h2>
-  
-  <p>
+  <p align="center">
     <a href="https://github.com/jjj-n/DOVideo-AI/stargazers"><img src="https://img.shields.io/github/stars/jjj-n/DOVideo-AI?style=flat-square" alt="GitHub Stars"></a>
     <img src="https://img.shields.io/badge/Java-21-E76F00?style=flat-square" alt="Java 21">
     <img src="https://img.shields.io/badge/Spring%20Boot-3.5.9-6DB33F?style=flat-square" alt="Spring Boot 3.5.9">
@@ -12,6 +11,7 @@
     <img src="https://img.shields.io/badge/LangChain4j-Agent-20232A?style=flat-square" alt="LangChain4j">
     <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="MIT License"></a>
   </p>
+
 </div>
 
 <div align="center">
