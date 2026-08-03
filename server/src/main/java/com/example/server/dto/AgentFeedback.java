@@ -61,4 +61,8 @@ public record AgentFeedback(
                 createdAt == null ? Instant.now() : createdAt
         );
     }
+
+    public String effectiveGoal() {
+        return correctedGoal == null || correctedGoal.isBlank() ? goal : correctedGoal;
+    }
 }

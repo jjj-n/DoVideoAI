@@ -316,19 +316,12 @@ public class AiService {
         }
     }
 
-    /** 兼容旧调用方:未指定模式时按 GENERAL 暂存修正。 */
-    public void stageRevision(AgentFeedback feedback) {
-        stageRevision(feedback, AnalysisMode.GENERAL);
-    }
-
     public void stageRevision(AgentFeedback feedback, AnalysisMode mode) {
         AnalysisMode resolvedMode = mode == null ? AnalysisMode.GENERAL : mode;
         AgentFeedback normalized = feedback.normalized(resolvedMode);
         checkpointService.saveFeedback(normalized);
 
-        String goal = normalized.correctedGoal() == null || normalized.correctedGoal().isBlank()
-                ? normalized.goal()
-                : normalized.correctedGoal().trim();
+        String goal = normalized.effectiveGoal();
         AgentState.AgentPlan correctedPlan = normalized.correctedTasks().isEmpty()
                 ? null
                 : new AgentState.AgentPlan(goal, normalized.correctedTasks());
@@ -336,14 +329,7 @@ public class AiService {
     }
 
     public String revisionGoal(AgentFeedback feedback) {
-        AgentFeedback normalized = feedback.normalized();
-        return normalized.correctedGoal() == null || normalized.correctedGoal().isBlank()
-                ? normalized.goal()
-                : normalized.correctedGoal();
-    }
-
-    public void cancelStagedRevision(Long mediaId, String goal) {
-        cancelStagedRevision(mediaId, goal, AnalysisMode.GENERAL);
+        return feedback.normalized().effectiveGoal();
     }
 
     public void cancelStagedRevision(Long mediaId, String goal, AnalysisMode mode) {
