@@ -10,10 +10,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
-import javax.imageio.ImageIO;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -29,9 +25,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 @Service
 public class VideoContextService {
@@ -39,12 +32,11 @@ public class VideoContextService {
     private static final Logger log = LoggerFactory.getLogger(VideoContextService.class);
     private static final String EVIDENCE_OBJECT_PREFIX = "evidence-frames";
     private static final long SEGMENT_MS = 60_000L;
-    private static final long FALLBACK_FRAME_INTERVAL_MS = 30_000L;
-    private static final Pattern PTS_TIME = Pattern.compile("pts_time:([0-9.]+)");
 
     private final SegmentedTranscriptionService transcriptionService;
     private final OcrUtils ocrUtils;
     private final MinioUtils minioUtils;
+    private final KeyFrameExtractor keyFrameExtractor;
     private final ThreadPoolTaskExecutor asrExecutor;
     private final ThreadPoolTaskExecutor ocrExecutor;
     private final AgentTelemetry telemetry;
@@ -52,12 +44,14 @@ public class VideoContextService {
     public VideoContextService(SegmentedTranscriptionService transcriptionService,
                                OcrUtils ocrUtils,
                                MinioUtils minioUtils,
+                               KeyFrameExtractor keyFrameExtractor,
                                @Qualifier("asrExecutor") ThreadPoolTaskExecutor asrExecutor,
                                @Qualifier("ocrExecutor") ThreadPoolTaskExecutor ocrExecutor,
                                AgentTelemetry telemetry) {
         this.transcriptionService = transcriptionService;
         this.ocrUtils = ocrUtils;
         this.minioUtils = minioUtils;
+        this.keyFrameExtractor = keyFrameExtractor;
         this.asrExecutor = asrExecutor;
         this.ocrExecutor = ocrExecutor;
         this.telemetry = telemetry;
@@ -206,55 +200,35 @@ public class VideoContextService {
                                              Path frameDir,
                                              String traceId,
                                              List<String> uploadedEvidenceFrames) throws Exception {
-        Files.createDirectories(frameDir);
-        List<Long> timestamps = new ArrayList<>();
-        runCommand(List.of(
-                "ffmpeg", "-y", "-i", videoPath,
-                "-vf", "select=eq(n\\,0)+gt(scene\\,0.35)+gte(t-prev_selected_t\\,30),showinfo",
-                "-vsync", "vfr",
-                frameDir.resolve("frame_%06d.jpg").toString()
-        ), timestamps);
-
-        List<Path> frameFiles;
-        try (var paths = Files.list(frameDir)) {
-            frameFiles = paths.filter(Files::isRegularFile).sorted().toList();
-        }
-
+        List<KeyFrameExtractor.FrameInfo> frameInfos = keyFrameExtractor.extract(videoPath, frameDir);
         List<FramePart> result = new ArrayList<>();
-        Long previousHash = null;
         int failedFrames = 0;
-        for (int i = 0; i < frameFiles.size(); i++) {
-            long imageHash = differenceHash(frameFiles.get(i).toFile());
-            if (previousHash != null && Long.bitCount(previousHash ^ imageHash) <= 5) {
-                continue;
-            }
-            previousHash = imageHash;
-            long timestampMs = i < timestamps.size() ? timestamps.get(i) : i * FALLBACK_FRAME_INTERVAL_MS;
+        for (KeyFrameExtractor.FrameInfo info : frameInfos) {
             String ocrText;
             try {
                 telemetry.increment(traceId, "ocrCalls", 1);
-                ocrText = ocrUtils.recognize(frameFiles.get(i).toFile());
+                ocrText = ocrUtils.recognize(info.framePath().toFile());
             } catch (RuntimeException e) {
                 failedFrames++;
                 telemetry.increment(traceId, "ocrFrameFailures", 1);
                 log.warn("ocr_frame_failed frame={} timestampMs={}",
-                        frameFiles.get(i).getFileName(), timestampMs, e);
+                        info.framePath().getFileName(), info.timestampMs(), e);
                 continue;
             }
             String frameUrl;
             try {
                 frameUrl = minioUtils.uploadLocalFile(
-                        frameFiles.get(i).toFile(),
-                        frameFiles.get(i).getFileName().toString(),
+                        info.framePath().toFile(),
+                        info.framePath().getFileName().toString(),
                         EVIDENCE_OBJECT_PREFIX);
                 uploadedEvidenceFrames.add(frameUrl);
             } catch (Exception e) {
                 telemetry.increment(traceId, "frameUploadFailures", 1);
                 log.warn("evidence_frame_upload_failed frame={} timestampMs={}",
-                        frameFiles.get(i).getFileName(), timestampMs, e);
-                frameUrl = videoPath + "#timestampMs=" + timestampMs;
+                        info.framePath().getFileName(), info.timestampMs(), e);
+                frameUrl = videoPath + "#timestampMs=" + info.timestampMs();
             }
-            result.add(new FramePart(timestampMs, ocrText, frameUrl));
+            result.add(new FramePart(info.timestampMs(), ocrText, frameUrl));
         }
         if (result.isEmpty() && failedFrames > 0) {
             throw new IllegalStateException("所有 OCR 关键帧均处理失败");
@@ -281,62 +255,6 @@ public class VideoContextService {
 
     private long windowStart(long timestampMs) {
         return timestampMs / SEGMENT_MS * SEGMENT_MS;
-    }
-
-    private long differenceHash(File imageFile) throws Exception {
-        BufferedImage source = ImageIO.read(imageFile);
-        if (source == null) return 0;
-        BufferedImage scaled = new BufferedImage(9, 8, BufferedImage.TYPE_BYTE_GRAY);
-        Graphics2D graphics = scaled.createGraphics();
-        try {
-            graphics.drawImage(source, 0, 0, 9, 8, null);
-        } finally {
-            graphics.dispose();
-        }
-
-        long hash = 0;
-        for (int y = 0; y < 8; y++) {
-            for (int x = 0; x < 8; x++) {
-                hash <<= 1;
-                if (scaled.getRGB(x, y) > scaled.getRGB(x + 1, y)) hash |= 1;
-            }
-        }
-        return hash;
-    }
-
-    private void runCommand(List<String> command, List<Long> timestamps) throws Exception {
-        Path logPath = Files.createTempFile("dovideo-ffmpeg-", ".log");
-        Process process = null;
-        try {
-            process = new ProcessBuilder(command)
-                    .redirectErrorStream(true)
-                    .redirectOutput(logPath.toFile())
-                    .start();
-            if (!process.waitFor(15, TimeUnit.MINUTES)) {
-                process.destroyForcibly();
-                throw new IllegalStateException("FFmpeg 执行超时");
-            }
-            if (process.exitValue() != 0) throw new IllegalStateException("FFmpeg 执行失败");
-            if (timestamps != null) {
-                try (Stream<String> lines = Files.lines(logPath)) {
-                    lines.forEach(line -> appendTimestamp(line, timestamps));
-                }
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw e;
-        } finally {
-            if (process != null && process.isAlive()) process.destroyForcibly();
-            Files.deleteIfExists(logPath);
-        }
-    }
-
-    private void appendTimestamp(String line, List<Long> timestamps) {
-        if (!line.contains("showinfo")) return;
-        Matcher matcher = PTS_TIME.matcher(line);
-        if (matcher.find()) {
-            timestamps.add((long) (Double.parseDouble(matcher.group(1)) * 1000));
-        }
     }
 
     private void deleteDirectory(Path directory) {
