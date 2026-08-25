@@ -1,0 +1,465 @@
+{
+  "summary": {
+    "hybrid": {
+      "n": 24,
+      "hitAt3": 0.833,
+      "mrrAt3": 0.736,
+      "exactHit": 1,
+      "fuzzyHit": 0.667
+    },
+    "vector": {
+      "n": 24,
+      "hitAt3": 0.833,
+      "mrrAt3": 0.764,
+      "exactHit": 1,
+      "fuzzyHit": 0.667
+    },
+    "keyword": {
+      "n": 24,
+      "hitAt3": 0.583,
+      "mrrAt3": 0.514,
+      "exactHit": 0.917,
+      "fuzzyHit": 0.25
+    }
+  },
+  "detail": {
+    "hybrid": [
+      {
+        "q": "Pytorch 框架怎么入门",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "李牧老师的课程讲什么内容",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "transformer 的简化模型怎么理解",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "AlexNet 和 ResNet 有什么作用",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "hugging face 的 transformers 课程内容",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "BERT 模型训练有哪些组件",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "Lora 微调怎么使用",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "多模态大模型从零训练用什么架构",
+        "tag": "exact",
+        "hit": true,
+        "rr": 0.3333333333333333
+      },
+      {
+        "q": "文本编码器和视觉编码器怎么选择",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "线性回归和逻辑回归是什么",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "卷积神经网络怎么入门",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "分布式训练和低精度训练",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "完全没基础的人怎么开始学AI",
+        "tag": "fuzzy",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "看不懂论文里的网络结构怎么办",
+        "tag": "fuzzy",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "哪个老师讲的课适合小白",
+        "tag": "fuzzy",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "看不懂大模型的内部原理怎么办",
+        "tag": "fuzzy",
+        "hit": false,
+        "rr": 0
+      },
+      {
+        "q": "不用原版那么复杂能不能学到核心思想",
+        "tag": "fuzzy",
+        "hit": false,
+        "rr": 0
+      },
+      {
+        "q": "怎么把学到的模型跑起来练手",
+        "tag": "fuzzy",
+        "hit": false,
+        "rr": 0
+      },
+      {
+        "q": "训练模型前要准备哪些东西",
+        "tag": "fuzzy",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "除了文字还能处理图像的模型有哪些",
+        "tag": "fuzzy",
+        "hit": false,
+        "rr": 0
+      },
+      {
+        "q": "微调一个自己的模型大概什么流程",
+        "tag": "fuzzy",
+        "hit": true,
+        "rr": 0.5
+      },
+      {
+        "q": "想自己动手训一个能看图的模型",
+        "tag": "fuzzy",
+        "hit": true,
+        "rr": 0.5
+      },
+      {
+        "q": "从零到入门整体学习路线是什么样的",
+        "tag": "fuzzy",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "有没有一套视频把模型发展史讲全",
+        "tag": "fuzzy",
+        "hit": true,
+        "rr": 0.3333333333333333
+      }
+    ],
+    "vector": [
+      {
+        "q": "Pytorch 框架怎么入门",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "李牧老师的课程讲什么内容",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "transformer 的简化模型怎么理解",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "AlexNet 和 ResNet 有什么作用",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "hugging face 的 transformers 课程内容",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "BERT 模型训练有哪些组件",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "Lora 微调怎么使用",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "多模态大模型从零训练用什么架构",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "文本编码器和视觉编码器怎么选择",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "线性回归和逻辑回归是什么",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "卷积神经网络怎么入门",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "分布式训练和低精度训练",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "完全没基础的人怎么开始学AI",
+        "tag": "fuzzy",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "看不懂论文里的网络结构怎么办",
+        "tag": "fuzzy",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "哪个老师讲的课适合小白",
+        "tag": "fuzzy",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "看不懂大模型的内部原理怎么办",
+        "tag": "fuzzy",
+        "hit": false,
+        "rr": 0
+      },
+      {
+        "q": "不用原版那么复杂能不能学到核心思想",
+        "tag": "fuzzy",
+        "hit": false,
+        "rr": 0
+      },
+      {
+        "q": "怎么把学到的模型跑起来练手",
+        "tag": "fuzzy",
+        "hit": false,
+        "rr": 0
+      },
+      {
+        "q": "训练模型前要准备哪些东西",
+        "tag": "fuzzy",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "除了文字还能处理图像的模型有哪些",
+        "tag": "fuzzy",
+        "hit": false,
+        "rr": 0
+      },
+      {
+        "q": "微调一个自己的模型大概什么流程",
+        "tag": "fuzzy",
+        "hit": true,
+        "rr": 0.5
+      },
+      {
+        "q": "想自己动手训一个能看图的模型",
+        "tag": "fuzzy",
+        "hit": true,
+        "rr": 0.5
+      },
+      {
+        "q": "从零到入门整体学习路线是什么样的",
+        "tag": "fuzzy",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "有没有一套视频把模型发展史讲全",
+        "tag": "fuzzy",
+        "hit": true,
+        "rr": 0.3333333333333333
+      }
+    ],
+    "keyword": [
+      {
+        "q": "Pytorch 框架怎么入门",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "李牧老师的课程讲什么内容",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "transformer 的简化模型怎么理解",
+        "tag": "exact",
+        "hit": true,
+        "rr": 0.5
+      },
+      {
+        "q": "AlexNet 和 ResNet 有什么作用",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "hugging face 的 transformers 课程内容",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "BERT 模型训练有哪些组件",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "Lora 微调怎么使用",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "多模态大模型从零训练用什么架构",
+        "tag": "exact",
+        "hit": false,
+        "rr": 0
+      },
+      {
+        "q": "文本编码器和视觉编码器怎么选择",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "线性回归和逻辑回归是什么",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "卷积神经网络怎么入门",
+        "tag": "exact",
+        "hit": true,
+        "rr": 0.5
+      },
+      {
+        "q": "分布式训练和低精度训练",
+        "tag": "exact",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "完全没基础的人怎么开始学AI",
+        "tag": "fuzzy",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "看不懂论文里的网络结构怎么办",
+        "tag": "fuzzy",
+        "hit": false,
+        "rr": 0
+      },
+      {
+        "q": "哪个老师讲的课适合小白",
+        "tag": "fuzzy",
+        "hit": true,
+        "rr": 0.3333333333333333
+      },
+      {
+        "q": "看不懂大模型的内部原理怎么办",
+        "tag": "fuzzy",
+        "hit": false,
+        "rr": 0
+      },
+      {
+        "q": "不用原版那么复杂能不能学到核心思想",
+        "tag": "fuzzy",
+        "hit": false,
+        "rr": 0
+      },
+      {
+        "q": "怎么把学到的模型跑起来练手",
+        "tag": "fuzzy",
+        "hit": false,
+        "rr": 0
+      },
+      {
+        "q": "训练模型前要准备哪些东西",
+        "tag": "fuzzy",
+        "hit": false,
+        "rr": 0
+      },
+      {
+        "q": "除了文字还能处理图像的模型有哪些",
+        "tag": "fuzzy",
+        "hit": false,
+        "rr": 0
+      },
+      {
+        "q": "微调一个自己的模型大概什么流程",
+        "tag": "fuzzy",
+        "hit": false,
+        "rr": 0
+      },
+      {
+        "q": "想自己动手训一个能看图的模型",
+        "tag": "fuzzy",
+        "hit": false,
+        "rr": 0
+      },
+      {
+        "q": "从零到入门整体学习路线是什么样的",
+        "tag": "fuzzy",
+        "hit": true,
+        "rr": 1
+      },
+      {
+        "q": "有没有一套视频把模型发展史讲全",
+        "tag": "fuzzy",
+        "hit": false,
+        "rr": 0
+      }
+    ]
+  }
+}

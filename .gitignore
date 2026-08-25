@@ -1,0 +1,49 @@
+# IDE
+.idea/
+.vscode/settings.json
+.history/
+*.iml
+
+# OS
+.DS_Store
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Temp files
+*.tmp
+*.bak
+*.swp
+
+# docs/ 下只保留 images/ 子目录，其余文档不上传
+docs/*
+!docs/images/
+
+# Agent / domain docs 仅本地使用，不入 git
+/CLAUDE.md
+/CONTEXT.md
+/CONTEXT-MAP.md
+
+# Build outputs
+server/target/
+client/node_modules/
+client/dist/
+
+# Data volumes (docker)
+mysql/data/
+mysql/logs/
+redis/data/
+qdrant/data/
+minio/data/

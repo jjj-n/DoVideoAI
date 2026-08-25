@@ -1,0 +1,25 @@
+{
+  "summary": {
+    "total": 10,
+    "immediateSuccess": 8,
+    "immediateSuccessRate": 0.8,
+    "retryAfterRateLimit": 2,
+    "finalSuccessRate": 1.0,
+    "note": "8 任务即时成功；2 个 60 分钟视频任务因 SiliconFlow TPM 限流失败（RateLimitException 50602，非系统故障），间隔 2 分钟串行补测均成功",
+    "successLatencySeconds": [45, 50, 50, 50, 50, 55, 30, 115],
+    "median": 50,
+    "max": 115
+  },
+  "results": [
+    { "i": 0, "mediaId": 2, "goal": "二分查找的边界处理要点", "state": "COMPLETED", "ms": 50000 },
+    { "i": 1, "mediaId": 2, "goal": "红蓝染色法怎么使用", "state": "COMPLETED", "ms": 45000 },
+    { "i": 2, "mediaId": 7, "goal": "开区间写法总结", "state": "COMPLETED", "ms": 55000 },
+    { "i": 3, "mediaId": 7, "goal": "这道题的时间复杂度分析", "state": "COMPLETED", "ms": 30000 },
+    { "i": 4, "mediaId": 3, "goal": "全排列的回溯模板", "state": "COMPLETED", "ms": 50000 },
+    { "i": 5, "mediaId": 3, "goal": "N皇后问题的约束条件", "state": "COMPLETED", "ms": 50000 },
+    { "i": 6, "mediaId": 3, "goal": "排列去重怎么处理", "state": "COMPLETED", "ms": 50000 },
+    { "i": 7, "mediaId": 3, "goal": "回溯剪枝技巧总结", "state": "COMPLETED", "ms": 115000 },
+    { "i": 8, "mediaId": 4, "goal": "transformer 学习建议汇总", "state": "FAILED->RETRY_COMPLETED", "failReason": "SiliconFlow TPM rate limit (code 50602)", "retryAgentLoopMs": 29158 },
+    { "i": 9, "mediaId": 4, "goal": "多模态方向怎么入门", "state": "FAILED->RETRY_COMPLETED", "failReason": "SiliconFlow TPM rate limit (code 50602)", "retryAgentLoopMs": 39898 }
+  ]
+}

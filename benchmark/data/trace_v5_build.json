@@ -1,0 +1,1 @@
+{"traceId":"e27fd6da-e8d8-43ca-8b25-915000c4693c","taskId":2,"goalDigest":"5e8a7d99b6089314ed549da9ec76a24d6c6274ce898a2fdfba17104b857dcb54","startedAt":"2026-08-23T15:11:36.788497900Z","stageDurationMs":{"VIDEO_CONTEXT":5},"counters":{"failedStages":1,"VIDEO_CONTEXTCalls":1},"values":{},"estimatedCost":0}

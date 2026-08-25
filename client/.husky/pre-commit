@@ -1,0 +1,3 @@
+cd "$(git rev-parse --show-toplevel)/client"
+npx lint-staged
+npm run test

@@ -1,0 +1,264 @@
+{
+  "summary": {
+    "evidences": 36,
+    "conclusions": 42,
+    "layer1Timestamp": "36/36 (100%)",
+    "layer2Text": "19/36 (53%)",
+    "layer3CriticSoft": "critiquePassed=false,false,false,false,false,false,false,false,false, unsupportedClaims=24",
+    "citationsPerConclusion": 0.86
+  },
+  "detail": [
+    {
+      "timestampMs": 120000,
+      "source": "ASR",
+      "l1": true,
+      "l2": false,
+      "inRange": true
+    },
+    {
+      "timestampMs": 180000,
+      "source": "ASR",
+      "l1": true,
+      "l2": false,
+      "inRange": true
+    },
+    {
+      "timestampMs": 0,
+      "source": "ASR",
+      "l1": true,
+      "l2": true,
+      "inRange": true
+    },
+    {
+      "timestampMs": 180000,
+      "source": "ASR",
+      "l1": true,
+      "l2": true,
+      "inRange": true
+    },
+    {
+      "timestampMs": 245000,
+      "source": "ASR",
+      "l1": true,
+      "l2": true,
+      "inRange": true
+    },
+    {
+      "timestampMs": 0,
+      "source": "OCR",
+      "l1": true,
+      "l2": true,
+      "inRange": true
+    },
+    {
+      "timestampMs": 120000,
+      "source": "ASR",
+      "l1": true,
+      "l2": true,
+      "inRange": true
+    },
+    {
+      "timestampMs": 160000,
+      "source": "ASR",
+      "l1": true,
+      "l2": false,
+      "inRange": true
+    },
+    {
+      "timestampMs": 210000,
+      "source": "ASR",
+      "l1": true,
+      "l2": true,
+      "inRange": true
+    },
+    {
+      "timestampMs": 150000,
+      "source": "ASR",
+      "l1": true,
+      "l2": false,
+      "inRange": true
+    },
+    {
+      "timestampMs": 270000,
+      "source": "ASR",
+      "l1": true,
+      "l2": true,
+      "inRange": true
+    },
+    {
+      "timestampMs": 120000,
+      "source": "getAsr",
+      "l1": true,
+      "l2": false,
+      "inRange": true
+    },
+    {
+      "timestampMs": 600000,
+      "source": "getAsr",
+      "l1": true,
+      "l2": false,
+      "inRange": true
+    },
+    {
+      "timestampMs": 660000,
+      "source": "getAsr",
+      "l1": true,
+      "l2": false,
+      "inRange": true
+    },
+    {
+      "timestampMs": 960000,
+      "source": "getAsr",
+      "l1": true,
+      "l2": false,
+      "inRange": true
+    },
+    {
+      "timestampMs": 540000,
+      "source": "getAsr",
+      "l1": true,
+      "l2": true,
+      "inRange": true
+    },
+    {
+      "timestampMs": 300000,
+      "source": "ASR",
+      "l1": true,
+      "l2": true,
+      "inRange": true
+    },
+    {
+      "timestampMs": 300000,
+      "source": "ASR",
+      "l1": true,
+      "l2": true,
+      "inRange": true
+    },
+    {
+      "timestampMs": 600000,
+      "source": "ASR",
+      "l1": true,
+      "l2": false,
+      "inRange": true
+    },
+    {
+      "timestampMs": 1500000,
+      "source": "ASR",
+      "l1": true,
+      "l2": false,
+      "inRange": true
+    },
+    {
+      "timestampMs": 1740000,
+      "source": "ASR",
+      "l1": true,
+      "l2": true,
+      "inRange": true
+    },
+    {
+      "timestampMs": 340000,
+      "source": "OCR",
+      "l1": true,
+      "l2": false,
+      "inRange": true
+    },
+    {
+      "timestampMs": 1700000,
+      "source": "OCR",
+      "l1": true,
+      "l2": false,
+      "inRange": true
+    },
+    {
+      "timestampMs": 120000,
+      "source": "OCR",
+      "l1": true,
+      "l2": true,
+      "inRange": true
+    },
+    {
+      "timestampMs": 720000,
+      "source": "ASR",
+      "l1": true,
+      "l2": false,
+      "inRange": true
+    },
+    {
+      "timestampMs": 120000,
+      "source": "OCR",
+      "l1": true,
+      "l2": true,
+      "inRange": true
+    },
+    {
+      "timestampMs": 720000,
+      "source": "OCR",
+      "l1": true,
+      "l2": false,
+      "inRange": true
+    },
+    {
+      "timestampMs": 1800000,
+      "source": "ASR",
+      "l1": true,
+      "l2": true,
+      "inRange": true
+    },
+    {
+      "timestampMs": 2340000,
+      "source": "ASR",
+      "l1": true,
+      "l2": false,
+      "inRange": true
+    },
+    {
+      "timestampMs": 3360000,
+      "source": "ASR",
+      "l1": true,
+      "l2": true,
+      "inRange": true
+    },
+    {
+      "timestampMs": 3540000,
+      "source": "ASR",
+      "l1": true,
+      "l2": false,
+      "inRange": true
+    },
+    {
+      "timestampMs": 480000,
+      "source": "OCR",
+      "l1": true,
+      "l2": true,
+      "inRange": true
+    },
+    {
+      "timestampMs": 540000,
+      "source": "OCR",
+      "l1": true,
+      "l2": true,
+      "inRange": true
+    },
+    {
+      "timestampMs": 120000,
+      "source": "ASR",
+      "l1": true,
+      "l2": false,
+      "inRange": true
+    },
+    {
+      "timestampMs": 180000,
+      "source": "OCR",
+      "l1": true,
+      "l2": true,
+      "inRange": true
+    },
+    {
+      "timestampMs": 0,
+      "source": "OCR",
+      "l1": true,
+      "l2": true,
+      "inRange": true
+    }
+  ]
+}
