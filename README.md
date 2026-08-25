@@ -238,6 +238,22 @@ npm run dev
 
 只查看前端 Agent 工作台时，可以打开 `http://localhost:5173/?demo`。Demo 模式使用内置示例数据，不依赖后端服务。
 
+### 5. 运行测试
+
+日常开发只运行快速单元测试，不需要启动 Docker：
+
+```bash
+cd server
+./mvnw test
+```
+
+提交前运行完整验证。集成测试会通过 Testcontainers 临时启动 MySQL 8，需要本机 Docker 可用；测试结束后容器会自动回收：
+
+```bash
+cd server
+./mvnw verify -Pintegration
+```
+
 ### 常见问题
 
 | 现象 | 处理方式 |
