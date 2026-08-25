@@ -14,7 +14,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import java.time.Duration;
 
-/** MySQL 保存恢复真源，Redis 只承担热数据读取。 */
+/** MySQL 保存恢复真源，Redis 只承担热数据读取；阶段迁移使用数据库 CAS。 */
 @Repository
 public class AgentCheckpointRepository {
 
@@ -62,9 +62,17 @@ public class AgentCheckpointRepository {
         } catch (RuntimeException e) {
             log.warn("agent_checkpoint_stage_cache_read_failed mediaId={}", mediaId, e);
         }
-        String persisted = checkpointMapper.findStage(mediaId, checkpointName);
-        if (persisted != null) cacheStage(redisKey, persisted);
-        return TaskStage.from(persisted);
+        return readPersistedStage(mediaId, checkpointName, redisKey);
+    }
+
+    public TaskStage readPersistedStage(Long mediaId, String checkpointName, String redisKey) {
+        TaskStage persisted = TaskStage.from(checkpointMapper.findStage(mediaId, checkpointName));
+        if (persisted == null) {
+            evictStageCache(redisKey);
+        } else {
+            cacheStage(redisKey, persisted.name());
+        }
+        return persisted;
     }
 
     @Transactional
@@ -108,6 +116,24 @@ public class AgentCheckpointRepository {
                            TaskStage stage) {
         checkpointMapper.upsert(mediaId, checkpointName, stage.name(), null);
         cacheStage(redisKey, stage.name());
+    }
+
+    @Transactional
+    public boolean compareAndSetStage(Long mediaId,
+                                      String checkpointName,
+                                      String redisKey,
+                                      TaskStage expectedStage,
+                                      TaskStage nextStage) {
+        int affected = expectedStage == null
+                ? checkpointMapper.insertStageIfAbsent(mediaId, checkpointName, nextStage.name())
+                : checkpointMapper.compareAndSetStage(
+                        mediaId, checkpointName, expectedStage.name(), nextStage.name());
+        if (affected != 1) {
+            evictStageCache(redisKey);
+            return false;
+        }
+        afterCommit(() -> cacheStage(redisKey, nextStage.name()));
+        return true;
     }
 
     public void deleteByPrefix(Long mediaId, String checkpointPrefix) {
@@ -171,6 +197,14 @@ public class AgentCheckpointRepository {
         } catch (RuntimeException e) {
             log.warn("agent_checkpoint_stage_cache_write_failed key={}", key, e);
             evictFields(key, e, "stage");
+        }
+    }
+
+    private void evictStageCache(String key) {
+        try {
+            redisTemplate.opsForHash().delete(key, "stage");
+        } catch (RuntimeException e) {
+            log.warn("agent_checkpoint_stage_cache_evict_failed key={}", key, e);
         }
     }
 

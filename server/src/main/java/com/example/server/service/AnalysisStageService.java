@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-/** Persists an analysis stage before publishing its observable task event. */
+/** Atomically advances the persisted analysis stage before publishing its observable task event. */
 @Service
 public class AnalysisStageService {
 
@@ -32,17 +32,24 @@ public class AnalysisStageService {
                            TaskStage nextStage) {
         AnalysisMode resolvedMode = mode == null ? AnalysisMode.GENERAL : mode;
         try {
-            TaskStage currentStage = checkpointService.loadStage(mediaId, goal, resolvedMode);
+            TaskStage currentStage = checkpointService.loadPersistedStage(mediaId, goal, resolvedMode);
             stagePolicy.requireAllowed(currentStage, nextStage);
             // Payload checkpoints persist their stage atomically. A same-stage call only publishes it.
-            if (currentStage != nextStage) {
-                checkpointService.saveStage(mediaId, goal, resolvedMode, nextStage);
+            if (currentStage != nextStage && !checkpointService.compareAndSetStage(
+                    mediaId, goal, resolvedMode, currentStage, nextStage)) {
+                throw new ConcurrentTransitionException(currentStage, nextStage);
             }
-        } catch (AnalysisStagePolicy.InvalidTransitionException e) {
+        } catch (AnalysisStagePolicy.InvalidTransitionException | ConcurrentTransitionException e) {
             throw e;
         } catch (RuntimeException e) {
             log.warn("analysis_stage_checkpoint_failed mediaId={} stage={}", mediaId, nextStage, e);
         }
         taskEventService.publishAnalysis(mediaId, goal, resolvedMode, status, nextStage);
+    }
+
+    public static class ConcurrentTransitionException extends IllegalStateException {
+        public ConcurrentTransitionException(TaskStage expectedStage, TaskStage nextStage) {
+            super("分析任务阶段已被并发修改，拒绝迁移: " + expectedStage + " -> " + nextStage);
+        }
     }
 }

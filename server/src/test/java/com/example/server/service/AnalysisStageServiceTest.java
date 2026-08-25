@@ -23,13 +23,17 @@ class AnalysisStageServiceTest {
     @Test
     void persistsStageBeforePublishingEvent() {
         TaskStatus status = TaskStatus.of(TaskStatus.State.PROCESSING, "开始消费");
-        when(checkpoints.loadStage(7L, "总结课程", AnalysisMode.GENERAL))
+        when(checkpoints.loadPersistedStage(7L, "总结课程", AnalysisMode.GENERAL))
                 .thenReturn(TaskStage.QUEUED);
+        when(checkpoints.compareAndSetStage(
+                7L, "总结课程", AnalysisMode.GENERAL, TaskStage.QUEUED, TaskStage.CONSUMING))
+                .thenReturn(true);
 
         service.transition(7L, "总结课程", AnalysisMode.GENERAL, status, TaskStage.CONSUMING);
 
         InOrder order = inOrder(checkpoints, events);
-        order.verify(checkpoints).saveStage(7L, "总结课程", AnalysisMode.GENERAL, TaskStage.CONSUMING);
+        order.verify(checkpoints).compareAndSetStage(
+                7L, "总结课程", AnalysisMode.GENERAL, TaskStage.QUEUED, TaskStage.CONSUMING);
         order.verify(events).publishAnalysis(
                 7L, "总结课程", AnalysisMode.GENERAL, status, TaskStage.CONSUMING);
     }
@@ -37,13 +41,14 @@ class AnalysisStageServiceTest {
     @Test
     void publishesPayloadStageWithoutWritingItTwice() {
         TaskStatus status = TaskStatus.of(TaskStatus.State.PROCESSING, "Planner 已完成");
-        when(checkpoints.loadStage(7L, "总结课程", AnalysisMode.GENERAL))
+        when(checkpoints.loadPersistedStage(7L, "总结课程", AnalysisMode.GENERAL))
                 .thenReturn(TaskStage.PLAN_COMPLETED);
 
         service.transition(7L, "总结课程", AnalysisMode.GENERAL, status, TaskStage.PLAN_COMPLETED);
 
-        verify(checkpoints, never()).saveStage(
-                7L, "总结课程", AnalysisMode.GENERAL, TaskStage.PLAN_COMPLETED);
+        verify(checkpoints, never()).compareAndSetStage(
+                7L, "总结课程", AnalysisMode.GENERAL,
+                TaskStage.PLAN_COMPLETED, TaskStage.PLAN_COMPLETED);
         verify(events).publishAnalysis(
                 7L, "总结课程", AnalysisMode.GENERAL, status, TaskStage.PLAN_COMPLETED);
     }
@@ -51,22 +56,39 @@ class AnalysisStageServiceTest {
     @Test
     void rejectsInvalidTransitionWithoutPublishing() {
         TaskStatus status = TaskStatus.of(TaskStatus.State.PROCESSING, "重新执行");
-        when(checkpoints.loadStage(7L, "总结课程", AnalysisMode.GENERAL))
+        when(checkpoints.loadPersistedStage(7L, "总结课程", AnalysisMode.GENERAL))
                 .thenReturn(TaskStage.COMPLETED);
 
         assertThrows(IllegalStateException.class, () -> service.transition(
                 7L, "总结课程", AnalysisMode.GENERAL, status, TaskStage.EXECUTOR_STARTED));
 
-        verify(checkpoints, never()).saveStage(
-                7L, "总结课程", AnalysisMode.GENERAL, TaskStage.EXECUTOR_STARTED);
+        verify(checkpoints, never()).compareAndSetStage(
+                7L, "总结课程", AnalysisMode.GENERAL,
+                TaskStage.COMPLETED, TaskStage.EXECUTOR_STARTED);
         verify(events, never()).publishAnalysis(
                 7L, "总结课程", AnalysisMode.GENERAL, status, TaskStage.EXECUTOR_STARTED);
     }
 
     @Test
+    void rejectsConcurrentTransitionWithoutPublishingStaleEvent() {
+        TaskStatus status = TaskStatus.of(TaskStatus.State.PROCESSING, "开始消费");
+        when(checkpoints.loadPersistedStage(7L, "总结课程", AnalysisMode.GENERAL))
+                .thenReturn(TaskStage.QUEUED);
+        when(checkpoints.compareAndSetStage(
+                7L, "总结课程", AnalysisMode.GENERAL, TaskStage.QUEUED, TaskStage.CONSUMING))
+                .thenReturn(false);
+
+        assertThrows(AnalysisStageService.ConcurrentTransitionException.class, () -> service.transition(
+                7L, "总结课程", AnalysisMode.GENERAL, status, TaskStage.CONSUMING));
+
+        verify(events, never()).publishAnalysis(
+                7L, "总结课程", AnalysisMode.GENERAL, status, TaskStage.CONSUMING);
+    }
+
+    @Test
     void keepsEventFallbackWhenCheckpointIsUnavailable() {
         TaskStatus status = TaskStatus.of(TaskStatus.State.PROCESSING, "开始消费");
-        when(checkpoints.loadStage(7L, "总结课程", AnalysisMode.GENERAL))
+        when(checkpoints.loadPersistedStage(7L, "总结课程", AnalysisMode.GENERAL))
                 .thenThrow(new IllegalStateException("database unavailable"));
 
         service.transition(7L, "总结课程", AnalysisMode.GENERAL, status, TaskStage.CONSUMING);

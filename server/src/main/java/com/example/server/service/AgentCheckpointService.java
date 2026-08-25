@@ -89,10 +89,21 @@ public class AgentCheckpointService {
                 mediaId, goalCheckpoint(goal, mode, "stage"), goalKey(mediaId, goal, mode));
     }
 
-    void saveStage(Long mediaId, String goal, AnalysisMode mode, TaskStage stage) {
+    TaskStage loadPersistedStage(Long mediaId, String goal, AnalysisMode mode) {
+        return checkpointRepository.readPersistedStage(
+                mediaId, goalCheckpoint(goal, mode, "stage"), goalKey(mediaId, goal, mode));
+    }
+
+    boolean compareAndSetStage(Long mediaId,
+                               String goal,
+                               AnalysisMode mode,
+                               TaskStage expectedStage,
+                               TaskStage nextStage) {
         String key = goalKey(mediaId, goal, mode);
-        checkpointRepository.writeStage(mediaId, goalCheckpoint(goal, mode, "stage"), key, stage);
-        rememberGoalKey(mediaId, key);
+        boolean updated = checkpointRepository.compareAndSetStage(
+                mediaId, goalCheckpoint(goal, mode, "stage"), key, expectedStage, nextStage);
+        if (updated) rememberGoalKey(mediaId, key);
+        return updated;
     }
 
     public List<VideoChunk> loadChunks(Long mediaId) {
