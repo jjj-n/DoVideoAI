@@ -65,15 +65,11 @@ public class TaskEventService implements MessageListener {
         return emitter;
     }
 
-    public void publishAnalysis(Long mediaId, String goal, TaskStatus status, TaskStage stage) {
-        publishAnalysis(mediaId, goal, AnalysisMode.GENERAL, status, stage);
-    }
-
-    public void publishAnalysis(Long mediaId,
-                                String goal,
-                                AnalysisMode mode,
-                                TaskStatus status,
-                                TaskStage stage) {
+    void publishAnalysis(Long mediaId,
+                         String goal,
+                         AnalysisMode mode,
+                         TaskStatus status,
+                         TaskStage stage) {
         publish(key(mediaId, ANALYSIS, goal, mode), TaskEvent.of(status, stage));
     }
 

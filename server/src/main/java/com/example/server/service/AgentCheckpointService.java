@@ -89,11 +89,7 @@ public class AgentCheckpointService {
                 mediaId, goalCheckpoint(goal, mode, "stage"), goalKey(mediaId, goal, mode));
     }
 
-    public void saveStage(Long mediaId, String goal, TaskStage stage) {
-        saveStage(mediaId, goal, AnalysisMode.GENERAL, stage);
-    }
-
-    public void saveStage(Long mediaId, String goal, AnalysisMode mode, TaskStage stage) {
+    void saveStage(Long mediaId, String goal, AnalysisMode mode, TaskStage stage) {
         String key = goalKey(mediaId, goal, mode);
         checkpointRepository.writeStage(mediaId, goalCheckpoint(goal, mode, "stage"), key, stage);
         rememberGoalKey(mediaId, key);

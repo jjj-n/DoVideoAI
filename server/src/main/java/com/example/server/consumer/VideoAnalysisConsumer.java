@@ -8,9 +8,9 @@ import com.example.server.dto.TaskStage;
 import com.example.server.service.AiService;
 import com.example.server.service.AgentCheckpointService;
 import com.example.server.service.AgentLoopService;
+import com.example.server.service.AnalysisStageService;
 import com.example.server.service.FailedAnalysisTaskService;
 import com.example.server.service.MediaService;
-import com.example.server.service.TaskEventService;
 import com.example.server.utils.AnalysisTaskKeys;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
@@ -55,7 +55,7 @@ public class VideoAnalysisConsumer implements RocketMQListener<AnalysisTaskMsg> 
     private final RocketMQTemplate rocketMQTemplate;
     private final FailedAnalysisTaskService failedTaskService;
     private final MediaService mediaService;
-    private final TaskEventService taskEventService;
+    private final AnalysisStageService analysisStageService;
     private final String deadLetterTopic;
 
     public VideoAnalysisConsumer(AiService aiService,
@@ -65,7 +65,7 @@ public class VideoAnalysisConsumer implements RocketMQListener<AnalysisTaskMsg> 
                                  RocketMQTemplate rocketMQTemplate,
                                  FailedAnalysisTaskService failedTaskService,
                                  MediaService mediaService,
-                                 TaskEventService taskEventService,
+                                 AnalysisStageService analysisStageService,
                                  @Value("${rocketmq.topic.video-analysis-dead:video-analysis-dead-topic}")
                                  String deadLetterTopic) {
         this.aiService = aiService;
@@ -75,7 +75,7 @@ public class VideoAnalysisConsumer implements RocketMQListener<AnalysisTaskMsg> 
         this.rocketMQTemplate = rocketMQTemplate;
         this.failedTaskService = failedTaskService;
         this.mediaService = mediaService;
-        this.taskEventService = taskEventService;
+        this.analysisStageService = analysisStageService;
         this.deadLetterTopic = deadLetterTopic;
     }
 
@@ -113,9 +113,6 @@ public class VideoAnalysisConsumer implements RocketMQListener<AnalysisTaskMsg> 
             Long currentAttempt = redisTemplate.opsForValue().increment(attemptsKey);
             attempt = currentAttempt == null ? 1 : currentAttempt;
             redisTemplate.expire(attemptsKey, ACTIVE_TTL);
-            taskEventService.publishAnalysis(mediaId, msg.getUserGoal(), mode,
-                    TaskStatus.of(TaskStatus.State.PROCESSING, "视频分析任务开始执行"),
-                    TaskStage.CONSUMING);
             if (msg.isRevision()) {
                 if (!checkpointService.beginStagedRevision(mediaId, msg.getUserGoal(), mode)) {
                     throw new IllegalStateException("修订任务状态不存在，等待消息队列重试");
@@ -129,7 +126,7 @@ public class VideoAnalysisConsumer implements RocketMQListener<AnalysisTaskMsg> 
                             : checkpointService.loadResult(sourceMediaId, msg.getUserGoal(), mode);
                     if (reusable != null && reusable.result() != null
                             && aiService.reuseResult(mediaId, sourceMediaId, reusable, mode)) {
-                        taskEventService.publishAnalysis(mediaId, msg.getUserGoal(), mode,
+                        analysisStageService.transition(mediaId, msg.getUserGoal(), mode,
                                 TaskStatus.completed(reusable), TaskStage.COMPLETED_REUSED);
                         log.info("video_analysis_reused mediaId={} sourceMediaId={}", mediaId, sourceMediaId);
                         return;
@@ -137,7 +134,9 @@ public class VideoAnalysisConsumer implements RocketMQListener<AnalysisTaskMsg> 
                     redisTemplate.delete(completedKey);
                 }
             }
-            saveStage(mediaId, msg.getUserGoal(), mode, TaskStage.CONSUMING);
+            analysisStageService.transition(mediaId, msg.getUserGoal(), mode,
+                    TaskStatus.of(TaskStatus.State.PROCESSING, "视频分析任务开始执行"),
+                    TaskStage.CONSUMING);
             aiService.asyncAnalyze(mediaId, msg.getUserGoal(), mode);
             if (msg.isRevision()) {
                 checkpointService.completeStagedRevision(mediaId, msg.getUserGoal(), mode);
@@ -151,12 +150,11 @@ public class VideoAnalysisConsumer implements RocketMQListener<AnalysisTaskMsg> 
                     completedKey, String.valueOf(mediaId), Duration.ofDays(7));
             AgentState completed = checkpointService.loadResult(mediaId, msg.getUserGoal(), mode);
             if (completed != null && completed.result() != null) {
-                taskEventService.publishAnalysis(mediaId, msg.getUserGoal(), mode,
+                analysisStageService.transition(mediaId, msg.getUserGoal(), mode,
                         TaskStatus.completed(completed), TaskStage.COMPLETED);
             }
         } catch (AgentLoopService.BudgetExceededException e) {
-            saveStage(mediaId, msg.getUserGoal(), mode, TaskStage.BUDGET_EXHAUSTED);
-            taskEventService.publishAnalysis(mediaId, msg.getUserGoal(), mode,
+            analysisStageService.transition(mediaId, msg.getUserGoal(), mode,
                     TaskStatus.of(TaskStatus.State.FAILED, e.getMessage()),
                     TaskStage.BUDGET_EXHAUSTED);
             log.warn("video_analysis_budget_exhausted mediaId={} reason={}", mediaId, e.getMessage());
@@ -169,8 +167,7 @@ public class VideoAnalysisConsumer implements RocketMQListener<AnalysisTaskMsg> 
                 // 重试期间 active 不能掉，不然前端会以为任务结束，又塞进来一份相同工作。
                 retrying = true;
                 redisTemplate.expire(activeKey, ACTIVE_TTL);
-                saveStage(mediaId, msg.getUserGoal(), mode, TaskStage.RETRYING);
-                taskEventService.publishAnalysis(mediaId, msg.getUserGoal(), mode,
+                analysisStageService.transition(mediaId, msg.getUserGoal(), mode,
                         TaskStatus.of(TaskStatus.State.PROCESSING, "本次执行失败，等待消息队列重试"),
                         TaskStage.RETRYING);
                 log.warn("video_analysis_retry_scheduled mediaId={} attempt={}", mediaId, attempt, e);
@@ -186,8 +183,7 @@ public class VideoAnalysisConsumer implements RocketMQListener<AnalysisTaskMsg> 
                         log.error("failed_analysis_record_write_failed mediaId={}", mediaId, recordError);
                     }
                     rocketMQTemplate.convertAndSend(deadLetterTopic, msg);
-                    saveStage(mediaId, msg.getUserGoal(), mode, TaskStage.DEAD_LETTERED);
-                    taskEventService.publishAnalysis(mediaId, msg.getUserGoal(), mode,
+                    analysisStageService.transition(mediaId, msg.getUserGoal(), mode,
                             TaskStatus.of(TaskStatus.State.FAILED, "分析失败，已进入人工处理队列"),
                             TaskStage.DEAD_LETTERED);
                     log.error("video_analysis_dead_lettered mediaId={} attempts={} permanent={}",
@@ -277,8 +273,7 @@ public class VideoAnalysisConsumer implements RocketMQListener<AnalysisTaskMsg> 
             redisTemplate.delete(java.util.List.of(
                     AnalysisTaskKeys.active(contentHash, goalDigest),
                     AnalysisTaskKeys.attempts(contentHash, goalDigest)));
-            saveStage(msg.getMediaId(), msg.getUserGoal(), mode, TaskStage.DEAD_LETTERED);
-            taskEventService.publishAnalysis(msg.getMediaId(), msg.getUserGoal(), mode,
+            analysisStageService.transition(msg.getMediaId(), msg.getUserGoal(), mode,
                     TaskStatus.of(TaskStatus.State.FAILED, "任务消息非法，已终止"),
                     TaskStage.DEAD_LETTERED);
         } catch (RuntimeException e) {
@@ -326,11 +321,4 @@ public class VideoAnalysisConsumer implements RocketMQListener<AnalysisTaskMsg> 
         }
     }
 
-    private void saveStage(Long mediaId, String goal, AnalysisMode mode, TaskStage stage) {
-        try {
-            checkpointService.saveStage(mediaId, goal, mode, stage);
-        } catch (RuntimeException e) {
-            log.warn("analysis_stage_checkpoint_failed mediaId={} stage={}", mediaId, stage, e);
-        }
-    }
 }

@@ -22,13 +22,15 @@ public class AgentLoopService {
 
     private static final Logger log = LoggerFactory.getLogger(AgentLoopService.class);
     private static final int MAX_PLAN_TASKS = 5;
+    /** ADR-0001: one initial round plus at most one targeted retry. */
+    private static final int MAX_ALLOWED_ROUNDS = 2;
 
     private final DeepSeekUtils deepSeekUtils;
     private final LongVideoContextService longVideoContextService;
     private final AgentCheckpointService checkpointService;
     private final AgentTelemetry telemetry;
     private final EvidenceVerificationService evidenceVerificationService;
-    private final TaskEventService taskEventService;
+    private final AnalysisStageService analysisStageService;
     private final int maxRounds;
     private final long maxDurationMs;
     private final long maxEstimatedTokens;
@@ -39,7 +41,7 @@ public class AgentLoopService {
                             AgentCheckpointService checkpointService,
                             AgentTelemetry telemetry,
                             EvidenceVerificationService evidenceVerificationService,
-                            TaskEventService taskEventService,
+                            AnalysisStageService analysisStageService,
                             @Value("${agent.budget.max-rounds:2}") int maxRounds,
                             @Value("${agent.budget.max-duration-ms:120000}") long maxDurationMs,
                             @Value("${agent.budget.max-estimated-tokens:50000}") long maxEstimatedTokens,
@@ -49,8 +51,9 @@ public class AgentLoopService {
         this.checkpointService = checkpointService;
         this.telemetry = telemetry;
         this.evidenceVerificationService = evidenceVerificationService;
-        this.taskEventService = taskEventService;
-        if (maxRounds < 1 || maxDurationMs < 1 || maxEstimatedTokens < 1 || maxEstimatedCost < 0) {
+        this.analysisStageService = analysisStageService;
+        if (maxRounds < 1 || maxRounds > MAX_ALLOWED_ROUNDS
+                || maxDurationMs < 1 || maxEstimatedTokens < 1 || maxEstimatedCost < 0) {
             throw new IllegalArgumentException("Agent 终止预算配置无效");
         }
         this.maxRounds = maxRounds;
@@ -110,7 +113,7 @@ public class AgentLoopService {
         AgentState.AgentPlan plan = resolvePlan(mediaId, relevantContext, savedState, profile);
         checkBudget(runStartedNanos, "Planner");
         if (mediaId != null) {
-            taskEventService.publishAnalysis(mediaId, relevantContext.userGoal(), modeOf(profile),
+            analysisStageService.transition(mediaId, relevantContext.userGoal(), modeOf(profile),
                     TaskStatus.of(TaskStatus.State.PROCESSING, "Planner 已完成任务拆解"),
                     TaskStage.PLAN_COMPLETED);
         }
@@ -128,6 +131,7 @@ public class AgentLoopService {
             telemetry.incrementCurrent("criticCheckpointResumes", 1);
             checkBudget(runStartedNanos, "Executor Checkpoint");
             state = critiqueRound(mediaId, relevantContext, plan, state.result(), state.round(), profile);
+            checkBudget(runStartedNanos, "Critic");
             if (!state.critique().passed() && state.round() < maxRounds) {
                 relevantContext = contextForRetry(
                         mediaId, context, relevantContext, state.critique(), profile);
@@ -139,6 +143,7 @@ public class AgentLoopService {
             checkBudget(runStartedNanos, "Agent Round " + round);
             state = executeRound(
                     mediaId, relevantContext, plan, state.critique(), round, runStartedNanos, profile);
+            checkBudget(runStartedNanos, "Critic");
             if (state.critique().passed()) break;
             if (round < maxRounds) {
                 relevantContext = contextForRetry(
@@ -402,7 +407,7 @@ public class AgentLoopService {
             telemetry.incrementCurrent("planRevisions", 1);
             if (mediaId != null) {
                 checkpointService.savePlan(mediaId, context.userGoal(), modeOf(profile), revisedPlan);
-                taskEventService.publishAnalysis(mediaId, context.userGoal(), modeOf(profile),
+                analysisStageService.transition(mediaId, context.userGoal(), modeOf(profile),
                         TaskStatus.of(TaskStatus.State.PROCESSING, "Planner 根据 Critic 反馈补充了遗漏任务"),
                         TaskStage.PLAN_COMPLETED);
             }
@@ -420,7 +425,7 @@ public class AgentLoopService {
                               String message,
                               TaskStage stage) {
         if (mediaId == null) return;
-        taskEventService.publishAnalysis(mediaId, goal, mode,
+        analysisStageService.transition(mediaId, goal, mode,
                 TaskStatus.of(TaskStatus.State.PROCESSING, message), stage);
     }
 

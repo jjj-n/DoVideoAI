@@ -42,7 +42,7 @@ public class AiService {
     private final AgentCheckpointService checkpointService;
     private final AgentTelemetry telemetry;
     private final MediaService mediaService;
-    private final TaskEventService taskEventService;
+    private final AnalysisStageService analysisStageService;
     private final RedissonClient redissonClient;
     private final StringRedisTemplate redisTemplate;
     private final ModeRegistry modeRegistry;
@@ -54,7 +54,7 @@ public class AiService {
                      AgentCheckpointService checkpointService,
                      AgentTelemetry telemetry,
                      MediaService mediaService,
-                     TaskEventService taskEventService,
+                     AnalysisStageService analysisStageService,
                      RedissonClient redissonClient,
                      StringRedisTemplate redisTemplate,
                      ModeRegistry modeRegistry) {
@@ -65,7 +65,7 @@ public class AiService {
         this.checkpointService = checkpointService;
         this.telemetry = telemetry;
         this.mediaService = mediaService;
-        this.taskEventService = taskEventService;
+        this.analysisStageService = analysisStageService;
         this.redissonClient = redissonClient;
         this.redisTemplate = redisTemplate;
         this.modeRegistry = modeRegistry;
@@ -101,7 +101,7 @@ public class AiService {
             VideoContext videoContext = resolveContext(mediaFile, userGoal, traceId, resolvedMode);
             mediaFile.setTranscriptText(videoContext.transcriptText());
             currentStage = TaskStage.AGENT_LOOP;
-            taskEventService.publishAnalysis(mediaId, userGoal, resolvedMode,
+            analysisStageService.transition(mediaId, userGoal, resolvedMode,
                     TaskStatus.of(TaskStatus.State.PROCESSING, "多模态上下文已就绪，Agent 开始分析"),
                     TaskStage.AGENT_LOOP);
             long agentStarted = System.nanoTime();
@@ -218,7 +218,7 @@ public class AiService {
                                       String traceId,
                                       String contentHash,
                                       AnalysisMode mode) {
-        taskEventService.publishAnalysis(mediaFile.getId(), userGoal, mode,
+        analysisStageService.transition(mediaFile.getId(), userGoal, mode,
                 TaskStatus.of(TaskStatus.State.PROCESSING, "正在并行提取语音与关键帧"),
                 TaskStage.VIDEO_CONTEXT);
         long started = System.nanoTime();

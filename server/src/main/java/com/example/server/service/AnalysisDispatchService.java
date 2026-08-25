@@ -35,7 +35,7 @@ public class AnalysisDispatchService {
     private final StringRedisTemplate redisTemplate;
     private final RocketMQTemplate rocketMQTemplate;
     private final RedissonClient redissonClient;
-    private final TaskEventService taskEventService;
+    private final AnalysisStageService analysisStageService;
     private final String analysisTopic;
 
     public AnalysisDispatchService(AiService aiService,
@@ -43,7 +43,7 @@ public class AnalysisDispatchService {
                                    StringRedisTemplate redisTemplate,
                                    RocketMQTemplate rocketMQTemplate,
                                    RedissonClient redissonClient,
-                                   TaskEventService taskEventService,
+                                   AnalysisStageService analysisStageService,
                                    @Value("${rocketmq.topic.video-analysis:video-analysis-topic}")
                                    String analysisTopic) {
         this.aiService = aiService;
@@ -51,7 +51,7 @@ public class AnalysisDispatchService {
         this.redisTemplate = redisTemplate;
         this.rocketMQTemplate = rocketMQTemplate;
         this.redissonClient = redissonClient;
-        this.taskEventService = taskEventService;
+        this.analysisStageService = analysisStageService;
         this.analysisTopic = analysisTopic;
     }
 
@@ -91,7 +91,7 @@ public class AnalysisDispatchService {
         }
 
         try {
-            taskEventService.publishAnalysis(mediaId, goal, resolvedMode,
+            analysisStageService.transition(mediaId, goal, resolvedMode,
                     TaskStatus.of(TaskStatus.State.QUEUED, "任务已进入异步分析队列"), TaskStage.QUEUED);
         } catch (RuntimeException eventError) {
             // MQ 已经接单，通知失败不能把任务伪装成投递失败。

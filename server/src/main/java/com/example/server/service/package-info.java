@@ -10,7 +10,8 @@
  *       {@code VideoChunkingService}、{@code AudioExportService}。</li>
  *   <li><b>检索与长文</b> —— {@code LongVideoContextService}、{@code VideoEvidenceRetrievalService}、
  *       {@code QdrantVectorStore}、{@code EvidenceVerificationService}。</li>
- *   <li><b>状态与配套</b> —— {@code AgentCheckpointService}(MySQL 为真源、Redis 为热缓存)、
+ *   <li><b>状态与配套</b> —— {@code AnalysisStageService}(分析阶段迁移入口)、
+ *       {@code AgentCheckpointService}(MySQL 为真源、Redis 为热缓存)、
  *       {@code AgentTelemetry}、{@code TaskEventService}、{@code FailedAnalysisTaskService} 等。</li>
  * </ul>
  *

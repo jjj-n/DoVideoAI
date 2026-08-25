@@ -40,19 +40,19 @@ public class FailedAnalysisTaskService {
     private final FailedAnalysisTaskMapper taskMapper;
     private final RocketMQTemplate rocketMQTemplate;
     private final StringRedisTemplate redisTemplate;
-    private final TaskEventService taskEventService;
+    private final AnalysisStageService analysisStageService;
     private final String analysisTopic;
 
     public FailedAnalysisTaskService(FailedAnalysisTaskMapper taskMapper,
                                      RocketMQTemplate rocketMQTemplate,
                                      StringRedisTemplate redisTemplate,
-                                     TaskEventService taskEventService,
+                                     AnalysisStageService analysisStageService,
                                      @Value("${rocketmq.topic.video-analysis:video-analysis-topic}")
                                      String analysisTopic) {
         this.taskMapper = taskMapper;
         this.rocketMQTemplate = rocketMQTemplate;
         this.redisTemplate = redisTemplate;
-        this.taskEventService = taskEventService;
+        this.analysisStageService = analysisStageService;
         this.analysisTopic = analysisTopic;
     }
 
@@ -137,7 +137,7 @@ public class FailedAnalysisTaskService {
         }
 
         try {
-            taskEventService.publishAnalysis(task.getMediaId(), task.getUserGoal(), mode,
+            analysisStageService.transition(task.getMediaId(), task.getUserGoal(), mode,
                     TaskStatus.of(TaskStatus.State.QUEUED, "失败任务已由管理员重新入队"),
                     TaskStage.MANUAL_REPLAY);
         } catch (RuntimeException eventError) {
