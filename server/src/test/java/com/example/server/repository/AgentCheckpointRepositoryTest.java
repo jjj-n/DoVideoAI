@@ -8,6 +8,7 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -15,6 +16,31 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class AgentCheckpointRepositoryTest {
+
+    @Test
+    void writesGoalPayloadWithoutAdvancingCanonicalStage() {
+        Fixture fixture = fixture();
+
+        fixture.repository.writePayload(
+                7L, "goal:plan", "goal:key", "plan", TaskStage.PLAN_COMPLETED, "draft");
+
+        verify(fixture.mapper).upsert(7L, "goal:plan", "PLAN_COMPLETED", "\"draft\"");
+        verify(fixture.hashes).put("goal:key", "plan", "\"draft\"");
+        verify(fixture.hashes, never()).put("goal:key", "stage", "PLAN_COMPLETED");
+    }
+
+    @Test
+    void readsGoalPayloadWithoutReplacingCachedCanonicalStage() {
+        Fixture fixture = fixture();
+        when(fixture.mapper.findPayload(7L, "goal:plan")).thenReturn("\"draft\"");
+
+        assertEquals("draft", fixture.repository.readPayload(
+                7L, "goal:plan", "goal:key", "plan", String.class));
+
+        verify(fixture.mapper, never()).findStage(7L, "goal:plan");
+        verify(fixture.hashes).put("goal:key", "plan", "\"draft\"");
+        verify(fixture.hashes, never()).put("goal:key", "stage", "PLAN_COMPLETED");
+    }
 
     @Test
     void insertsInitialStageWhenThePersistedStageIsAbsent() {

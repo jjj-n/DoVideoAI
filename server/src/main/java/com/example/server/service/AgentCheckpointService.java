@@ -7,6 +7,7 @@ import com.example.server.dto.TaskStage;
 import com.example.server.dto.VideoChunk;
 import com.example.server.dto.VideoContext;
 import com.example.server.repository.AgentCheckpointRepository;
+import com.example.server.repository.AnalysisTaskEventOutboxRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.server.utils.AnalysisTaskKeys;
@@ -39,13 +40,16 @@ public class AgentCheckpointService {
     private final StringRedisTemplate redisTemplate;
     private final ObjectMapper objectMapper;
     private final AgentCheckpointRepository checkpointRepository;
+    private final AnalysisTaskEventOutboxRepository outboxRepository;
 
     public AgentCheckpointService(StringRedisTemplate redisTemplate,
                                   ObjectMapper objectMapper,
-                                  AgentCheckpointRepository checkpointRepository) {
+                                  AgentCheckpointRepository checkpointRepository,
+                                  AnalysisTaskEventOutboxRepository outboxRepository) {
         this.redisTemplate = redisTemplate;
         this.objectMapper = objectMapper;
         this.checkpointRepository = checkpointRepository;
+        this.outboxRepository = outboxRepository;
     }
 
     public VideoContext loadContext(Long mediaId) {
@@ -58,7 +62,8 @@ public class AgentCheckpointService {
     }
 
     public AgentState loadResult(Long mediaId, String goal, AnalysisMode mode) {
-        return checkpointRepository.read(mediaId, goalCheckpoint(goal, mode, "result"), goalKey(mediaId, goal, mode),
+        return checkpointRepository.readPayload(
+                mediaId, goalCheckpoint(goal, mode, "result"), goalKey(mediaId, goal, mode),
                 "result", AgentState.class);
     }
 
@@ -67,7 +72,8 @@ public class AgentCheckpointService {
     }
 
     public AgentState.AgentPlan loadPlan(Long mediaId, String goal, AnalysisMode mode) {
-        return checkpointRepository.read(mediaId, goalCheckpoint(goal, mode, "plan"), goalKey(mediaId, goal, mode),
+        return checkpointRepository.readPayload(
+                mediaId, goalCheckpoint(goal, mode, "plan"), goalKey(mediaId, goal, mode),
                 "plan", AgentState.AgentPlan.class);
     }
 
@@ -76,7 +82,8 @@ public class AgentCheckpointService {
     }
 
     public AgentState loadCriticState(Long mediaId, String goal, AnalysisMode mode) {
-        return checkpointRepository.read(mediaId, goalCheckpoint(goal, mode, "criticState"), goalKey(mediaId, goal, mode),
+        return checkpointRepository.readPayload(
+                mediaId, goalCheckpoint(goal, mode, "criticState"), goalKey(mediaId, goal, mode),
                 "criticState", AgentState.class);
     }
 
@@ -134,8 +141,7 @@ public class AgentCheckpointService {
         TaskStage stage = state.critique() != null && state.critique().passed()
                 ? TaskStage.ANALYSIS_COMPLETED : TaskStage.ANALYSIS_COMPLETED_WITH_WARNINGS;
         String key = goalKey(mediaId, state.goal(), mode);
-        checkpointRepository.write(mediaId, goalCheckpoint(state.goal(), mode, "result"),
-                goalCheckpoint(state.goal(), mode, "stage"),
+        checkpointRepository.writePayload(mediaId, goalCheckpoint(state.goal(), mode, "result"),
                 key, "result", stage, state);
         rememberGoalKey(mediaId, key);
     }
@@ -146,7 +152,7 @@ public class AgentCheckpointService {
 
     public void savePlan(Long mediaId, String goal, AnalysisMode mode, AgentState.AgentPlan plan) {
         String key = goalKey(mediaId, goal, mode);
-        checkpointRepository.write(mediaId, goalCheckpoint(goal, mode, "plan"), goalCheckpoint(goal, mode, "stage"),
+        checkpointRepository.writePayload(mediaId, goalCheckpoint(goal, mode, "plan"),
                 key, "plan", TaskStage.PLAN_COMPLETED, plan);
         rememberGoalKey(mediaId, key);
     }
@@ -159,8 +165,7 @@ public class AgentCheckpointService {
         TaskStage stage = state.critique() != null && state.critique().passed()
                 ? TaskStage.CRITIC_PASSED : TaskStage.CRITIC_RETRY_REQUIRED;
         String key = goalKey(mediaId, state.goal(), mode);
-        checkpointRepository.write(mediaId, goalCheckpoint(state.goal(), mode, "criticState"),
-                goalCheckpoint(state.goal(), mode, "stage"),
+        checkpointRepository.writePayload(mediaId, goalCheckpoint(state.goal(), mode, "criticState"),
                 key, "criticState", stage, state);
         rememberGoalKey(mediaId, key);
     }
@@ -171,9 +176,8 @@ public class AgentCheckpointService {
 
     public void saveExecutionState(Long mediaId, AgentState state, AnalysisMode mode) {
         String key = goalKey(mediaId, state.goal(), mode);
-        checkpointRepository.write(mediaId,
+        checkpointRepository.writePayload(mediaId,
                 goalCheckpoint(state.goal(), mode, "criticState"),
-                goalCheckpoint(state.goal(), mode, "stage"),
                 key, "criticState", TaskStage.EXECUTOR_COMPLETED, state);
         rememberGoalKey(mediaId, key);
     }
@@ -271,8 +275,10 @@ public class AgentCheckpointService {
         rememberGoalKey(mediaId, key);
     }
 
+    @Transactional
     public void deleteMedia(Long mediaId) {
         checkpointRepository.deleteByMediaId(mediaId);
+        outboxRepository.deleteByMediaId(mediaId);
         try {
             Set<String> goalKeys = redisTemplate.opsForSet().members(goalIndexKey(mediaId));
             List<String> keys = new ArrayList<>();

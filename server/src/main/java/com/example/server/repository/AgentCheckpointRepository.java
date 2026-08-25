@@ -39,7 +39,7 @@ public class AgentCheckpointRepository {
                       String field,
                       Class<T> type) {
         return read(mediaId, checkpointName, redisKey, field,
-                value -> objectMapper.readValue(value, type));
+                value -> objectMapper.readValue(value, type), true);
     }
 
     public <T> T read(Long mediaId,
@@ -48,7 +48,25 @@ public class AgentCheckpointRepository {
                       String field,
                       TypeReference<T> type) {
         return read(mediaId, checkpointName, redisKey, field,
-                value -> objectMapper.readValue(value, type));
+                value -> objectMapper.readValue(value, type), true);
+    }
+
+    public <T> T readPayload(Long mediaId,
+                             String checkpointName,
+                             String redisKey,
+                             String field,
+                             Class<T> type) {
+        return read(mediaId, checkpointName, redisKey, field,
+                value -> objectMapper.readValue(value, type), false);
+    }
+
+    public <T> T readPayload(Long mediaId,
+                             String checkpointName,
+                             String redisKey,
+                             String field,
+                             TypeReference<T> type) {
+        return read(mediaId, checkpointName, redisKey, field,
+                value -> objectMapper.readValue(value, type), false);
     }
 
     public TaskStage readStage(Long mediaId, String checkpointName, String redisKey) {
@@ -91,6 +109,22 @@ public class AgentCheckpointRepository {
             afterCommit(() -> cacheField(redisKey, field, payload, stage.name()));
         } catch (Exception e) {
             throw new IllegalStateException("保存 Agent Checkpoint 失败", e);
+        }
+    }
+
+    @Transactional
+    public void writePayload(Long mediaId,
+                             String checkpointName,
+                             String redisKey,
+                             String field,
+                             TaskStage payloadStage,
+                             Object value) {
+        try {
+            String payload = objectMapper.writeValueAsString(value);
+            checkpointMapper.upsert(mediaId, checkpointName, payloadStage.name(), payload);
+            afterCommit(() -> cacheField(redisKey, field, payload, null, false));
+        } catch (Exception e) {
+            throw new IllegalStateException("保存 Agent Payload Checkpoint 失败", e);
         }
     }
 
@@ -160,7 +194,8 @@ public class AgentCheckpointRepository {
                        String checkpointName,
                        String redisKey,
                        String field,
-                       JsonReader<T> reader) {
+                       JsonReader<T> reader,
+                       boolean cachePayloadStage) {
         try {
             Object cached = redisTemplate.opsForHash().get(redisKey, field);
             if (cached != null) return reader.read(cached.toString());
@@ -172,7 +207,8 @@ public class AgentCheckpointRepository {
             String payload = checkpointMapper.findPayload(mediaId, checkpointName);
             if (payload == null) return null;
             T value = reader.read(payload);
-            cacheField(redisKey, field, payload, checkpointMapper.findStage(mediaId, checkpointName));
+            String stage = cachePayloadStage ? checkpointMapper.findStage(mediaId, checkpointName) : null;
+            cacheField(redisKey, field, payload, stage, cachePayloadStage);
             return value;
         } catch (Exception e) {
             throw new IllegalStateException("读取 Agent Checkpoint 失败: " + checkpointName, e);
@@ -180,13 +216,27 @@ public class AgentCheckpointRepository {
     }
 
     private void cacheField(String key, String field, String payload, String stage) {
+        cacheField(key, field, payload, stage, true);
+    }
+
+    private void cacheField(String key,
+                            String field,
+                            String payload,
+                            String stage,
+                            boolean cachePayloadStage) {
         try {
             redisTemplate.opsForHash().put(key, field, payload);
-            if (stage != null) redisTemplate.opsForHash().put(key, "stage", stage);
+            if (cachePayloadStage && stage != null) {
+                redisTemplate.opsForHash().put(key, "stage", stage);
+            }
             redisTemplate.expire(key, CACHE_TTL);
         } catch (RuntimeException e) {
             log.warn("agent_checkpoint_cache_write_failed key={} field={}", key, field, e);
-            evictFields(key, e, field, "stage");
+            if (cachePayloadStage) {
+                evictFields(key, e, field, "stage");
+            } else {
+                evictFields(key, e, field);
+            }
         }
     }
 

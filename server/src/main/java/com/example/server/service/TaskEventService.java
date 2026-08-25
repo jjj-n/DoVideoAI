@@ -70,7 +70,11 @@ public class TaskEventService implements MessageListener {
                          AnalysisMode mode,
                          TaskStatus status,
                          TaskStage stage) {
-        publish(key(mediaId, ANALYSIS, goal, mode), TaskEvent.of(status, stage));
+        publish(analysisKey(mediaId, goal, mode), TaskEvent.of(status, stage));
+    }
+
+    void publishStored(String key, TaskEvent event) {
+        publish(key, event, true);
     }
 
     public void publishTranscription(Long mediaId, TaskStatus status, TaskStage stage) {
@@ -78,6 +82,10 @@ public class TaskEventService implements MessageListener {
     }
 
     private void publish(String key, TaskEvent event) {
+        publish(key, event, false);
+    }
+
+    private void publish(String key, TaskEvent event, boolean retryOnRedisFailure) {
         try {
             String payload = objectMapper.createObjectNode()
                     .put("key", key)
@@ -88,6 +96,7 @@ public class TaskEventService implements MessageListener {
         } catch (RuntimeException e) {
             log.warn("task_event_redis_publish_failed key={}", key, e);
             publishLocal(key, event);
+            if (retryOnRedisFailure) throw e;
         }
     }
 
@@ -135,5 +144,10 @@ public class TaskEventService implements MessageListener {
                 ? AnalysisTaskKeys.goalDigest(goal, mode)
                 : "default";
         return type + ":" + mediaId + ":" + suffix;
+    }
+
+    static String analysisKey(Long mediaId, String goal, AnalysisMode mode) {
+        AnalysisMode resolvedMode = mode == null ? AnalysisMode.GENERAL : mode;
+        return ANALYSIS + ":" + mediaId + ":" + AnalysisTaskKeys.goalDigest(goal, resolvedMode);
     }
 }

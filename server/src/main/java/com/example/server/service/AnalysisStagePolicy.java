@@ -45,6 +45,7 @@ public class AnalysisStagePolicy {
         if (current == null) {
             if (next == TaskStage.QUEUED
                     || next == TaskStage.CONSUMING
+                    || next == TaskStage.COMPLETED_REUSED
                     || next == TaskStage.DEAD_LETTERED) return;
             throw invalid(current, next);
         }
@@ -60,7 +61,8 @@ public class AnalysisStagePolicy {
     private static Map<TaskStage, Set<TaskStage>> allowedTransitions() {
         Map<TaskStage, Set<TaskStage>> transitions = new EnumMap<>(TaskStage.class);
         allow(transitions, TaskStage.QUEUED,
-                TaskStage.CONSUMING, TaskStage.DISPATCH_FAILED, TaskStage.FAILED, TaskStage.DEAD_LETTERED);
+                TaskStage.CONSUMING, TaskStage.COMPLETED_REUSED,
+                TaskStage.DISPATCH_FAILED, TaskStage.FAILED, TaskStage.DEAD_LETTERED);
         allow(transitions, TaskStage.CONSUMING,
                 TaskStage.VIDEO_CONTEXT, TaskStage.AGENT_LOOP, TaskStage.PLAN_COMPLETED,
                 TaskStage.COMPLETED, TaskStage.COMPLETED_REUSED, TaskStage.RETRYING,

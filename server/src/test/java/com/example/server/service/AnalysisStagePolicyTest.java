@@ -40,6 +40,8 @@ class AnalysisStagePolicyTest {
     @Test
     void acceptsRevisionReuseAndFinalWarningPaths() {
         assertAllowed(TaskStage.PLAN_COMPLETED, TaskStage.CONSUMING);
+        assertAllowed(null, TaskStage.COMPLETED_REUSED);
+        assertAllowed(TaskStage.QUEUED, TaskStage.COMPLETED_REUSED);
         assertAllowed(TaskStage.ANALYSIS_COMPLETED, TaskStage.COMPLETED_REUSED);
         assertAllowed(TaskStage.CRITIC_RETRY_REQUIRED, TaskStage.ANALYSIS_COMPLETED_WITH_WARNINGS);
         assertAllowed(null, TaskStage.DEAD_LETTERED);

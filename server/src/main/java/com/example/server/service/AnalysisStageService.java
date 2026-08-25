@@ -7,22 +7,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-/** Atomically advances the persisted analysis stage before publishing its observable task event. */
+/** Advances an analysis stage and publishes its durable observable event. */
 @Service
 public class AnalysisStageService {
 
     private static final Logger log = LoggerFactory.getLogger(AnalysisStageService.class);
 
-    private final AgentCheckpointService checkpointService;
+    private final AnalysisStageTransaction stageTransaction;
+    private final AnalysisTaskEventOutboxRelay outboxRelay;
     private final TaskEventService taskEventService;
-    private final AnalysisStagePolicy stagePolicy;
 
-    public AnalysisStageService(AgentCheckpointService checkpointService,
-                                TaskEventService taskEventService,
-                                AnalysisStagePolicy stagePolicy) {
-        this.checkpointService = checkpointService;
+    public AnalysisStageService(AnalysisStageTransaction stageTransaction,
+                                AnalysisTaskEventOutboxRelay outboxRelay,
+                                TaskEventService taskEventService) {
+        this.stageTransaction = stageTransaction;
+        this.outboxRelay = outboxRelay;
         this.taskEventService = taskEventService;
-        this.stagePolicy = stagePolicy;
     }
 
     public void transition(Long mediaId,
@@ -31,20 +31,19 @@ public class AnalysisStageService {
                            TaskStatus status,
                            TaskStage nextStage) {
         AnalysisMode resolvedMode = mode == null ? AnalysisMode.GENERAL : mode;
+        final long eventId;
         try {
-            TaskStage currentStage = checkpointService.loadPersistedStage(mediaId, goal, resolvedMode);
-            stagePolicy.requireAllowed(currentStage, nextStage);
-            // Payload checkpoints persist their stage atomically. A same-stage call only publishes it.
-            if (currentStage != nextStage && !checkpointService.compareAndSetStage(
-                    mediaId, goal, resolvedMode, currentStage, nextStage)) {
-                throw new ConcurrentTransitionException(currentStage, nextStage);
-            }
+            eventId = stageTransaction.advanceAndEnqueue(
+                    mediaId, goal, resolvedMode, status, nextStage);
         } catch (AnalysisStagePolicy.InvalidTransitionException | ConcurrentTransitionException e) {
             throw e;
         } catch (RuntimeException e) {
-            log.warn("analysis_stage_checkpoint_failed mediaId={} stage={}", mediaId, nextStage, e);
+            // Preserve the existing degradation path when MySQL itself is unavailable.
+            log.warn("analysis_stage_transaction_failed mediaId={} stage={}", mediaId, nextStage, e);
+            taskEventService.publishAnalysis(mediaId, goal, resolvedMode, status, nextStage);
+            return;
         }
-        taskEventService.publishAnalysis(mediaId, goal, resolvedMode, status, nextStage);
+        outboxRelay.publishNow(eventId);
     }
 
     public static class ConcurrentTransitionException extends IllegalStateException {
