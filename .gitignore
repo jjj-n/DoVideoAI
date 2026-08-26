@@ -50,3 +50,6 @@ minio/data/
 
 # Local benchmark corpora may contain videos, transcripts, and embeddings.
 benchmark/local/
+
+# Locally generated review workbooks and previews.
+/outputs/

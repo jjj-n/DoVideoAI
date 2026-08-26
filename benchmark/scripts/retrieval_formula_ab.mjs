@@ -1,9 +1,18 @@
 #!/usr/bin/env node
 /**
- * Rebuild the 60-minute retrieval corpus and compare the historical and current
- * retrieval formulas on exactly the same chunks, labels, and embeddings.
+ * Rebuild a retrieval corpus and compare the historical and current formulas
+ * on exactly the same chunks, labels, and embeddings.
  *
- * Prepare (requires SILICONFLOW_API_KEY, ffmpeg, and tesseract):
+ * Extract media before questions are reviewed:
+ *   node retrieval_formula_ab.mjs extract <video> <dataset.json>
+ *
+ * Draft 9 exact, 9 fuzzy, and 6 visual questions for human review:
+ *   node retrieval_formula_ab.mjs draft <dataset.json> <questions.json>
+ *
+ * Enrich reviewed questions and attach them to an extracted dataset:
+ *   node retrieval_formula_ab.mjs enrich <dataset.json> <questions.json> [output-dataset.json]
+ *
+ * One-shot preparation when reviewed questions already exist:
  *   node retrieval_formula_ab.mjs prepare <video> <questions.json> <dataset.json>
  *
  * Compare (offline):
@@ -20,6 +29,7 @@ import {
 import { basename, dirname, join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import { spawn } from 'node:child_process';
+import { createHash } from 'node:crypto';
 
 const API_BASE = (process.env.SILICONFLOW_BASE_URL || 'https://api.siliconflow.cn/v1').replace(/\/+$/, '');
 const EMBEDDING_MODEL = process.env.EMBEDDING_MODEL || 'BAAI/bge-m3';
@@ -36,10 +46,23 @@ const SOURCE_URL = process.env.SOURCE_URL || '';
 const ASR_CONCURRENCY = Number(process.env.ASR_CONCURRENCY || 4);
 const OCR_CONCURRENCY = Number(process.env.OCR_CONCURRENCY || 4);
 const RETRIES = 3;
+const DRAFT_COUNTS = Object.freeze({ exact: 9, fuzzy: 9, visual: 6 });
 
 const [command, ...args] = process.argv.slice(2);
 
-if (command === 'prepare') {
+if (command === 'extract') {
+  const [videoFile, datasetFile] = args;
+  if (!videoFile || !datasetFile) usage();
+  await extract(resolve(videoFile), resolve(datasetFile));
+} else if (command === 'draft') {
+  const [datasetFile, questionsFile] = args;
+  if (!datasetFile || !questionsFile) usage();
+  await draft(resolve(datasetFile), resolve(questionsFile));
+} else if (command === 'enrich') {
+  const [datasetFile, questionsFile, outputFile = datasetFile] = args;
+  if (!datasetFile || !questionsFile) usage();
+  await enrich(resolve(datasetFile), resolve(questionsFile), resolve(outputFile));
+} else if (command === 'prepare') {
   const [videoFile, questionsFile, datasetFile] = args;
   if (!videoFile || !questionsFile || !datasetFile) usage();
   await prepare(resolve(videoFile), resolve(questionsFile), resolve(datasetFile));
@@ -52,20 +75,76 @@ if (command === 'prepare') {
 }
 
 function usage() {
-  console.error('usage: retrieval_formula_ab.mjs prepare <video> <questions.json> <dataset.json>');
+  console.error('usage: retrieval_formula_ab.mjs extract <video> <dataset.json>');
+  console.error('   or: retrieval_formula_ab.mjs draft <dataset.json> <questions.json>');
+  console.error('   or: retrieval_formula_ab.mjs enrich <dataset.json> <questions.json> [output-dataset.json]');
+  console.error('   or: retrieval_formula_ab.mjs prepare <video> <questions.json> <dataset.json>');
   console.error('   or: retrieval_formula_ab.mjs compare <dataset.json> <results.json>');
   process.exit(1);
 }
 
 async function prepare(videoFile, questionsFile, datasetFile) {
-  if (!API_KEY) throw new Error('SILICONFLOW_API_KEY is required for prepare');
-  await access(videoFile);
+  requireApiKey('prepare');
   const questions = JSON.parse(await readFile(questionsFile, 'utf8'));
   validateQuestions(questions);
+  const dataset = await buildCorpus(videoFile);
+  const questionCacheFile = join(workDirectory(), 'questions_enriched.json');
+  dataset.questions = await enrichQuestions(questions, questionCacheFile);
+  dataset.metadata.questionsEnrichedAt = new Date().toISOString();
+  await saveDataset(datasetFile, dataset);
+}
 
-  const workDir = resolve(
+async function extract(videoFile, datasetFile) {
+  requireApiKey('extract');
+  const dataset = await buildCorpus(videoFile);
+  dataset.questions = [];
+  await saveDataset(datasetFile, dataset);
+}
+
+async function draft(datasetFile, questionsFile) {
+  requireApiKey('draft');
+  const dataset = JSON.parse(await readFile(datasetFile, 'utf8'));
+  if (!Array.isArray(dataset.chunks) || dataset.chunks.length === 0) {
+    throw new Error('dataset must contain chunks before drafting questions');
+  }
+  const questions = await draftQuestions(dataset, join(workDirectory(), 'questions_draft_cache.json'));
+  await mkdir(dirname(questionsFile), { recursive: true });
+  await writeJson(questionsFile, questions);
+  console.log(`draft questions written: ${questionsFile}`);
+}
+
+async function enrich(datasetFile, questionsFile, outputFile) {
+  requireApiKey('enrich');
+  const [dataset, questions] = await Promise.all([
+    readFile(datasetFile, 'utf8').then(JSON.parse),
+    readFile(questionsFile, 'utf8').then(JSON.parse),
+  ]);
+  if (!Array.isArray(dataset.chunks) || dataset.chunks.length === 0) {
+    throw new Error('dataset must contain chunks before enriching questions');
+  }
+  validateQuestions(questions);
+  dataset.questions = await enrichQuestions(
+    questions,
+    join(workDirectory(), 'questions_enriched.json'),
+  );
+  dataset.metadata.questionsEnrichedAt = new Date().toISOString();
+  await saveDataset(outputFile, dataset);
+}
+
+function requireApiKey(operation) {
+  if (!API_KEY) throw new Error(`SILICONFLOW_API_KEY is required for ${operation}`);
+}
+
+function workDirectory() {
+  return resolve(
     process.env.DOV_RETRIEVAL_WORK || join(tmpdir(), 'dovideo-retrieval-ab', 'prepared'),
   );
+}
+
+async function buildCorpus(videoFile) {
+  await access(videoFile);
+
+  const workDir = workDirectory();
   await mkdir(workDir, { recursive: true });
   const clippedVideo = join(workDir, `video_${VIDEO_SECONDS}s.mp4`);
   await ensureClippedVideo(videoFile, clippedVideo);
@@ -86,11 +165,7 @@ async function prepare(videoFile, questionsFile, datasetFile) {
   const chunks = await buildChunks(segments, chunkCacheFile);
   console.log(`chunks ready: ${chunks.length}`);
 
-  const questionCacheFile = join(workDir, 'questions_enriched.json');
-  const enrichedQuestions = await enrichQuestions(questions, questionCacheFile);
-  console.log(`questions ready: ${enrichedQuestions.length}`);
-
-  const dataset = {
+  return {
     metadata: {
       datasetId: DATASET_ID || basename(videoFile).replace(/\.[^.]+$/, ''),
       sourceVideo: basename(videoFile),
@@ -105,8 +180,11 @@ async function prepare(videoFile, questionsFile, datasetFile) {
       scoringScope: 'chunk recall; segment reranking does not change whether the expected chunk is selected',
     },
     chunks,
-    questions: enrichedQuestions,
+    questions: [],
   };
+}
+
+async function saveDataset(datasetFile, dataset) {
   await mkdir(dirname(datasetFile), { recursive: true });
   await writeJson(datasetFile, dataset);
   console.log(`dataset written: ${datasetFile}`);
@@ -114,7 +192,7 @@ async function prepare(videoFile, questionsFile, datasetFile) {
 
 async function ensureClippedVideo(source, target) {
   if (await exists(target)) return;
-  console.log('clipping the first 60 minutes...');
+  console.log(`clipping the first ${VIDEO_SECONDS} seconds...`);
   await run(FFMPEG, [
     '-y', '-i', source,
     '-t', String(VIDEO_SECONDS),
@@ -332,12 +410,209 @@ async function summarizeChunk(segments) {
   };
 }
 
+async function draftQuestions(dataset, cacheFile) {
+  const cache = (await readJsonIfPresent(cacheFile)) || {};
+  const datasetId = dataset.metadata?.datasetId || 'video';
+  const exact = [];
+  const fuzzy = [];
+  const visual = [];
+  const textChunks = evenlySpaced(dataset.chunks, DRAFT_COUNTS.exact);
+
+  for (let index = 0; index < textChunks.length; index++) {
+    const chunk = textChunks[index];
+    const key = `text:${chunk.startTime}`;
+    let pair;
+    try {
+      pair = validateTextPair(cache[key], chunk);
+    } catch {
+      pair = await draftTextPair(chunk);
+      cache[key] = pair;
+      await writeJson(cacheFile, cache);
+    }
+    exact.push(questionCandidate(datasetId, 'exact', index, pair.exact, chunk));
+    fuzzy.push(questionCandidate(datasetId, 'fuzzy', index, pair.fuzzy, chunk));
+    console.log(`draft text pair ${index + 1}/${textChunks.length} ready`);
+  }
+
+  const visualTargets = visualDraftTargets(dataset.chunks, DRAFT_COUNTS.visual);
+  if (visualTargets.length < DRAFT_COUNTS.visual) {
+    throw new Error(`only ${visualTargets.length} visual draft target(s) have usable OCR text`);
+  }
+  for (let index = 0; index < visualTargets.length; index++) {
+    const { chunk, ordinal } = visualTargets[index];
+    const key = `visual:${chunk.startTime}:${ordinal}`;
+    let candidate;
+    try {
+      candidate = validateDraftCandidate(cache[key], chunk, 'visual');
+    } catch {
+      candidate = await draftVisualQuestion(chunk, visual.slice(-2).map((question) => question.q));
+      cache[key] = candidate;
+      await writeJson(cacheFile, cache);
+    }
+    visual.push(questionCandidate(datasetId, 'visual', index, candidate, chunk, 'ocr'));
+    console.log(`draft visual question ${index + 1}/${visualTargets.length} ready`);
+  }
+
+  return [...exact, ...fuzzy, ...visual];
+}
+
+function evenlySpaced(chunks, count) {
+  if (chunks.length < count) {
+    throw new Error(`need at least ${count} chunks to draft ${count} text question pairs`);
+  }
+  if (count === 1) return [chunks[Math.floor(chunks.length / 2)]];
+  const indexes = [...new Set(Array.from({ length: count }, (_, index) =>
+    Math.round(index * (chunks.length - 1) / (count - 1))))];
+  if (indexes.length !== count) throw new Error('could not distribute draft questions across chunks');
+  return indexes.map((index) => chunks[index]);
+}
+
+function visualDraftTargets(chunks, count) {
+  const ranked = chunks
+    .map((chunk) => ({ chunk, chars: evidenceNormalize(visualText(chunk)).length }))
+    .filter((entry) => entry.chars >= 12)
+    .sort((left, right) => right.chars - left.chars || left.chunk.startTime - right.chunk.startTime);
+  if (ranked.length === 0) return [];
+  return Array.from({ length: count }, (_, index) => ({
+    chunk: ranked[index % ranked.length].chunk,
+    ordinal: Math.floor(index / ranked.length),
+  }));
+}
+
+async function draftTextPair(chunk) {
+  const prompt = [
+    '根据下面一个五分钟 VideoChunk 生成两道用于 RAG 召回评测的问题。',
+    'exact：问题应包含证据中的明确术语、名称、数字或 API 名。',
+    'fuzzy：针对同一片段提出不同问题，但要换一种通俗说法，避免直接照抄核心术语。',
+    '问题不能泄露答案，也不能依赖片段外知识。',
+    'relevantSecond 必须取自输入中的某个 startSecond。',
+    'evidenceText 必须从 transcript 或 OCR 逐字复制 8–24 个连续字符，只作为证据锚点。',
+    '即使 ASR 中的专有名词有错字也必须原样照抄，严禁纠错、补字或改写。',
+    '只返回 JSON：',
+    '{"exact":{"q":"问题","relevantSecond":123,"evidenceText":"原文"},'
+      + '"fuzzy":{"q":"问题","relevantSecond":123,"evidenceText":"原文"}}',
+    `带时间片段：${JSON.stringify(compactSegments(chunk))}`,
+  ].join('\n');
+  return draftJson(prompt, (value) => validateTextPair(value, chunk));
+}
+
+async function draftVisualQuestion(chunk, previousQuestions) {
+  const prompt = [
+    '只根据下面 VideoChunk 的 OCR 画面文字，生成一道视觉检索问题。',
+    '问题必须依赖 PPT、代码、表格、字幕或画面文字，不得只靠语音摘要回答。',
+    '问题不能泄露答案，也不能依赖片段外知识。',
+    'relevantSecond 必须取自输入中的某个 startSecond。',
+    'evidenceText 必须从 ocrTexts 逐字复制 8–24 个连续字符，只作为证据锚点。',
+    '即使 OCR 有错字也必须原样照抄，严禁纠错、补字或改写。',
+    previousQuestions.length ? `不要与这些问题重复：${previousQuestions.join('；')}` : '',
+    '只返回 JSON：{"q":"问题","relevantSecond":123,"evidenceText":"OCR 原文"}',
+    `带时间 OCR：${JSON.stringify(compactSegments(chunk, true))}`,
+  ].filter(Boolean).join('\n');
+  return draftJson(prompt, (value) => validateDraftCandidate(value, chunk, 'visual'));
+}
+
+async function draftJson(prompt, validator) {
+  let lastError;
+  for (let attempt = 0; attempt < RETRIES; attempt++) {
+    try {
+      return validator(await chatJson([
+        prompt,
+        attempt ? '上一次结果未通过原文或时间校验，请严格使用给定的连续原文和时间。' : '',
+      ].filter(Boolean).join('\n')));
+    } catch (error) {
+      lastError = error;
+    }
+  }
+  throw lastError;
+}
+
+function validateTextPair(value, chunk) {
+  if (!value || typeof value !== 'object') throw new Error('text draft must be an object');
+  return {
+    exact: validateDraftCandidate(value.exact, chunk, 'text'),
+    fuzzy: validateDraftCandidate(value.fuzzy, chunk, 'text'),
+  };
+}
+
+function validateDraftCandidate(value, chunk, channel) {
+  if (!value?.q?.trim() || !value?.evidenceText?.trim()) {
+    throw new Error(`${channel} draft requires q and evidenceText`);
+  }
+  const relevantSecond = Number(value.relevantSecond);
+  if (!Number.isFinite(relevantSecond)
+    || relevantSecond * 1000 < chunk.startTime
+    || relevantSecond * 1000 >= chunk.endTime) {
+    throw new Error(`${channel} draft relevantSecond is outside the chunk`);
+  }
+  const source = channel === 'visual'
+    ? visualText(chunk)
+    : (chunk.rawSegments || []).flatMap((segment) => [
+      segment.transcript || '',
+      ...(segment.ocrTexts || []),
+    ]).join(' ');
+  const evidence = evidenceNormalize(value.evidenceText);
+  if (evidence.length < 4 || !evidenceNormalize(source).includes(evidence)) {
+    throw new Error(`${channel} draft evidenceText is not present in source evidence`);
+  }
+  return {
+    q: String(value.q).trim(),
+    relevantSecond,
+    evidenceText: String(value.evidenceText).trim().slice(0, 120),
+  };
+}
+
+function compactSegments(chunk, visualOnly = false) {
+  return (chunk.rawSegments || []).map((segment) => ({
+    startSecond: Math.round(Number(segment.startMs) / 1000),
+    ...(visualOnly ? {} : { transcript: truncate(segment.transcript, 2_000) }),
+    ocrTexts: (segment.ocrTexts || []).map((text) => truncate(text, 1_500)).filter(Boolean),
+  }));
+}
+
+function questionCandidate(datasetId, tag, index, draftValue, chunk, evidenceChannel) {
+  return {
+    id: `${datasetId}-${tag}-${String(index + 1).padStart(3, '0')}`,
+    q: draftValue.q,
+    tag,
+    relevantSecs: [Math.floor(draftValue.relevantSecond)],
+    reviewed: false,
+    sourceChunkStartSec: chunk.startTime / 1000,
+    evidenceChannel: evidenceChannel || evidenceSource(chunk, draftValue.evidenceText),
+    evidenceText: draftValue.evidenceText,
+  };
+}
+
+function evidenceSource(chunk, evidenceText) {
+  const evidence = evidenceNormalize(evidenceText);
+  const inAsr = (chunk.rawSegments || []).some((segment) =>
+    evidenceNormalize(segment.transcript).includes(evidence));
+  const inOcr = (chunk.rawSegments || []).some((segment) =>
+    (segment.ocrTexts || []).some((text) => evidenceNormalize(text).includes(evidence)));
+  if (inAsr && inOcr) return 'asr+ocr';
+  if (inAsr) return 'asr';
+  if (inOcr) return 'ocr';
+  throw new Error('draft evidence source cannot be resolved to ASR or OCR');
+}
+
+function truncate(value, limit) {
+  const text = String(value || '').trim();
+  return text.length > limit ? text.slice(0, limit) : text;
+}
+
+function evidenceNormalize(value) {
+  return String(value || '').toLowerCase().replace(/[\p{P}\p{S}\s]+/gu, '');
+}
+
 async function enrichQuestions(questions, cacheFile) {
   const cache = (await readJsonIfPresent(cacheFile)) || {};
   const result = [];
   for (let index = 0; index < questions.length; index++) {
     const question = questions[index];
-    const key = String(index);
+    const key = createHash('sha256').update(JSON.stringify({
+      q: question.q,
+      tag: question.tag,
+      relevantSecs: questionRelevantSecs(question),
+    })).digest('hex');
     if (!cache[key]?.rawEmbedding?.length || !cache[key]?.semanticEmbedding?.length) {
       const intent = await planRetrieval(question.q);
       cache[key] = {
@@ -707,9 +982,12 @@ function validateQuestions(questions) {
   if (!Array.isArray(questions) || questions.length === 0) throw new Error('questions must be a non-empty array');
   for (const question of questions) {
     const relevantSecs = questionRelevantSecs(question);
-    if (!question.q || !question.tag || relevantSecs.length === 0
+    if (!question.q || !['exact', 'fuzzy', 'visual'].includes(question.tag) || relevantSecs.length === 0
       || relevantSecs.some((second) => !Number.isFinite(second) || second < 0)) {
       throw new Error(`invalid question: ${JSON.stringify(question)}`);
+    }
+    if (question.reviewed !== true) {
+      throw new Error(`question must be human reviewed before enrichment: ${question.id || question.q}`);
     }
   }
 }

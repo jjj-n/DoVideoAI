@@ -60,51 +60,59 @@
       "id": "bv1ryuy6weds-full",
       "role": "primary",
       "split": "dev",
-      "status": "source-ready",
+      "status": "review-pending",
       "sourceUrl": "https://www.bilibili.com/video/BV1ryuy6WEDs/",
       "durationSeconds": 3893,
       "chunkCount": 13,
       "questionCount": 0,
+      "candidateQuestionCount": 24,
       "localSource": "../local/sources/bv1ryuy6weds/source.mp4",
-      "notes": "Single-part source downloaded and media-verified; ASR/OCR and reviewed questions are pending."
+      "localDataset": "../local/corpora/bv1ryuy6weds-full/dataset.json",
+      "notes": "ASR/OCR, 13 VideoChunks, Embeddings, and 24 draft questions are ready; human question review is pending."
     },
     {
       "id": "bv1ah4y1s7nx-all-p",
       "role": "primary",
       "split": "test",
-      "status": "source-ready",
+      "status": "review-pending",
       "sourceUrl": "https://www.bilibili.com/video/BV1Ah4y1S7NX/",
       "durationSeconds": 2950,
       "chunkCount": 10,
       "questionCount": 0,
+      "candidateQuestionCount": 24,
       "partCount": 7,
       "localSource": "../local/sources/bv1ah4y1s7nx/combined.mp4",
-      "notes": "All seven parts downloaded, concatenated in order, and media-verified; ASR/OCR and reviewed questions are pending."
+      "localDataset": "../local/corpora/bv1ah4y1s7nx-all-p/dataset.json",
+      "notes": "All seven parts were combined; ASR/OCR, 10 VideoChunks, Embeddings, and 24 draft questions are ready; human question review is pending."
     },
     {
       "id": "bv1fj6vbfenu-all-p",
       "role": "primary",
       "split": "test",
-      "status": "source-ready",
+      "status": "review-pending",
       "sourceUrl": "https://www.bilibili.com/video/BV1fj6vBfEnu/",
       "durationSeconds": 5029,
       "chunkCount": 17,
       "questionCount": 0,
+      "candidateQuestionCount": 24,
       "partCount": 9,
       "localSource": "../local/sources/bv1fj6vbfenu/combined.mp4",
-      "notes": "All nine parts downloaded, concatenated in order, and media-verified; ASR/OCR and reviewed questions are pending."
+      "localDataset": "../local/corpora/bv1fj6vbfenu-all-p/dataset.json",
+      "notes": "All nine parts were combined; ASR/OCR, 17 VideoChunks, Embeddings, and 24 draft questions are ready; human question review is pending."
     },
     {
       "id": "bv1sg8c6jefw-full",
       "role": "primary",
       "split": "test",
-      "status": "source-ready",
+      "status": "review-pending",
       "sourceUrl": "https://www.bilibili.com/video/BV1Sg8C6JEfW/",
       "durationSeconds": 4212,
       "chunkCount": 15,
       "questionCount": 0,
+      "candidateQuestionCount": 24,
       "localSource": "../local/sources/bv1sg8c6jefw/source.mp4",
-      "notes": "Single-part source downloaded and media-verified; ASR/OCR and reviewed questions are pending."
+      "localDataset": "../local/corpora/bv1sg8c6jefw-full/dataset.json",
+      "notes": "ASR/OCR, 15 VideoChunks, Embeddings, and 24 draft questions are ready; human question review is pending."
     }
   ]
 }
