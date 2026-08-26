@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "suiteId": "retrieval-current-v2",
+  "status": "expanding",
+  "primaryMode": "currentFull",
+  "primaryMetric": "recallAt3",
+  "chunkSeconds": 300,
+  "targets": {
+    "primarySamples": 5,
+    "minimumDurationSeconds": 2700,
+    "minimumChunksPerSample": 10,
+    "minimumQuestionsPerSample": 20,
+    "totalQuestions": 120,
+    "tagRatios": {
+      "exact": 0.4,
+      "fuzzy": 0.4,
+      "visual": 0.2
+    },
+    "humanReviewRequired": true,
+    "devTestSplitRequired": true
+  },
+  "samples": [
+    {
+      "id": "bv1xhovyzetu-60m",
+      "role": "primary",
+      "split": "dev",
+      "status": "ready",
+      "sourceUrl": "https://www.bilibili.com/video/BV1xhovYZEtU/",
+      "durationSeconds": 3600,
+      "chunkCount": 12,
+      "questionCount": 24,
+      "questionsFile": "questions_60.json",
+      "resultsFile": "retrieval_formula_ab_results.json",
+      "localDataset": "../local/corpora/bv1xhovyzetu-60m/dataset.json",
+      "notes": "Current 24-question seed baseline; not a publishable final test set."
+    },
+    {
+      "id": "bv1qk411d76w-5m",
+      "role": "diagnostic",
+      "split": "none",
+      "status": "excluded-from-retrieval",
+      "sourceUrl": "https://www.bilibili.com/video/BV1QK411d76w/",
+      "durationSeconds": 300,
+      "chunkCount": 1,
+      "questionCount": 0,
+      "notes": "One production Chunk makes Top-3 retrieval trivial; retain only for latency tests."
+    },
+    {
+      "id": "bv1my411d7f6-18m",
+      "role": "diagnostic",
+      "split": "none",
+      "status": "excluded-from-primary-retrieval",
+      "sourceUrl": "https://www.bilibili.com/video/BV1mY411D7f6/",
+      "durationSeconds": 1095,
+      "chunkCount": 4,
+      "questionCount": 0,
+      "notes": "Four Chunks make random Top-3 hit probability 75%; retain for pipeline and latency tests."
+    }
+  ]
+}

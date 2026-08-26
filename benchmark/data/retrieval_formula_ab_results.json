@@ -1,0 +1,2513 @@
+{
+  "metadata": {
+    "sourceVideo": "source_60plus.mp4",
+    "sourceUrl": "https://www.bilibili.com/video/BV1xhovYZEtU/",
+    "durationSeconds": 3600,
+    "segmentMs": 60000,
+    "chunkMs": 300000,
+    "asrModel": "TeleAI/TeleSpeechASR",
+    "embeddingModel": "BAAI/bge-m3",
+    "llmModel": "deepseek-ai/DeepSeek-V3.2",
+    "preparedAt": "2026-08-25T02:41:09.163Z",
+    "scoringScope": "chunk recall; segment reranking does not change whether the expected chunk is selected",
+    "datasetId": "bv1xhovyzetu-60m",
+    "comparedAt": "2026-08-26T01:50:54.147Z",
+    "historicalFormula": "0.7*cosine(raw query, chunk embedding) + 0.3*historical keyword score",
+    "currentFormula": "0.6*semantic + 0.25*text terms + 0.15*OCR visual terms",
+    "currentFormulaOnlyIntent": "raw query embedding + production fallback terms",
+    "currentFullIntent": "LLM semanticQuery/keywords/visualKeywords"
+  },
+  "summary": {
+    "oldHybrid": {
+      "n": 24,
+      "hitAt1": 0.4583,
+      "hitAt3": 0.7917,
+      "recallAt3": 0.7917,
+      "mrrAt3": 0.6111,
+      "exact": {
+        "n": 12,
+        "hitAt1": 0.5,
+        "hitAt3": 1,
+        "recallAt3": 1,
+        "mrrAt3": 0.7222
+      },
+      "fuzzy": {
+        "n": 12,
+        "hitAt1": 0.4167,
+        "hitAt3": 0.5833,
+        "recallAt3": 0.5833,
+        "mrrAt3": 0.5
+      },
+      "visual": {
+        "n": 0,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "recallAt3": 0,
+        "mrrAt3": 0
+      }
+    },
+    "currentFormulaOnly": {
+      "n": 24,
+      "hitAt1": 0.4167,
+      "hitAt3": 0.7917,
+      "recallAt3": 0.7917,
+      "mrrAt3": 0.5833,
+      "exact": {
+        "n": 12,
+        "hitAt1": 0.4167,
+        "hitAt3": 1,
+        "recallAt3": 1,
+        "mrrAt3": 0.6667
+      },
+      "fuzzy": {
+        "n": 12,
+        "hitAt1": 0.4167,
+        "hitAt3": 0.5833,
+        "recallAt3": 0.5833,
+        "mrrAt3": 0.5
+      },
+      "visual": {
+        "n": 0,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "recallAt3": 0,
+        "mrrAt3": 0
+      }
+    },
+    "currentFull": {
+      "n": 24,
+      "hitAt1": 0.5,
+      "hitAt3": 0.75,
+      "recallAt3": 0.75,
+      "mrrAt3": 0.6042,
+      "exact": {
+        "n": 12,
+        "hitAt1": 0.75,
+        "hitAt3": 1,
+        "recallAt3": 1,
+        "mrrAt3": 0.8611
+      },
+      "fuzzy": {
+        "n": 12,
+        "hitAt1": 0.25,
+        "hitAt3": 0.5,
+        "recallAt3": 0.5,
+        "mrrAt3": 0.3472
+      },
+      "visual": {
+        "n": 0,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "recallAt3": 0,
+        "mrrAt3": 0
+      }
+    },
+    "vectorOnly": {
+      "n": 24,
+      "hitAt1": 0.4583,
+      "hitAt3": 0.7917,
+      "recallAt3": 0.7917,
+      "mrrAt3": 0.6111,
+      "exact": {
+        "n": 12,
+        "hitAt1": 0.5,
+        "hitAt3": 1,
+        "recallAt3": 1,
+        "mrrAt3": 0.7222
+      },
+      "fuzzy": {
+        "n": 12,
+        "hitAt1": 0.4167,
+        "hitAt3": 0.5833,
+        "recallAt3": 0.5833,
+        "mrrAt3": 0.5
+      },
+      "visual": {
+        "n": 0,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "recallAt3": 0,
+        "mrrAt3": 0
+      }
+    },
+    "oldKeywordOnly": {
+      "n": 24,
+      "hitAt1": 0.25,
+      "hitAt3": 0.4583,
+      "recallAt3": 0.4583,
+      "mrrAt3": 0.3264,
+      "exact": {
+        "n": 12,
+        "hitAt1": 0.3333,
+        "hitAt3": 0.6667,
+        "recallAt3": 0.6667,
+        "mrrAt3": 0.4583
+      },
+      "fuzzy": {
+        "n": 12,
+        "hitAt1": 0.1667,
+        "hitAt3": 0.25,
+        "recallAt3": 0.25,
+        "mrrAt3": 0.1944
+      },
+      "visual": {
+        "n": 0,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "recallAt3": 0,
+        "mrrAt3": 0
+      }
+    }
+  },
+  "uplift": {
+    "currentFormulaOnlyVsOld": {
+      "hitAt1AbsolutePoints": -4.16,
+      "hitAt3AbsolutePoints": 0,
+      "recallAt3AbsolutePoints": 0,
+      "recallAt3RelativePercent": 0,
+      "hitAt3RelativePercent": 0,
+      "mrrAt3Absolute": -0.0278,
+      "exactHitAt3Points": 0,
+      "fuzzyHitAt3Points": 0,
+      "gainedQueries": [],
+      "lostQueries": [],
+      "pairedBootstrap95": {
+        "hitAt3Points": [
+          0,
+          0
+        ],
+        "recallAt3Points": [
+          0,
+          0
+        ],
+        "mrrAt3": [
+          -0.0764,
+          0
+        ]
+      }
+    },
+    "currentFullVsOld": {
+      "hitAt1AbsolutePoints": 4.17,
+      "hitAt3AbsolutePoints": -4.17,
+      "recallAt3AbsolutePoints": -4.17,
+      "recallAt3RelativePercent": -5.27,
+      "hitAt3RelativePercent": -5.27,
+      "mrrAt3Absolute": -0.0069,
+      "exactHitAt3Points": 0,
+      "fuzzyHitAt3Points": -8.33,
+      "gainedQueries": [
+        "有没有一套视频把模型发展史讲全"
+      ],
+      "lostQueries": [
+        "哪个老师讲的课适合小白",
+        "训练模型前要准备哪些东西"
+      ],
+      "pairedBootstrap95": {
+        "hitAt3Points": [
+          -16.67,
+          8.33
+        ],
+        "recallAt3Points": [
+          -16.67,
+          8.33
+        ],
+        "mrrAt3": [
+          -0.1736,
+          0.1458
+        ]
+      }
+    }
+  },
+  "detail": {
+    "oldHybrid": [
+      {
+        "id": "bv1x-exact-001",
+        "q": "Pytorch 框架怎么入门",
+        "tag": "exact",
+        "expectedStartSec": 300,
+        "relevantStartSecs": [
+          300
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          600,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1x-exact-002",
+        "q": "李牧老师的课程讲什么内容",
+        "tag": "exact",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          900,
+          600,
+          1500
+        ]
+      },
+      {
+        "id": "bv1x-exact-003",
+        "q": "transformer 的简化模型怎么理解",
+        "tag": "exact",
+        "expectedStartSec": 1200,
+        "relevantStartSecs": [
+          1200
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1200,
+          2400,
+          2100
+        ]
+      },
+      {
+        "id": "bv1x-exact-004",
+        "q": "AlexNet 和 ResNet 有什么作用",
+        "tag": "exact",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1500,
+          300,
+          900
+        ]
+      },
+      {
+        "id": "bv1x-exact-005",
+        "q": "hugging face 的 transformers 课程内容",
+        "tag": "exact",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          2100,
+          1800,
+          1200
+        ]
+      },
+      {
+        "id": "bv1x-exact-006",
+        "q": "BERT 模型训练有哪些组件",
+        "tag": "exact",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          1500,
+          2100,
+          900
+        ]
+      },
+      {
+        "id": "bv1x-exact-007",
+        "q": "Lora 微调怎么使用",
+        "tag": "exact",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2700,
+          2400,
+          3000
+        ]
+      },
+      {
+        "id": "bv1x-exact-008",
+        "q": "多模态大模型从零训练用什么架构",
+        "tag": "exact",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3000,
+          3300,
+          2400
+        ]
+      },
+      {
+        "id": "bv1x-exact-009",
+        "q": "文本编码器和视觉编码器怎么选择",
+        "tag": "exact",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          3000,
+          1200,
+          3300
+        ]
+      },
+      {
+        "id": "bv1x-exact-010",
+        "q": "线性回归和逻辑回归是什么",
+        "tag": "exact",
+        "expectedStartSec": 300,
+        "relevantStartSecs": [
+          300
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          0,
+          300,
+          2700
+        ]
+      },
+      {
+        "id": "bv1x-exact-011",
+        "q": "卷积神经网络怎么入门",
+        "tag": "exact",
+        "expectedStartSec": 300,
+        "relevantStartSecs": [
+          300
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          300,
+          0,
+          600
+        ]
+      },
+      {
+        "id": "bv1x-exact-012",
+        "q": "分布式训练和低精度训练",
+        "tag": "exact",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2100,
+          3300,
+          2400
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-001",
+        "q": "完全没基础的人怎么开始学AI",
+        "tag": "fuzzy",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-002",
+        "q": "看不懂论文里的网络结构怎么办",
+        "tag": "fuzzy",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1500,
+          3300,
+          2400
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-003",
+        "q": "哪个老师讲的课适合小白",
+        "tag": "fuzzy",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          600,
+          900,
+          0
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-004",
+        "q": "看不懂大模型的内部原理怎么办",
+        "tag": "fuzzy",
+        "expectedStartSec": 900,
+        "relevantStartSecs": [
+          900
+        ],
+        "rank": 8,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          2400,
+          0,
+          1500
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-005",
+        "q": "不用原版那么复杂能不能学到核心思想",
+        "tag": "fuzzy",
+        "expectedStartSec": 1200,
+        "relevantStartSecs": [
+          1200
+        ],
+        "rank": 7,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          2400,
+          0,
+          3000
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-006",
+        "q": "怎么把学到的模型跑起来练手",
+        "tag": "fuzzy",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 7,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          2700,
+          2400
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-007",
+        "q": "训练模型前要准备哪些东西",
+        "tag": "fuzzy",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2100,
+          1800,
+          0
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-008",
+        "q": "除了文字还能处理图像的模型有哪些",
+        "tag": "fuzzy",
+        "expectedStartSec": 2400,
+        "relevantStartSecs": [
+          2400
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          3000,
+          2400,
+          1500
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-009",
+        "q": "微调一个自己的模型大概什么流程",
+        "tag": "fuzzy",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 4,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          2400,
+          2100,
+          0
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-010",
+        "q": "想自己动手训一个能看图的模型",
+        "tag": "fuzzy",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          0,
+          3000,
+          2400
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-011",
+        "q": "从零到入门整体学习路线是什么样的",
+        "tag": "fuzzy",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          0,
+          600,
+          3300
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-012",
+        "q": "有没有一套视频把模型发展史讲全",
+        "tag": "fuzzy",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 5,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          2700,
+          1800,
+          2400
+        ]
+      }
+    ],
+    "currentFormulaOnly": [
+      {
+        "id": "bv1x-exact-001",
+        "q": "Pytorch 框架怎么入门",
+        "tag": "exact",
+        "expectedStartSec": 300,
+        "relevantStartSecs": [
+          300
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          600,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1x-exact-002",
+        "q": "李牧老师的课程讲什么内容",
+        "tag": "exact",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          900,
+          600,
+          1500
+        ]
+      },
+      {
+        "id": "bv1x-exact-003",
+        "q": "transformer 的简化模型怎么理解",
+        "tag": "exact",
+        "expectedStartSec": 1200,
+        "relevantStartSecs": [
+          1200
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          2400,
+          1200,
+          2100
+        ]
+      },
+      {
+        "id": "bv1x-exact-004",
+        "q": "AlexNet 和 ResNet 有什么作用",
+        "tag": "exact",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1500,
+          300,
+          3300
+        ]
+      },
+      {
+        "id": "bv1x-exact-005",
+        "q": "hugging face 的 transformers 课程内容",
+        "tag": "exact",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          2100,
+          1800,
+          2400
+        ]
+      },
+      {
+        "id": "bv1x-exact-006",
+        "q": "BERT 模型训练有哪些组件",
+        "tag": "exact",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          1500,
+          900,
+          2100
+        ]
+      },
+      {
+        "id": "bv1x-exact-007",
+        "q": "Lora 微调怎么使用",
+        "tag": "exact",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2700,
+          2100,
+          1800
+        ]
+      },
+      {
+        "id": "bv1x-exact-008",
+        "q": "多模态大模型从零训练用什么架构",
+        "tag": "exact",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3000,
+          3300,
+          2400
+        ]
+      },
+      {
+        "id": "bv1x-exact-009",
+        "q": "文本编码器和视觉编码器怎么选择",
+        "tag": "exact",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          3000,
+          1200,
+          3300
+        ]
+      },
+      {
+        "id": "bv1x-exact-010",
+        "q": "线性回归和逻辑回归是什么",
+        "tag": "exact",
+        "expectedStartSec": 300,
+        "relevantStartSecs": [
+          300
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          0,
+          300,
+          2700
+        ]
+      },
+      {
+        "id": "bv1x-exact-011",
+        "q": "卷积神经网络怎么入门",
+        "tag": "exact",
+        "expectedStartSec": 300,
+        "relevantStartSecs": [
+          300
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          300,
+          0,
+          600
+        ]
+      },
+      {
+        "id": "bv1x-exact-012",
+        "q": "分布式训练和低精度训练",
+        "tag": "exact",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2100,
+          3300,
+          2400
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-001",
+        "q": "完全没基础的人怎么开始学AI",
+        "tag": "fuzzy",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-002",
+        "q": "看不懂论文里的网络结构怎么办",
+        "tag": "fuzzy",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1500,
+          3300,
+          2400
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-003",
+        "q": "哪个老师讲的课适合小白",
+        "tag": "fuzzy",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          600,
+          900,
+          0
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-004",
+        "q": "看不懂大模型的内部原理怎么办",
+        "tag": "fuzzy",
+        "expectedStartSec": 900,
+        "relevantStartSecs": [
+          900
+        ],
+        "rank": 8,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          2400,
+          0,
+          1800
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-005",
+        "q": "不用原版那么复杂能不能学到核心思想",
+        "tag": "fuzzy",
+        "expectedStartSec": 1200,
+        "relevantStartSecs": [
+          1200
+        ],
+        "rank": 7,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          2400,
+          0,
+          3000
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-006",
+        "q": "怎么把学到的模型跑起来练手",
+        "tag": "fuzzy",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 7,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          2700,
+          2400
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-007",
+        "q": "训练模型前要准备哪些东西",
+        "tag": "fuzzy",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2100,
+          1800,
+          0
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-008",
+        "q": "除了文字还能处理图像的模型有哪些",
+        "tag": "fuzzy",
+        "expectedStartSec": 2400,
+        "relevantStartSecs": [
+          2400
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          3000,
+          2400,
+          1500
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-009",
+        "q": "微调一个自己的模型大概什么流程",
+        "tag": "fuzzy",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 4,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          2100,
+          0,
+          2400
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-010",
+        "q": "想自己动手训一个能看图的模型",
+        "tag": "fuzzy",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          0,
+          3000,
+          2400
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-011",
+        "q": "从零到入门整体学习路线是什么样的",
+        "tag": "fuzzy",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          0,
+          600,
+          3300
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-012",
+        "q": "有没有一套视频把模型发展史讲全",
+        "tag": "fuzzy",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 5,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          2700,
+          1800,
+          2400
+        ]
+      }
+    ],
+    "currentFull": [
+      {
+        "id": "bv1x-exact-001",
+        "q": "Pytorch 框架怎么入门",
+        "tag": "exact",
+        "expectedStartSec": 300,
+        "relevantStartSecs": [
+          300
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          600,
+          300,
+          0
+        ]
+      },
+      {
+        "id": "bv1x-exact-002",
+        "q": "李牧老师的课程讲什么内容",
+        "tag": "exact",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          600,
+          1500,
+          900
+        ]
+      },
+      {
+        "id": "bv1x-exact-003",
+        "q": "transformer 的简化模型怎么理解",
+        "tag": "exact",
+        "expectedStartSec": 1200,
+        "relevantStartSecs": [
+          1200
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          2400,
+          900,
+          1200
+        ]
+      },
+      {
+        "id": "bv1x-exact-004",
+        "q": "AlexNet 和 ResNet 有什么作用",
+        "tag": "exact",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1500,
+          300,
+          3300
+        ]
+      },
+      {
+        "id": "bv1x-exact-005",
+        "q": "hugging face 的 transformers 课程内容",
+        "tag": "exact",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1800,
+          2100,
+          900
+        ]
+      },
+      {
+        "id": "bv1x-exact-006",
+        "q": "BERT 模型训练有哪些组件",
+        "tag": "exact",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2100,
+          3300,
+          1500
+        ]
+      },
+      {
+        "id": "bv1x-exact-007",
+        "q": "Lora 微调怎么使用",
+        "tag": "exact",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2700,
+          2100,
+          2400
+        ]
+      },
+      {
+        "id": "bv1x-exact-008",
+        "q": "多模态大模型从零训练用什么架构",
+        "tag": "exact",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3000,
+          2700,
+          2400
+        ]
+      },
+      {
+        "id": "bv1x-exact-009",
+        "q": "文本编码器和视觉编码器怎么选择",
+        "tag": "exact",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3300,
+          3000,
+          2400
+        ]
+      },
+      {
+        "id": "bv1x-exact-010",
+        "q": "线性回归和逻辑回归是什么",
+        "tag": "exact",
+        "expectedStartSec": 300,
+        "relevantStartSecs": [
+          300
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1x-exact-011",
+        "q": "卷积神经网络怎么入门",
+        "tag": "exact",
+        "expectedStartSec": 300,
+        "relevantStartSecs": [
+          300
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          300,
+          0,
+          600
+        ]
+      },
+      {
+        "id": "bv1x-exact-012",
+        "q": "分布式训练和低精度训练",
+        "tag": "exact",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2100,
+          2400,
+          3300
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-001",
+        "q": "完全没基础的人怎么开始学AI",
+        "tag": "fuzzy",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          0,
+          300,
+          3300
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-002",
+        "q": "看不懂论文里的网络结构怎么办",
+        "tag": "fuzzy",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1500,
+          300,
+          3300
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-003",
+        "q": "哪个老师讲的课适合小白",
+        "tag": "fuzzy",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 4,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          300,
+          0,
+          900
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-004",
+        "q": "看不懂大模型的内部原理怎么办",
+        "tag": "fuzzy",
+        "expectedStartSec": 900,
+        "relevantStartSecs": [
+          900
+        ],
+        "rank": 7,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          2400,
+          2700,
+          1800
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-005",
+        "q": "不用原版那么复杂能不能学到核心思想",
+        "tag": "fuzzy",
+        "expectedStartSec": 1200,
+        "relevantStartSecs": [
+          1200
+        ],
+        "rank": 6,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          2400,
+          0,
+          1800
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-006",
+        "q": "怎么把学到的模型跑起来练手",
+        "tag": "fuzzy",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 6,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          2700,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-007",
+        "q": "训练模型前要准备哪些东西",
+        "tag": "fuzzy",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 9,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          300,
+          1800
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-008",
+        "q": "除了文字还能处理图像的模型有哪些",
+        "tag": "fuzzy",
+        "expectedStartSec": 2400,
+        "relevantStartSecs": [
+          2400
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          1200,
+          2400,
+          2700
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-009",
+        "q": "微调一个自己的模型大概什么流程",
+        "tag": "fuzzy",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 4,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          1800,
+          2100,
+          2400
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-010",
+        "q": "想自己动手训一个能看图的模型",
+        "tag": "fuzzy",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          3300,
+          300,
+          3000
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-011",
+        "q": "从零到入门整体学习路线是什么样的",
+        "tag": "fuzzy",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          0,
+          3000,
+          300
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-012",
+        "q": "有没有一套视频把模型发展史讲全",
+        "tag": "fuzzy",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          1500,
+          0,
+          3300
+        ]
+      }
+    ],
+    "vectorOnly": [
+      {
+        "id": "bv1x-exact-001",
+        "q": "Pytorch 框架怎么入门",
+        "tag": "exact",
+        "expectedStartSec": 300,
+        "relevantStartSecs": [
+          300
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          600,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1x-exact-002",
+        "q": "李牧老师的课程讲什么内容",
+        "tag": "exact",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          900,
+          600,
+          1500
+        ]
+      },
+      {
+        "id": "bv1x-exact-003",
+        "q": "transformer 的简化模型怎么理解",
+        "tag": "exact",
+        "expectedStartSec": 1200,
+        "relevantStartSecs": [
+          1200
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          2400,
+          1200,
+          2100
+        ]
+      },
+      {
+        "id": "bv1x-exact-004",
+        "q": "AlexNet 和 ResNet 有什么作用",
+        "tag": "exact",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1500,
+          300,
+          900
+        ]
+      },
+      {
+        "id": "bv1x-exact-005",
+        "q": "hugging face 的 transformers 课程内容",
+        "tag": "exact",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          2100,
+          1800,
+          900
+        ]
+      },
+      {
+        "id": "bv1x-exact-006",
+        "q": "BERT 模型训练有哪些组件",
+        "tag": "exact",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2100,
+          1500,
+          3300
+        ]
+      },
+      {
+        "id": "bv1x-exact-007",
+        "q": "Lora 微调怎么使用",
+        "tag": "exact",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2700,
+          3000,
+          2100
+        ]
+      },
+      {
+        "id": "bv1x-exact-008",
+        "q": "多模态大模型从零训练用什么架构",
+        "tag": "exact",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3000,
+          3300,
+          2400
+        ]
+      },
+      {
+        "id": "bv1x-exact-009",
+        "q": "文本编码器和视觉编码器怎么选择",
+        "tag": "exact",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          3000,
+          1200,
+          3300
+        ]
+      },
+      {
+        "id": "bv1x-exact-010",
+        "q": "线性回归和逻辑回归是什么",
+        "tag": "exact",
+        "expectedStartSec": 300,
+        "relevantStartSecs": [
+          300
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          0,
+          300,
+          2700
+        ]
+      },
+      {
+        "id": "bv1x-exact-011",
+        "q": "卷积神经网络怎么入门",
+        "tag": "exact",
+        "expectedStartSec": 300,
+        "relevantStartSecs": [
+          300
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          300,
+          0,
+          600
+        ]
+      },
+      {
+        "id": "bv1x-exact-012",
+        "q": "分布式训练和低精度训练",
+        "tag": "exact",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2100,
+          3300,
+          2400
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-001",
+        "q": "完全没基础的人怎么开始学AI",
+        "tag": "fuzzy",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-002",
+        "q": "看不懂论文里的网络结构怎么办",
+        "tag": "fuzzy",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1500,
+          3300,
+          2400
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-003",
+        "q": "哪个老师讲的课适合小白",
+        "tag": "fuzzy",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          600,
+          900,
+          0
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-004",
+        "q": "看不懂大模型的内部原理怎么办",
+        "tag": "fuzzy",
+        "expectedStartSec": 900,
+        "relevantStartSecs": [
+          900
+        ],
+        "rank": 8,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          2400,
+          0,
+          1800
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-005",
+        "q": "不用原版那么复杂能不能学到核心思想",
+        "tag": "fuzzy",
+        "expectedStartSec": 1200,
+        "relevantStartSecs": [
+          1200
+        ],
+        "rank": 7,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          2400,
+          0,
+          3000
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-006",
+        "q": "怎么把学到的模型跑起来练手",
+        "tag": "fuzzy",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 7,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          2700,
+          2400
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-007",
+        "q": "训练模型前要准备哪些东西",
+        "tag": "fuzzy",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2100,
+          1800,
+          0
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-008",
+        "q": "除了文字还能处理图像的模型有哪些",
+        "tag": "fuzzy",
+        "expectedStartSec": 2400,
+        "relevantStartSecs": [
+          2400
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          3000,
+          2400,
+          1500
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-009",
+        "q": "微调一个自己的模型大概什么流程",
+        "tag": "fuzzy",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 4,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          2100,
+          0,
+          2400
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-010",
+        "q": "想自己动手训一个能看图的模型",
+        "tag": "fuzzy",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          0,
+          3000,
+          2400
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-011",
+        "q": "从零到入门整体学习路线是什么样的",
+        "tag": "fuzzy",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          0,
+          600,
+          3300
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-012",
+        "q": "有没有一套视频把模型发展史讲全",
+        "tag": "fuzzy",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 5,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          2700,
+          1800,
+          2400
+        ]
+      }
+    ],
+    "oldKeywordOnly": [
+      {
+        "id": "bv1x-exact-001",
+        "q": "Pytorch 框架怎么入门",
+        "tag": "exact",
+        "expectedStartSec": 300,
+        "relevantStartSecs": [
+          300
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          600,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1x-exact-002",
+        "q": "李牧老师的课程讲什么内容",
+        "tag": "exact",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1x-exact-003",
+        "q": "transformer 的简化模型怎么理解",
+        "tag": "exact",
+        "expectedStartSec": 1200,
+        "relevantStartSecs": [
+          1200
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1200,
+          900,
+          1500
+        ]
+      },
+      {
+        "id": "bv1x-exact-004",
+        "q": "AlexNet 和 ResNet 有什么作用",
+        "tag": "exact",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1500,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1x-exact-005",
+        "q": "hugging face 的 transformers 课程内容",
+        "tag": "exact",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 8,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          1200,
+          2400,
+          900
+        ]
+      },
+      {
+        "id": "bv1x-exact-006",
+        "q": "BERT 模型训练有哪些组件",
+        "tag": "exact",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 8,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          900,
+          1500,
+          0
+        ]
+      },
+      {
+        "id": "bv1x-exact-007",
+        "q": "Lora 微调怎么使用",
+        "tag": "exact",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 10,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          2400,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1x-exact-008",
+        "q": "多模态大模型从零训练用什么架构",
+        "tag": "exact",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          2400,
+          2700,
+          3000
+        ]
+      },
+      {
+        "id": "bv1x-exact-009",
+        "q": "文本编码器和视觉编码器怎么选择",
+        "tag": "exact",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 12,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          3000,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1x-exact-010",
+        "q": "线性回归和逻辑回归是什么",
+        "tag": "exact",
+        "expectedStartSec": 300,
+        "relevantStartSecs": [
+          300
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1x-exact-011",
+        "q": "卷积神经网络怎么入门",
+        "tag": "exact",
+        "expectedStartSec": 300,
+        "relevantStartSecs": [
+          300
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          300,
+          0,
+          600
+        ]
+      },
+      {
+        "id": "bv1x-exact-012",
+        "q": "分布式训练和低精度训练",
+        "tag": "exact",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2100,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-001",
+        "q": "完全没基础的人怎么开始学AI",
+        "tag": "fuzzy",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-002",
+        "q": "看不懂论文里的网络结构怎么办",
+        "tag": "fuzzy",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 6,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-003",
+        "q": "哪个老师讲的课适合小白",
+        "tag": "fuzzy",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-004",
+        "q": "看不懂大模型的内部原理怎么办",
+        "tag": "fuzzy",
+        "expectedStartSec": 900,
+        "relevantStartSecs": [
+          900
+        ],
+        "rank": 6,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          2400,
+          1500,
+          0
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-005",
+        "q": "不用原版那么复杂能不能学到核心思想",
+        "tag": "fuzzy",
+        "expectedStartSec": 1200,
+        "relevantStartSecs": [
+          1200
+        ],
+        "rank": 5,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-006",
+        "q": "怎么把学到的模型跑起来练手",
+        "tag": "fuzzy",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 7,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-007",
+        "q": "训练模型前要准备哪些东西",
+        "tag": "fuzzy",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 8,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-008",
+        "q": "除了文字还能处理图像的模型有哪些",
+        "tag": "fuzzy",
+        "expectedStartSec": 2400,
+        "relevantStartSecs": [
+          2400
+        ],
+        "rank": 9,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-009",
+        "q": "微调一个自己的模型大概什么流程",
+        "tag": "fuzzy",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 10,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          2400,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-010",
+        "q": "想自己动手训一个能看图的模型",
+        "tag": "fuzzy",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 11,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-011",
+        "q": "从零到入门整体学习路线是什么样的",
+        "tag": "fuzzy",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1x-fuzzy-012",
+        "q": "有没有一套视频把模型发展史讲全",
+        "tag": "fuzzy",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 12,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      }
+    ]
+  }
+}

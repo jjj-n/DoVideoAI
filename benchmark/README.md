@@ -1,58 +1,113 @@
-# 量化测试与评估
+# 评测工作区
 
-本目录是 DoVideoAI 的全链路量化测试：完整报告、可复现脚本与原始结果数据。测试结论（60 分钟视频端到端解析约 11 分钟、断点恢复节省 89% 耗时等）见 [DoVideoAI量化测试报告.md](./DoVideoAI量化测试报告.md)。
+本目录保存 DoVideoAI 的可复现评测脚本、公开标注和派生结果。视频、完整 ASR/OCR、VideoContext、VideoChunk 与 Embedding 放在 `benchmark/local/`，该目录已被 Git 忽略。
 
-## 目录结构
+## 当前状态
+
+GitHub 历史数据包含 24 道检索问题、逐题排名、阶段 trace、证据校验结果和稳定性结果，但缺少当时实际使用的原始视频、`chunks_<mediaId>.json` 与 `context_<mediaId>.json`。因此，历史数字只能作为审计记录，不能作为当前生产公式的可复现基线。
+
+2026-08-25 已从公开视频重新构建一份 60 分钟语料，并在同一批 Chunk、标签和 Embedding 上比较历史公式与当前链路。该 24 题结果现在只作为**种子基线**。扩大到以下门槛并完成人工审核前，不发布新的汇总测试报告：
+
+- 至少 5 条 45–90 分钟视频，每条不少于 10 个五分钟 Chunk；
+- 至少 120 道问题，每条视频至少 20 道；
+- 精确术语、模糊语义、视觉/OCR 问题分别约占 40%、40%、20%；
+- 调参与最终测试分离，最终测试题不得用于改权重或 Prompt；
+- 允许一个问题标注多个相关 Chunk，主指标为 `Recall@3`，同时报告 `Hit@1`、`Hit@3`、`MRR@3` 和分组指标；
+- 所有问题和相关时间点经过人工审核，自动生成的问题不能直接计入正式结果。
+
+短视频可以继续用于端到端耗时和稳定性测试，但不纳入主检索指标：5 分钟视频只有一个 Chunk，Top-3 必然命中；18 分钟视频通常只有四个 Chunk，随机 Top-3 已有 75% 命中概率，会明显抬高召回率。
+
+## 文件说明
 
 ```text
-benchmark
-├── DoVideoAI量化测试报告.md   # 完整报告：5 项测试的方法、原始数据与结论
-├── scripts/                   # 测试驱动与评测脚本（可复现）
-│   ├── test_driver.mjs        # 登录/上传/提交分析/轮询/取 trace（全部测试的驱动）
-│   ├── retrieval_eval.mjs     # 检索质量三方式对比（复刻生产打分公式）
-│   ├── evidence_eval.mjs      # 证据两层程序化校验统计
-│   ├── stability_test.mjs     # 连续 10 任务稳定性
-│   ├── dump_checkpoint.sh     # 从 Redis 导出 chunks/context/result
-│   └── gen_videos.sh          # 合成测试视频生成器（Windows/PowerShell TTS）
-└── data/
-    ├── questions_60.json      # 检索评测集（24 题人工标注）
-    ├── knowledge_30.json      # 合成视频语料（30 个知识点槽位）
-    ├── trace_*.json           # 各档视频的 agent-trace 阶段耗时（测试 1 原始数据）
-    ├── retrieval_results.json # 测试 2 原始数据
-    ├── evidence_results.json  # 测试 3 原始数据
-    ├── stability_results.json # 测试 5 原始数据
-    └── result_*.json          # 各任务最终结论样例
+benchmark/
+├── README.md
+├── data/
+│   ├── retrieval_suite.json              # 多视频评测套件与发布门槛
+│   ├── questions_60.json                 # 当前 24 题种子标注
+│   ├── retrieval_formula_ab_results.json # 当前同语料 A/B 种子结果
+│   ├── retrieval_suite_baseline.json     # 多视频聚合器的当前输出
+│   └── *_results.json / trace_*.json     # 历史派生结果，仅供审计
+├── local/                                # 视频、Chunk、Embedding，不入 Git
+└── scripts/
+    ├── retrieval_formula_ab.mjs          # 构建单视频语料并运行公式 A/B
+    ├── retrieval_suite_eval.mjs          # 校验、聚合多视频结果
+    ├── retrieval_eval.mjs                # 历史公式评测器
+    └── test_driver.mjs                   # 在线链路测试驱动
 ```
 
-## 复现步骤
+## 本机基线
 
-前置：按仓库根 README 启动中间件与后端（默认 `http://localhost:9090`，可用 `DOV_BASE` 覆盖），并准备：
+完整种子数据集保存在：
 
-```bash
-export SILICONFLOW_API_KEY=sk-xxx   # 检索评测需要实时计算查询向量
-export REDIS_PASSWORD=xxx           # dump_checkpoint.sh 需要
+```text
+benchmark/local/corpora/bv1xhovyzetu-60m/dataset.json
 ```
 
-```bash
-# 1. 上传并分析一个视频（mediaId 与 trace 见输出）
-node scripts/test_driver.mjs upload <video.mp4>
-node scripts/test_driver.mjs analyze <mediaId> "<分析目标>"
+它包含 ASR/OCR、12 个 VideoChunk、Chunk Embedding、24 个查询意图及查询 Embedding。仓库内的派生结果不包含视频、完整转录、Embedding 或 API key。
 
-# 2. 导出 checkpoint（供离线评测）
-scripts/dump_checkpoint.sh <mediaId> data
+离线重跑单视频 A/B：
 
-# 3. 检索质量对比（混合 / 纯向量 / 纯关键词）
-node scripts/retrieval_eval.mjs data/questions_60.json data/chunks_<mediaId>.json
-
-# 4. 证据两层程序化校验（输入为导出的 context）
-node scripts/evidence_eval.mjs data/evidence_input.json
-
-# 5. 连续 10 任务稳定性（需要已解析的媒体，任务清单在脚本内）
-node scripts/stability_test.mjs
+```powershell
+node benchmark/scripts/retrieval_formula_ab.mjs compare `
+  benchmark/local/corpora/bv1xhovyzetu-60m/dataset.json `
+  benchmark/data/retrieval_formula_ab_results.json
 ```
 
-## 说明
+检查扩样进度并聚合所有已就绪样本：
 
-- **测试视频不入库**（体积与版权原因）：可用 `scripts/gen_videos.sh` 生成内容可控的合成视频，或自行准备公开课/纪录片片段。`gen_videos.sh` 依赖 Windows PowerShell TTS 与 `ffmpeg`（可用 `FFMPEG` 环境变量指定路径）。
-- 测试基线为上游 `423277e` + 3 处修复（见报告附录 A）；模型网关 SiliconFlow（Qwen2.5-32B / bge-m3 / TeleSpeechASR），换成其他网关时绝对耗时会不同，但相对结论（并行加速比、检索对比、恢复节省比例）仍可参考。
-- 断点恢复测试（报告测试 4）需在解析中途 `taskkill` 强杀后端进程后重启复测。
+```powershell
+node benchmark/scripts/retrieval_suite_eval.mjs validate benchmark/data/retrieval_suite.json
+node benchmark/scripts/retrieval_suite_eval.mjs aggregate `
+  benchmark/data/retrieval_suite.json `
+  benchmark/data/retrieval_suite_baseline.json
+```
+
+`validate` 默认只检查结构并报告距离发布门槛还差多少；增加 `--strict` 后，样本门槛未达到也会返回失败，适合最终报告前的 CI 检查。
+
+## 添加新视频
+
+选择 45–90 分钟、内容边界清晰且允许本地评测的视频。准备阶段需要 FFmpeg、Tesseract `chi_sim+eng` 和模型网关：
+
+```powershell
+$env:SILICONFLOW_API_KEY = '<rotated-key>'
+$env:VIDEO_SECONDS = '3600'
+$env:SOURCE_URL = '<source-url>'
+$env:DATASET_ID = '<stable-dataset-id>'
+$env:DOV_RETRIEVAL_WORK = 'benchmark/local/work/<dataset-id>'
+
+node benchmark/scripts/retrieval_formula_ab.mjs prepare `
+  <video.mp4> `
+  <reviewed-questions.json> `
+  benchmark/local/corpora/<dataset-id>/dataset.json
+```
+
+问题文件兼容单正样本和多正样本：
+
+```json
+[
+  {
+    "id": "video-a-fuzzy-001",
+    "q": "完全没基础应该从哪里开始？",
+    "tag": "fuzzy",
+    "relevantSecs": [150, 420],
+    "reviewed": true
+  }
+]
+```
+
+旧格式的 `expectSec` 仍然兼容。时间点单位为秒，Chunk 和 VideoSegment 时间单位为毫秒。
+
+完成单视频 `compare` 后，把数据集元信息和结果文件加入 `retrieval_suite.json`，再运行聚合器。原始视频和完整语料不得提交到 Git；新增公开问题必须先确认不包含大段版权文本。
+
+## 历史数据
+
+以下文件来自旧测试，但缺少对应原始 Chunk，不能与当前结果直接做公式归因：
+
+- `data/retrieval_results.json`
+- `data/evidence_results.json`
+- `data/stability_results.json`
+- `data/trace_*.json`
+- `data/result_*.json`
+
+保留这些文件是为了审计测试来源，不代表 README 对其中结论背书。

@@ -93,19 +93,11 @@ Evidence frame_000125.jpg
 - **断点恢复** — Checkpoint 以 MySQL 为恢复真源、Redis 为热缓存，持久化 `VideoContext`、分块、计划、Critic 状态与最终结果。
 - **状态可观测** — 前端通过 SSE 接收任务阶段；失败消息写入独立失败主题与失败任务表，可由管理接口重新投递。
 
-## 量化测试与评估
+## 评测
 
-2026-08 对项目做了一轮全链路量化测试（方法、原始数据与复现脚本见 [`benchmark/`](./benchmark/)）：
+[`benchmark/`](./benchmark/) 保存评测脚本、数据格式和历史派生结果。旧量化报告依赖未入库的原始视频、VideoContext 和 VideoChunk，无法在同一语料上复现，因此不再把其中的数字作为当前版本结论。
 
-| 测试 | 结果 |
-| :--- | :--- |
-| 端到端解析与并行收益 | 60 分钟视频端到端解析约 636s；ASR/OCR 双路并行较串行提速约 **1.4 倍** |
-| 检索质量（24 题评测集） | 混合检索 Top-3 命中率 **83%**、MRR 0.74；模糊语义问题命中率为纯关键词的 **2.7 倍** |
-| 证据可溯源性 | 36 条证据时间戳可回溯率 **100%**，平均每条结论绑定 0.86 条时间戳证据 |
-| 断点恢复 | 解析进程中途强杀后凭 Checkpoint 分层恢复（68s），较全量重跑（636s）节省 **89%** |
-| 稳定性（连续 10 任务） | 系统零故障；剔除 LLM 网关 TPM 限流后成功率 **100%**，成功任务耗时中位数 50s |
-
-测试过程中定位了 3 个代码级缺陷：Redisson 3.23.5 与 Spring Data Redis 3.5 不兼容导致消费链路 StackOverflowError **静默吞消息**（升级 3.52.0 已修复）、编译错误（已修复）、消费端 `tryLock` 失败直接 ACK 导致任务永久丢失（已给出修复方案）。详见[测试报告](./benchmark/DoVideoAI量化测试报告.md)。
+当前检索评测以生产链路为基线，按多条长视频扩展人工标注集，并在同一批 Chunk、标签和 Embedding 上比较纯向量、纯关键词、历史公式、当前公式和完整 Query Rewrite 链路。达到预设样本门槛前，结果只视为本地种子基线，不在项目主页固化指标。
 
 ## 系统流程
 
@@ -278,7 +270,7 @@ docker compose --env-file .env down
 DoVideoAI
 ├── client/              # Vue 3 工作台
 ├── server/              # Spring Boot API 与 Video Agent
-├── benchmark/           # 量化测试报告、评测脚本与原始数据
+├── benchmark/           # 评测脚本、数据格式与历史派生结果
 ├── rocketmq/            # Broker 配置
 ├── docker-compose.yml   # 中间件编排
 └── .env.example         # 本地配置模板

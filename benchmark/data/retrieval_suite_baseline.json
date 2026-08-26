@@ -1,0 +1,373 @@
+{
+  "metadata": {
+    "suiteId": "retrieval-current-v2",
+    "status": "provisional",
+    "generatedAt": "2026-08-26T01:51:48.876Z",
+    "primaryMode": "currentFull",
+    "primaryMetric": "recallAt3",
+    "scoringUnit": "300-second VideoChunk"
+  },
+  "coverage": {
+    "publishable": false,
+    "readyPrimarySamples": 1,
+    "targetPrimarySamples": 5,
+    "reviewedQuestions": 24,
+    "targetQuestions": 120,
+    "tagCounts": {
+      "exact": 12,
+      "fuzzy": 12
+    },
+    "tagRatios": {
+      "exact": 0.5,
+      "fuzzy": 0.5,
+      "visual": 0
+    },
+    "splits": [
+      "dev"
+    ],
+    "warnings": [
+      "need 4 more qualifying primary video(s)",
+      "need 96 more reviewed question(s)",
+      "both dev and test samples are required before publishing",
+      "visual ratio 0 is outside target 0.2 +/- 0.1"
+    ]
+  },
+  "summary": {
+    "oldHybrid": {
+      "n": 24,
+      "hitAt1": 0.4583,
+      "hitAt3": 0.7917,
+      "recallAt3": 0.7917,
+      "mrrAt3": 0.6111,
+      "byTag": {
+        "exact": {
+          "n": 12,
+          "hitAt1": 0.5,
+          "hitAt3": 1,
+          "recallAt3": 1,
+          "mrrAt3": 0.7222
+        },
+        "fuzzy": {
+          "n": 12,
+          "hitAt1": 0.4167,
+          "hitAt3": 0.5833,
+          "recallAt3": 0.5833,
+          "mrrAt3": 0.5
+        }
+      }
+    },
+    "currentFormulaOnly": {
+      "n": 24,
+      "hitAt1": 0.4167,
+      "hitAt3": 0.7917,
+      "recallAt3": 0.7917,
+      "mrrAt3": 0.5833,
+      "byTag": {
+        "exact": {
+          "n": 12,
+          "hitAt1": 0.4167,
+          "hitAt3": 1,
+          "recallAt3": 1,
+          "mrrAt3": 0.6667
+        },
+        "fuzzy": {
+          "n": 12,
+          "hitAt1": 0.4167,
+          "hitAt3": 0.5833,
+          "recallAt3": 0.5833,
+          "mrrAt3": 0.5
+        }
+      }
+    },
+    "currentFull": {
+      "n": 24,
+      "hitAt1": 0.5,
+      "hitAt3": 0.75,
+      "recallAt3": 0.75,
+      "mrrAt3": 0.6042,
+      "byTag": {
+        "exact": {
+          "n": 12,
+          "hitAt1": 0.75,
+          "hitAt3": 1,
+          "recallAt3": 1,
+          "mrrAt3": 0.8611
+        },
+        "fuzzy": {
+          "n": 12,
+          "hitAt1": 0.25,
+          "hitAt3": 0.5,
+          "recallAt3": 0.5,
+          "mrrAt3": 0.3472
+        }
+      }
+    },
+    "vectorOnly": {
+      "n": 24,
+      "hitAt1": 0.4583,
+      "hitAt3": 0.7917,
+      "recallAt3": 0.7917,
+      "mrrAt3": 0.6111,
+      "byTag": {
+        "exact": {
+          "n": 12,
+          "hitAt1": 0.5,
+          "hitAt3": 1,
+          "recallAt3": 1,
+          "mrrAt3": 0.7222
+        },
+        "fuzzy": {
+          "n": 12,
+          "hitAt1": 0.4167,
+          "hitAt3": 0.5833,
+          "recallAt3": 0.5833,
+          "mrrAt3": 0.5
+        }
+      }
+    },
+    "oldKeywordOnly": {
+      "n": 24,
+      "hitAt1": 0.25,
+      "hitAt3": 0.4583,
+      "recallAt3": 0.4583,
+      "mrrAt3": 0.3264,
+      "byTag": {
+        "exact": {
+          "n": 12,
+          "hitAt1": 0.3333,
+          "hitAt3": 0.6667,
+          "recallAt3": 0.6667,
+          "mrrAt3": 0.4583
+        },
+        "fuzzy": {
+          "n": 12,
+          "hitAt1": 0.1667,
+          "hitAt3": 0.25,
+          "recallAt3": 0.25,
+          "mrrAt3": 0.1944
+        }
+      }
+    }
+  },
+  "comparisons": {
+    "currentFullVsoldHybrid": {
+      "recallAt3AbsolutePoints": -4.17,
+      "hitAt3AbsolutePoints": -4.17,
+      "mrrAt3Absolute": -0.0069,
+      "gainedQueries": [
+        "bv1xhovyzetu-60m:bv1x-fuzzy-012"
+      ],
+      "lostQueries": [
+        "bv1xhovyzetu-60m:bv1x-fuzzy-003",
+        "bv1xhovyzetu-60m:bv1x-fuzzy-007"
+      ],
+      "pairedBootstrap95": {
+        "recallAt3Points": [
+          -16.67,
+          8.33
+        ],
+        "mrrAt3": [
+          -0.1736,
+          0.1458
+        ]
+      }
+    },
+    "currentFullVscurrentFormulaOnly": {
+      "recallAt3AbsolutePoints": -4.17,
+      "hitAt3AbsolutePoints": -4.17,
+      "mrrAt3Absolute": 0.0209,
+      "gainedQueries": [
+        "bv1xhovyzetu-60m:bv1x-fuzzy-012"
+      ],
+      "lostQueries": [
+        "bv1xhovyzetu-60m:bv1x-fuzzy-003",
+        "bv1xhovyzetu-60m:bv1x-fuzzy-007"
+      ],
+      "pairedBootstrap95": {
+        "recallAt3Points": [
+          -16.67,
+          8.33
+        ],
+        "mrrAt3": [
+          -0.1458,
+          0.1667
+        ]
+      }
+    },
+    "currentFullVsvectorOnly": {
+      "recallAt3AbsolutePoints": -4.17,
+      "hitAt3AbsolutePoints": -4.17,
+      "mrrAt3Absolute": -0.0069,
+      "gainedQueries": [
+        "bv1xhovyzetu-60m:bv1x-fuzzy-012"
+      ],
+      "lostQueries": [
+        "bv1xhovyzetu-60m:bv1x-fuzzy-003",
+        "bv1xhovyzetu-60m:bv1x-fuzzy-007"
+      ],
+      "pairedBootstrap95": {
+        "recallAt3Points": [
+          -16.67,
+          8.33
+        ],
+        "mrrAt3": [
+          -0.1597,
+          0.1319
+        ]
+      }
+    },
+    "currentFullVsoldKeywordOnly": {
+      "recallAt3AbsolutePoints": 29.17,
+      "hitAt3AbsolutePoints": 29.17,
+      "mrrAt3Absolute": 0.2778,
+      "gainedQueries": [
+        "bv1xhovyzetu-60m:bv1x-exact-005",
+        "bv1xhovyzetu-60m:bv1x-exact-006",
+        "bv1xhovyzetu-60m:bv1x-exact-007",
+        "bv1xhovyzetu-60m:bv1x-exact-009",
+        "bv1xhovyzetu-60m:bv1x-fuzzy-002",
+        "bv1xhovyzetu-60m:bv1x-fuzzy-008",
+        "bv1xhovyzetu-60m:bv1x-fuzzy-010",
+        "bv1xhovyzetu-60m:bv1x-fuzzy-012"
+      ],
+      "lostQueries": [
+        "bv1xhovyzetu-60m:bv1x-fuzzy-003"
+      ],
+      "pairedBootstrap95": {
+        "recallAt3Points": [
+          8.33,
+          50
+        ],
+        "mrrAt3": [
+          0.0972,
+          0.4653
+        ]
+      }
+    }
+  },
+  "perSample": {
+    "bv1xhovyzetu-60m": {
+      "oldHybrid": {
+        "n": 24,
+        "hitAt1": 0.4583,
+        "hitAt3": 0.7917,
+        "recallAt3": 0.7917,
+        "mrrAt3": 0.6111,
+        "byTag": {
+          "exact": {
+            "n": 12,
+            "hitAt1": 0.5,
+            "hitAt3": 1,
+            "recallAt3": 1,
+            "mrrAt3": 0.7222
+          },
+          "fuzzy": {
+            "n": 12,
+            "hitAt1": 0.4167,
+            "hitAt3": 0.5833,
+            "recallAt3": 0.5833,
+            "mrrAt3": 0.5
+          }
+        }
+      },
+      "currentFormulaOnly": {
+        "n": 24,
+        "hitAt1": 0.4167,
+        "hitAt3": 0.7917,
+        "recallAt3": 0.7917,
+        "mrrAt3": 0.5833,
+        "byTag": {
+          "exact": {
+            "n": 12,
+            "hitAt1": 0.4167,
+            "hitAt3": 1,
+            "recallAt3": 1,
+            "mrrAt3": 0.6667
+          },
+          "fuzzy": {
+            "n": 12,
+            "hitAt1": 0.4167,
+            "hitAt3": 0.5833,
+            "recallAt3": 0.5833,
+            "mrrAt3": 0.5
+          }
+        }
+      },
+      "currentFull": {
+        "n": 24,
+        "hitAt1": 0.5,
+        "hitAt3": 0.75,
+        "recallAt3": 0.75,
+        "mrrAt3": 0.6042,
+        "byTag": {
+          "exact": {
+            "n": 12,
+            "hitAt1": 0.75,
+            "hitAt3": 1,
+            "recallAt3": 1,
+            "mrrAt3": 0.8611
+          },
+          "fuzzy": {
+            "n": 12,
+            "hitAt1": 0.25,
+            "hitAt3": 0.5,
+            "recallAt3": 0.5,
+            "mrrAt3": 0.3472
+          }
+        }
+      },
+      "vectorOnly": {
+        "n": 24,
+        "hitAt1": 0.4583,
+        "hitAt3": 0.7917,
+        "recallAt3": 0.7917,
+        "mrrAt3": 0.6111,
+        "byTag": {
+          "exact": {
+            "n": 12,
+            "hitAt1": 0.5,
+            "hitAt3": 1,
+            "recallAt3": 1,
+            "mrrAt3": 0.7222
+          },
+          "fuzzy": {
+            "n": 12,
+            "hitAt1": 0.4167,
+            "hitAt3": 0.5833,
+            "recallAt3": 0.5833,
+            "mrrAt3": 0.5
+          }
+        }
+      },
+      "oldKeywordOnly": {
+        "n": 24,
+        "hitAt1": 0.25,
+        "hitAt3": 0.4583,
+        "recallAt3": 0.4583,
+        "mrrAt3": 0.3264,
+        "byTag": {
+          "exact": {
+            "n": 12,
+            "hitAt1": 0.3333,
+            "hitAt3": 0.6667,
+            "recallAt3": 0.6667,
+            "mrrAt3": 0.4583
+          },
+          "fuzzy": {
+            "n": 12,
+            "hitAt1": 0.1667,
+            "hitAt3": 0.25,
+            "recallAt3": 0.25,
+            "mrrAt3": 0.1944
+          }
+        }
+      }
+    }
+  },
+  "caveats": [
+    "need 4 more qualifying primary video(s)",
+    "need 96 more reviewed question(s)",
+    "both dev and test samples are required before publishing",
+    "visual ratio 0 is outside target 0.2 +/- 0.1"
+  ]
+}

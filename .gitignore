@@ -47,3 +47,6 @@ mysql/logs/
 redis/data/
 qdrant/data/
 minio/data/
+
+# Local benchmark corpora may contain videos, transcripts, and embeddings.
+benchmark/local/
