@@ -55,6 +55,56 @@
       "chunkCount": 4,
       "questionCount": 0,
       "notes": "Four Chunks make random Top-3 hit probability 75%; retain for pipeline and latency tests."
+    },
+    {
+      "id": "bv1ryuy6weds-full",
+      "role": "primary",
+      "split": "dev",
+      "status": "source-ready",
+      "sourceUrl": "https://www.bilibili.com/video/BV1ryuy6WEDs/",
+      "durationSeconds": 3893,
+      "chunkCount": 13,
+      "questionCount": 0,
+      "localSource": "../local/sources/bv1ryuy6weds/source.mp4",
+      "notes": "Single-part source downloaded and media-verified; ASR/OCR and reviewed questions are pending."
+    },
+    {
+      "id": "bv1ah4y1s7nx-all-p",
+      "role": "primary",
+      "split": "test",
+      "status": "source-ready",
+      "sourceUrl": "https://www.bilibili.com/video/BV1Ah4y1S7NX/",
+      "durationSeconds": 2950,
+      "chunkCount": 10,
+      "questionCount": 0,
+      "partCount": 7,
+      "localSource": "../local/sources/bv1ah4y1s7nx/combined.mp4",
+      "notes": "All seven parts downloaded, concatenated in order, and media-verified; ASR/OCR and reviewed questions are pending."
+    },
+    {
+      "id": "bv1fj6vbfenu-all-p",
+      "role": "primary",
+      "split": "test",
+      "status": "source-ready",
+      "sourceUrl": "https://www.bilibili.com/video/BV1fj6vBfEnu/",
+      "durationSeconds": 5029,
+      "chunkCount": 17,
+      "questionCount": 0,
+      "partCount": 9,
+      "localSource": "../local/sources/bv1fj6vbfenu/combined.mp4",
+      "notes": "All nine parts downloaded, concatenated in order, and media-verified; ASR/OCR and reviewed questions are pending."
+    },
+    {
+      "id": "bv1sg8c6jefw-full",
+      "role": "primary",
+      "split": "test",
+      "status": "source-ready",
+      "sourceUrl": "https://www.bilibili.com/video/BV1Sg8C6JEfW/",
+      "durationSeconds": 4212,
+      "chunkCount": 15,
+      "questionCount": 0,
+      "localSource": "../local/sources/bv1sg8c6jefw/source.mp4",
+      "notes": "Single-part source downloaded and media-verified; ASR/OCR and reviewed questions are pending."
     }
   ]
 }
