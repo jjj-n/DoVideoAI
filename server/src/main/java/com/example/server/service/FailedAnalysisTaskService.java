@@ -40,18 +40,21 @@ public class FailedAnalysisTaskService {
     private final FailedAnalysisTaskMapper taskMapper;
     private final RocketMQTemplate rocketMQTemplate;
     private final StringRedisTemplate redisTemplate;
+    private final AgentCheckpointService checkpointService;
     private final AnalysisStageService analysisStageService;
     private final String analysisTopic;
 
     public FailedAnalysisTaskService(FailedAnalysisTaskMapper taskMapper,
                                      RocketMQTemplate rocketMQTemplate,
                                      StringRedisTemplate redisTemplate,
+                                     AgentCheckpointService checkpointService,
                                      AnalysisStageService analysisStageService,
                                      @Value("${rocketmq.topic.video-analysis:video-analysis-topic}")
                                      String analysisTopic) {
         this.taskMapper = taskMapper;
         this.rocketMQTemplate = rocketMQTemplate;
         this.redisTemplate = redisTemplate;
+        this.checkpointService = checkpointService;
         this.analysisStageService = analysisStageService;
         this.analysisTopic = analysisTopic;
     }
@@ -117,6 +120,9 @@ public class FailedAnalysisTaskService {
         boolean dispatched = false;
         try {
             redisTemplate.delete(AnalysisTaskKeys.attempts(contentHash, goalDigest));
+            if (AnalysisTaskMsg.START_ANALYSIS.equals(task.getAction())) {
+                checkpointService.resetAnalysis(task.getMediaId(), task.getUserGoal(), mode);
+            }
             rocketMQTemplate.convertAndSend(analysisTopic, new AnalysisTaskMsg(
                     task.getMediaId(), task.getAction(), contentHash, task.getUserGoal(), mode.name()));
             dispatched = true;

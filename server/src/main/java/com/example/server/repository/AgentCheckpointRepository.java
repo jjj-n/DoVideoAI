@@ -175,6 +175,21 @@ public class AgentCheckpointRepository {
     }
 
     @Transactional
+    public void deleteGoalPayloads(Long mediaId,
+                                   String checkpointPrefix,
+                                   String stageCheckpoint,
+                                   String redisKey) {
+        checkpointMapper.deleteGoalPayloads(mediaId, checkpointPrefix, stageCheckpoint);
+        afterCommit(() -> {
+            try {
+                redisTemplate.delete(redisKey);
+            } catch (RuntimeException e) {
+                log.warn("agent_checkpoint_goal_cache_delete_failed key={}", redisKey, e);
+            }
+        });
+    }
+
+    @Transactional
     public void delete(Long mediaId, String checkpointName, String redisKey) {
         checkpointMapper.delete(mediaId, checkpointName);
         afterCommit(() -> {

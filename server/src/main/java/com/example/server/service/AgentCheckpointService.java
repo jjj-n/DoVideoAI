@@ -237,6 +237,15 @@ public class AgentCheckpointService {
                 mediaId, revisionCheckpoint(goal, mode), revisionKey(mediaId, goal, mode));
     }
 
+    /** 人工 Replay 开始新执行时清理目标级 payload，保留可复用的视频上下文与 canonical stage。 */
+    public void resetAnalysis(Long mediaId, String goal, AnalysisMode mode) {
+        checkpointRepository.deleteGoalPayloads(
+                mediaId,
+                goalCheckpoint(goal, mode, ""),
+                goalCheckpoint(goal, mode, "stage"),
+                goalKey(mediaId, goal, mode));
+    }
+
     public void saveFeedback(AgentFeedback feedback) {
         try {
             redisTemplate.opsForList().rightPush(

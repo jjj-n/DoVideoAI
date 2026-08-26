@@ -1,16 +1,25 @@
 package com.example.server.integration;
 
 import com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration;
-import com.example.server.mapper.AgentCheckpointMapper;
+import com.example.server.dto.AgentState;
 import com.example.server.dto.AnalysisMode;
+import com.example.server.dto.AnalysisResult;
+import com.example.server.dto.AnalysisTaskMsg;
 import com.example.server.dto.TaskEvent;
 import com.example.server.dto.TaskStage;
 import com.example.server.dto.TaskStatus;
+import com.example.server.entity.FailedAnalysisTask;
+import com.example.server.mapper.AgentCheckpointMapper;
 import com.example.server.repository.AgentCheckpointRepository;
 import com.example.server.repository.AnalysisTaskEventOutboxRepository;
 import com.example.server.service.AgentCheckpointService;
+import com.example.server.service.AnalysisStageService;
 import com.example.server.service.AnalysisStagePolicy;
 import com.example.server.service.AnalysisStageTransaction;
+import com.example.server.service.AnalysisTaskEventOutboxRelay;
+import com.example.server.service.FailedAnalysisTaskService;
+import com.example.server.service.TaskEventService;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
@@ -31,6 +40,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -47,9 +57,12 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -79,6 +92,12 @@ class AnalysisPersistenceIT {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private FailedAnalysisTaskService failedTaskService;
+
+    @Autowired
+    private AnalysisStageService analysisStageService;
 
     @Test
     void appliesEveryDatabaseMigration() {
@@ -147,6 +166,68 @@ class AnalysisPersistenceIT {
         }
     }
 
+    @Test
+    void manualReplayStartsWithoutOldGoalCheckpoints() {
+        Long mediaId = 104L;
+        String goal = "replay-goal";
+        AgentState previousResult = new AgentState(
+                goal,
+                new AgentState.AgentPlan(goal, List.of("old task")),
+                new AnalysisResult(
+                        "old result",
+                        List.of("old conclusion"),
+                        List.of(new AnalysisResult.Evidence(
+                                1_000, "ASR", "old evidence", "old claim")),
+                        List.of(),
+                        List.of()),
+                null,
+                1);
+        AgentState previousCriticState = new AgentState(
+                goal,
+                previousResult.plan(),
+                previousResult.result(),
+                new AgentState.CriticResult(
+                        false,
+                        List.of("old feedback"),
+                        List.of(),
+                        List.of(),
+                        List.of()),
+                1);
+        checkpointService.savePlan(
+                mediaId, goal, AnalysisMode.GENERAL, previousResult.plan());
+        checkpointService.saveCriticState(
+                mediaId, previousCriticState, AnalysisMode.GENERAL);
+        checkpointService.saveResult(mediaId, previousResult, AnalysisMode.GENERAL);
+        analysisStageService.transition(
+                mediaId,
+                goal,
+                AnalysisMode.GENERAL,
+                TaskStatus.of(TaskStatus.State.FAILED, "dead lettered"),
+                TaskStage.DEAD_LETTERED);
+        failedTaskService.record(
+                new AnalysisTaskMsg(
+                        mediaId,
+                        AnalysisTaskMsg.START_ANALYSIS,
+                        "media-" + mediaId,
+                        goal,
+                        AnalysisMode.GENERAL.name()),
+                3,
+                new IllegalStateException("analysis failed"));
+        FailedAnalysisTask failedTask = failedTaskService.latest().getFirst();
+        assertNotNull(checkpointService.loadPlan(mediaId, goal, AnalysisMode.GENERAL));
+        assertNotNull(checkpointService.loadCriticState(mediaId, goal, AnalysisMode.GENERAL));
+        assertNotNull(checkpointService.loadResult(mediaId, goal, AnalysisMode.GENERAL));
+
+        failedTaskService.replay(failedTask.getId());
+
+        assertNull(checkpointService.loadPlan(mediaId, goal, AnalysisMode.GENERAL));
+        assertNull(checkpointService.loadCriticState(mediaId, goal, AnalysisMode.GENERAL));
+        assertNull(checkpointService.loadResult(mediaId, goal, AnalysisMode.GENERAL));
+        assertEquals(TaskStage.MANUAL_REPLAY,
+                checkpointService.loadStage(mediaId, goal, AnalysisMode.GENERAL));
+        assertEquals("REQUEUED", failedTaskService.latest().getFirst().getStatus());
+    }
+
     @SpringBootConfiguration(proxyBeanMethods = false)
     @ImportAutoConfiguration({
             DataSourceAutoConfiguration.class,
@@ -164,13 +245,17 @@ class AnalysisPersistenceIT {
             AgentCheckpointService.class,
             AnalysisStagePolicy.class,
             AnalysisStageTransaction.class,
-            RedisBoundaryConfiguration.class
+            AnalysisTaskEventOutboxRelay.class,
+            TaskEventService.class,
+            AnalysisStageService.class,
+            FailedAnalysisTaskService.class,
+            ExternalBoundaryConfiguration.class
     })
     static class TestApplication {
     }
 
     @TestConfiguration(proxyBeanMethods = false)
-    static class RedisBoundaryConfiguration {
+    static class ExternalBoundaryConfiguration {
 
         @Bean
         StringRedisTemplate stringRedisTemplate() {
@@ -179,9 +264,18 @@ class AnalysisPersistenceIT {
             HashOperations<String, Object, Object> hashes = mock(HashOperations.class);
             @SuppressWarnings("unchecked")
             SetOperations<String, String> sets = mock(SetOperations.class);
+            @SuppressWarnings("unchecked")
+            ValueOperations<String, String> values = mock(ValueOperations.class);
             when(redis.opsForHash()).thenReturn(hashes);
             when(redis.opsForSet()).thenReturn(sets);
+            when(redis.opsForValue()).thenReturn(values);
+            when(values.setIfAbsent(anyString(), anyString(), any(Duration.class))).thenReturn(true);
             return redis;
+        }
+
+        @Bean
+        RocketMQTemplate rocketMQTemplate() {
+            return mock(RocketMQTemplate.class);
         }
     }
 }
