@@ -1,0 +1,2515 @@
+{
+  "metadata": {
+    "datasetId": "bv1sg8c6jefw-full",
+    "sourceVideo": "source.mp4",
+    "sourceUrl": "https://www.bilibili.com/video/BV1Sg8C6JEfW/",
+    "durationSeconds": 4212,
+    "segmentMs": 60000,
+    "chunkMs": 300000,
+    "asrModel": "TeleAI/TeleSpeechASR",
+    "embeddingModel": "BAAI/bge-m3",
+    "llmModel": "deepseek-ai/DeepSeek-V3.2",
+    "preparedAt": "2026-08-26T03:15:36.491Z",
+    "scoringScope": "chunk recall; segment reranking does not change whether the expected chunk is selected",
+    "questionsEnrichedAt": "2026-08-28T05:55:04.863Z",
+    "comparedAt": "2026-08-28T05:56:08.810Z",
+    "historicalFormula": "0.7*cosine(raw query, chunk embedding) + 0.3*historical keyword score",
+    "currentFormula": "0.6*semantic + 0.25*text terms + 0.15*OCR visual terms",
+    "currentFormulaOnlyIntent": "raw query embedding + production fallback terms",
+    "currentFullIntent": "LLM semanticQuery/keywords/visualKeywords"
+  },
+  "summary": {
+    "oldHybrid": {
+      "n": 24,
+      "hitAt1": 0.5833,
+      "hitAt3": 0.9583,
+      "recallAt3": 0.9583,
+      "mrrAt3": 0.7708,
+      "exact": {
+        "n": 9,
+        "hitAt1": 0.6667,
+        "hitAt3": 0.8889,
+        "recallAt3": 0.8889,
+        "mrrAt3": 0.7778
+      },
+      "fuzzy": {
+        "n": 9,
+        "hitAt1": 0.4444,
+        "hitAt3": 1,
+        "recallAt3": 1,
+        "mrrAt3": 0.7222
+      },
+      "visual": {
+        "n": 6,
+        "hitAt1": 0.6667,
+        "hitAt3": 1,
+        "recallAt3": 1,
+        "mrrAt3": 0.8333
+      }
+    },
+    "currentFormulaOnly": {
+      "n": 24,
+      "hitAt1": 0.7083,
+      "hitAt3": 1,
+      "recallAt3": 1,
+      "mrrAt3": 0.8403,
+      "exact": {
+        "n": 9,
+        "hitAt1": 0.8889,
+        "hitAt3": 1,
+        "recallAt3": 1,
+        "mrrAt3": 0.9259
+      },
+      "fuzzy": {
+        "n": 9,
+        "hitAt1": 0.6667,
+        "hitAt3": 1,
+        "recallAt3": 1,
+        "mrrAt3": 0.8333
+      },
+      "visual": {
+        "n": 6,
+        "hitAt1": 0.5,
+        "hitAt3": 1,
+        "recallAt3": 1,
+        "mrrAt3": 0.7222
+      }
+    },
+    "currentFull": {
+      "n": 24,
+      "hitAt1": 0.75,
+      "hitAt3": 0.9583,
+      "recallAt3": 0.9583,
+      "mrrAt3": 0.8472,
+      "exact": {
+        "n": 9,
+        "hitAt1": 0.7778,
+        "hitAt3": 1,
+        "recallAt3": 1,
+        "mrrAt3": 0.8889
+      },
+      "fuzzy": {
+        "n": 9,
+        "hitAt1": 0.6667,
+        "hitAt3": 0.8889,
+        "recallAt3": 0.8889,
+        "mrrAt3": 0.7593
+      },
+      "visual": {
+        "n": 6,
+        "hitAt1": 0.8333,
+        "hitAt3": 1,
+        "recallAt3": 1,
+        "mrrAt3": 0.9167
+      }
+    },
+    "vectorOnly": {
+      "n": 24,
+      "hitAt1": 0.6667,
+      "hitAt3": 0.9583,
+      "recallAt3": 0.9583,
+      "mrrAt3": 0.8056,
+      "exact": {
+        "n": 9,
+        "hitAt1": 0.8889,
+        "hitAt3": 0.8889,
+        "recallAt3": 0.8889,
+        "mrrAt3": 0.8889
+      },
+      "fuzzy": {
+        "n": 9,
+        "hitAt1": 0.5556,
+        "hitAt3": 1,
+        "recallAt3": 1,
+        "mrrAt3": 0.7778
+      },
+      "visual": {
+        "n": 6,
+        "hitAt1": 0.5,
+        "hitAt3": 1,
+        "recallAt3": 1,
+        "mrrAt3": 0.7222
+      }
+    },
+    "oldKeywordOnly": {
+      "n": 24,
+      "hitAt1": 0.2083,
+      "hitAt3": 0.375,
+      "recallAt3": 0.375,
+      "mrrAt3": 0.2708,
+      "exact": {
+        "n": 9,
+        "hitAt1": 0.1111,
+        "hitAt3": 0.4444,
+        "recallAt3": 0.4444,
+        "mrrAt3": 0.2407
+      },
+      "fuzzy": {
+        "n": 9,
+        "hitAt1": 0.2222,
+        "hitAt3": 0.2222,
+        "recallAt3": 0.2222,
+        "mrrAt3": 0.2222
+      },
+      "visual": {
+        "n": 6,
+        "hitAt1": 0.3333,
+        "hitAt3": 0.5,
+        "recallAt3": 0.5,
+        "mrrAt3": 0.3889
+      }
+    }
+  },
+  "uplift": {
+    "currentFormulaOnlyVsOld": {
+      "hitAt1AbsolutePoints": 12.5,
+      "hitAt3AbsolutePoints": 4.17,
+      "recallAt3AbsolutePoints": 4.17,
+      "recallAt3RelativePercent": 4.35,
+      "hitAt3RelativePercent": 4.35,
+      "mrrAt3Absolute": 0.0695,
+      "exactHitAt3Points": 11.11,
+      "fuzzyHitAt3Points": 0,
+      "gainedQueries": [
+        "在 DeepSeek-V3.2 的 Off-Policy Sequence Masking 中，满足什么条件时二元掩码 \\(M_{i,t}\\) 会被置为 0？置零后该样本如何参与策略梯度更新？"
+      ],
+      "lostQueries": [],
+      "pairedBootstrap95": {
+        "hitAt3Points": [
+          0,
+          12.5
+        ],
+        "recallAt3Points": [
+          0,
+          12.5
+        ],
+        "mrrAt3": [
+          -0.0417,
+          0.1875
+        ]
+      }
+    },
+    "currentFullVsOld": {
+      "hitAt1AbsolutePoints": 16.67,
+      "hitAt3AbsolutePoints": 0,
+      "recallAt3AbsolutePoints": 0,
+      "recallAt3RelativePercent": 0,
+      "hitAt3RelativePercent": 0,
+      "mrrAt3Absolute": 0.0764,
+      "exactHitAt3Points": 11.11,
+      "fuzzyHitAt3Points": -11.11,
+      "gainedQueries": [
+        "在 DeepSeek-V3.2 的 Off-Policy Sequence Masking 中，满足什么条件时二元掩码 \\(M_{i,t}\\) 会被置为 0？置零后该样本如何参与策略梯度更新？"
+      ],
+      "lostQueries": [
+        "这个模型的新版本在结构上只做了一个关键改动，具体是什么？"
+      ],
+      "pairedBootstrap95": {
+        "hitAt3Points": [
+          -12.5,
+          12.5
+        ],
+        "recallAt3Points": [
+          -12.5,
+          12.5
+        ],
+        "mrrAt3": [
+          -0.0417,
+          0.2083
+        ]
+      }
+    }
+  },
+  "detail": {
+    "oldHybrid": [
+      {
+        "id": "bv1sg8c6jefw-full-exact-001",
+        "q": "DeepSeek-V3.2-Special 在哪些竞赛中获得了金牌？",
+        "tag": "exact",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          2100,
+          0,
+          1200
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-002",
+        "q": "根据研究，开源大语言模型在复杂任务上存在哪三个关键限制？",
+        "tag": "exact",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          600,
+          900,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-003",
+        "q": "DeepSeek-V3.2 相比 DeepSeek-V3.1-Terminus 唯一的架构修改是什么？",
+        "tag": "exact",
+        "expectedStartSec": 1200,
+        "relevantStartSecs": [
+          1200
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          300,
+          1200,
+          2100
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-004",
+        "q": "在DeepSeek-V3.2的DSA机制中，Lightning Indexer使用什么激活函数来过滤掉负相似度的q-k对？",
+        "tag": "exact",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1500,
+          1200,
+          1800
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-005",
+        "q": "DeepSeek-V3.2的后训练阶段包含哪两个核心过程？",
+        "tag": "exact",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2100,
+          1800,
+          900
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-006",
+        "q": "在 Scaling GRPO 中，优势 A_i,t 是如何计算的？",
+        "tag": "exact",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2700,
+          3300,
+          0
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-007",
+        "q": "在 DeepSeek-V3.2 的 Off-Policy Sequence Masking 中，满足什么条件时二元掩码 \\(M_{i,t}\\) 会被置为 0？置零后该样本如何参与策略梯度更新？",
+        "tag": "exact",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 9,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          900,
+          2100,
+          1200
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-008",
+        "q": "在DeepSeek-V3-0324之后的RL训练流程中，采用了哪个操作来确保MoE模型的稳定性？",
+        "tag": "exact",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3600,
+          1800,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-009",
+        "q": "技术报告的主要部分在哪个时间点讲完了？",
+        "tag": "exact",
+        "expectedStartSec": 4200,
+        "relevantStartSecs": [
+          4200
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          4200,
+          0,
+          900
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-001",
+        "q": "这个模型的高计算版本在哪些国际学科竞赛中表现最佳？",
+        "tag": "fuzzy",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          3900,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-002",
+        "q": "为什么说开源模型在应对复杂工作时，能力提升不如闭源模型快？",
+        "tag": "fuzzy",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          600,
+          900,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-003",
+        "q": "这个模型的新版本在结构上只做了一个关键改动，具体是什么？",
+        "tag": "fuzzy",
+        "expectedStartSec": 1200,
+        "relevantStartSecs": [
+          1200
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          300,
+          1200,
+          600
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-004",
+        "q": "在动态稀疏注意力机制中，第一步计算相似度时如何排除不相关的查询和键值对？",
+        "tag": "fuzzy",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1500,
+          1200,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-005",
+        "q": "在模型优化的后训练阶段，需要经过哪两个主要的训练步骤？",
+        "tag": "fuzzy",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2100,
+          1800,
+          3300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-006",
+        "q": "在强化学习算法中，如何判断模型生成的某个回答比同组的其他回答更好？",
+        "tag": "fuzzy",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          3300,
+          2700,
+          2400
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-007",
+        "q": "在训练和推理阶段，如何确保模型对同一个问题选择相同的专家路径？",
+        "tag": "fuzzy",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          3600,
+          3300,
+          2100
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-008",
+        "q": "为了在训练和推理时保持专家路径一致，避免参数子空间突变，他们采用了什么方法？",
+        "tag": "fuzzy",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          3300,
+          3600,
+          2400
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-009",
+        "q": "这份文档的核心内容大概在什么时候结束？",
+        "tag": "fuzzy",
+        "expectedStartSec": 4200,
+        "relevantStartSecs": [
+          4200
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          4200,
+          900,
+          0
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-001",
+        "q": "根据表格，哪种智能体任务的环境和提示词均为合成的？",
+        "tag": "visual",
+        "expectedStartSec": 3900,
+        "relevantStartSecs": [
+          3900
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3900,
+          600,
+          1800
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-002",
+        "q": "根据PPT，为了解决开源模型在复杂任务中的关键限制，提出的第一个解决方案是什么？",
+        "tag": "visual",
+        "expectedStartSec": 900,
+        "relevantStartSecs": [
+          900
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          600,
+          900,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-003",
+        "q": "根据PPT，为了解决工具调用场景中的令牌效率问题，提出的上下文管理规则是什么？",
+        "tag": "visual",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          1200,
+          3600,
+          3900
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-004",
+        "q": "根据PPT中的图表，在解码阶段，当Token Position为128K时，DeepSeek-V3.2的推理成本大约是多少美元？",
+        "tag": "visual",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2100,
+          900,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-005",
+        "q": "根据PPT，为了稳定训练并提高对离策略更新的容忍度，所引入的二元掩码M被用于哪个损失函数？",
+        "tag": "visual",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3000,
+          3300,
+          2700
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-006",
+        "q": "根据PPT，在Dense Warm-up阶段，用于初始化lightning indexer的损失函数是什么？",
+        "tag": "visual",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1800,
+          1500,
+          2700
+        ]
+      }
+    ],
+    "currentFormulaOnly": [
+      {
+        "id": "bv1sg8c6jefw-full-exact-001",
+        "q": "DeepSeek-V3.2-Special 在哪些竞赛中获得了金牌？",
+        "tag": "exact",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          0,
+          300,
+          3900
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-002",
+        "q": "根据研究，开源大语言模型在复杂任务上存在哪三个关键限制？",
+        "tag": "exact",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          600,
+          900,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-003",
+        "q": "DeepSeek-V3.2 相比 DeepSeek-V3.1-Terminus 唯一的架构修改是什么？",
+        "tag": "exact",
+        "expectedStartSec": 1200,
+        "relevantStartSecs": [
+          1200
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          1800,
+          300,
+          1200
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-004",
+        "q": "在DeepSeek-V3.2的DSA机制中，Lightning Indexer使用什么激活函数来过滤掉负相似度的q-k对？",
+        "tag": "exact",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1500,
+          1800,
+          1200
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-005",
+        "q": "DeepSeek-V3.2的后训练阶段包含哪两个核心过程？",
+        "tag": "exact",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2100,
+          1800,
+          0
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-006",
+        "q": "在 Scaling GRPO 中，优势 A_i,t 是如何计算的？",
+        "tag": "exact",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2700,
+          3000,
+          0
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-007",
+        "q": "在 DeepSeek-V3.2 的 Off-Policy Sequence Masking 中，满足什么条件时二元掩码 \\(M_{i,t}\\) 会被置为 0？置零后该样本如何参与策略梯度更新？",
+        "tag": "exact",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3000,
+          3300,
+          3600
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-008",
+        "q": "在DeepSeek-V3-0324之后的RL训练流程中，采用了哪个操作来确保MoE模型的稳定性？",
+        "tag": "exact",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3600,
+          1800,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-009",
+        "q": "技术报告的主要部分在哪个时间点讲完了？",
+        "tag": "exact",
+        "expectedStartSec": 4200,
+        "relevantStartSecs": [
+          4200
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          4200,
+          0,
+          900
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-001",
+        "q": "这个模型的高计算版本在哪些国际学科竞赛中表现最佳？",
+        "tag": "fuzzy",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          3900,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-002",
+        "q": "为什么说开源模型在应对复杂工作时，能力提升不如闭源模型快？",
+        "tag": "fuzzy",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          600,
+          900,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-003",
+        "q": "这个模型的新版本在结构上只做了一个关键改动，具体是什么？",
+        "tag": "fuzzy",
+        "expectedStartSec": 1200,
+        "relevantStartSecs": [
+          1200
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          300,
+          1200,
+          600
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-004",
+        "q": "在动态稀疏注意力机制中，第一步计算相似度时如何排除不相关的查询和键值对？",
+        "tag": "fuzzy",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1500,
+          300,
+          2100
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-005",
+        "q": "在模型优化的后训练阶段，需要经过哪两个主要的训练步骤？",
+        "tag": "fuzzy",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2100,
+          1800,
+          3300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-006",
+        "q": "在强化学习算法中，如何判断模型生成的某个回答比同组的其他回答更好？",
+        "tag": "fuzzy",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2700,
+          2400,
+          3300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-007",
+        "q": "在训练和推理阶段，如何确保模型对同一个问题选择相同的专家路径？",
+        "tag": "fuzzy",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3300,
+          3600,
+          2100
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-008",
+        "q": "为了在训练和推理时保持专家路径一致，避免参数子空间突变，他们采用了什么方法？",
+        "tag": "fuzzy",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          3300,
+          3600,
+          2400
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-009",
+        "q": "这份文档的核心内容大概在什么时候结束？",
+        "tag": "fuzzy",
+        "expectedStartSec": 4200,
+        "relevantStartSecs": [
+          4200
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          4200,
+          900,
+          0
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-001",
+        "q": "根据表格，哪种智能体任务的环境和提示词均为合成的？",
+        "tag": "visual",
+        "expectedStartSec": 3900,
+        "relevantStartSecs": [
+          3900
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3900,
+          1800,
+          1200
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-002",
+        "q": "根据PPT，为了解决开源模型在复杂任务中的关键限制，提出的第一个解决方案是什么？",
+        "tag": "visual",
+        "expectedStartSec": 900,
+        "relevantStartSecs": [
+          900
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          600,
+          900,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-003",
+        "q": "根据PPT，为了解决工具调用场景中的令牌效率问题，提出的上下文管理规则是什么？",
+        "tag": "visual",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          1200,
+          3600,
+          3900
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-004",
+        "q": "根据PPT中的图表，在解码阶段，当Token Position为128K时，DeepSeek-V3.2的推理成本大约是多少美元？",
+        "tag": "visual",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          300,
+          0,
+          2100
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-005",
+        "q": "根据PPT，为了稳定训练并提高对离策略更新的容忍度，所引入的二元掩码M被用于哪个损失函数？",
+        "tag": "visual",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3000,
+          3300,
+          2700
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-006",
+        "q": "根据PPT，在Dense Warm-up阶段，用于初始化lightning indexer的损失函数是什么？",
+        "tag": "visual",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1800,
+          1500,
+          2700
+        ]
+      }
+    ],
+    "currentFull": [
+      {
+        "id": "bv1sg8c6jefw-full-exact-001",
+        "q": "DeepSeek-V3.2-Special 在哪些竞赛中获得了金牌？",
+        "tag": "exact",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          0,
+          3900,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-002",
+        "q": "根据研究，开源大语言模型在复杂任务上存在哪三个关键限制？",
+        "tag": "exact",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          600,
+          300,
+          900
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-003",
+        "q": "DeepSeek-V3.2 相比 DeepSeek-V3.1-Terminus 唯一的架构修改是什么？",
+        "tag": "exact",
+        "expectedStartSec": 1200,
+        "relevantStartSecs": [
+          1200
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          1800,
+          1200,
+          2100
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-004",
+        "q": "在DeepSeek-V3.2的DSA机制中，Lightning Indexer使用什么激活函数来过滤掉负相似度的q-k对？",
+        "tag": "exact",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1500,
+          1800,
+          1200
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-005",
+        "q": "DeepSeek-V3.2的后训练阶段包含哪两个核心过程？",
+        "tag": "exact",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2100,
+          1800,
+          0
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-006",
+        "q": "在 Scaling GRPO 中，优势 A_i,t 是如何计算的？",
+        "tag": "exact",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2700,
+          3300,
+          0
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-007",
+        "q": "在 DeepSeek-V3.2 的 Off-Policy Sequence Masking 中，满足什么条件时二元掩码 \\(M_{i,t}\\) 会被置为 0？置零后该样本如何参与策略梯度更新？",
+        "tag": "exact",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3000,
+          3900,
+          2400
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-008",
+        "q": "在DeepSeek-V3-0324之后的RL训练流程中，采用了哪个操作来确保MoE模型的稳定性？",
+        "tag": "exact",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          3300,
+          3600,
+          2400
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-009",
+        "q": "技术报告的主要部分在哪个时间点讲完了？",
+        "tag": "exact",
+        "expectedStartSec": 4200,
+        "relevantStartSecs": [
+          4200
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          4200,
+          0,
+          3900
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-001",
+        "q": "这个模型的高计算版本在哪些国际学科竞赛中表现最佳？",
+        "tag": "fuzzy",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          3900,
+          600,
+          0
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-002",
+        "q": "为什么说开源模型在应对复杂工作时，能力提升不如闭源模型快？",
+        "tag": "fuzzy",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          600,
+          900,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-003",
+        "q": "这个模型的新版本在结构上只做了一个关键改动，具体是什么？",
+        "tag": "fuzzy",
+        "expectedStartSec": 1200,
+        "relevantStartSecs": [
+          1200
+        ],
+        "rank": 7,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          2700,
+          3300,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-004",
+        "q": "在动态稀疏注意力机制中，第一步计算相似度时如何排除不相关的查询和键值对？",
+        "tag": "fuzzy",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1500,
+          1200,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-005",
+        "q": "在模型优化的后训练阶段，需要经过哪两个主要的训练步骤？",
+        "tag": "fuzzy",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2100,
+          1800,
+          900
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-006",
+        "q": "在强化学习算法中，如何判断模型生成的某个回答比同组的其他回答更好？",
+        "tag": "fuzzy",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2700,
+          3300,
+          2100
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-007",
+        "q": "在训练和推理阶段，如何确保模型对同一个问题选择相同的专家路径？",
+        "tag": "fuzzy",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3300,
+          3600,
+          2100
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-008",
+        "q": "为了在训练和推理时保持专家路径一致，避免参数子空间突变，他们采用了什么方法？",
+        "tag": "fuzzy",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          3300,
+          3600,
+          2400
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-009",
+        "q": "这份文档的核心内容大概在什么时候结束？",
+        "tag": "fuzzy",
+        "expectedStartSec": 4200,
+        "relevantStartSecs": [
+          4200
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          4200,
+          600,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-001",
+        "q": "根据表格，哪种智能体任务的环境和提示词均为合成的？",
+        "tag": "visual",
+        "expectedStartSec": 3900,
+        "relevantStartSecs": [
+          3900
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3900,
+          900,
+          600
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-002",
+        "q": "根据PPT，为了解决开源模型在复杂任务中的关键限制，提出的第一个解决方案是什么？",
+        "tag": "visual",
+        "expectedStartSec": 900,
+        "relevantStartSecs": [
+          900
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          600,
+          900,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-003",
+        "q": "根据PPT，为了解决工具调用场景中的令牌效率问题，提出的上下文管理规则是什么？",
+        "tag": "visual",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3600,
+          3900,
+          3000
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-004",
+        "q": "根据PPT中的图表，在解码阶段，当Token Position为128K时，DeepSeek-V3.2的推理成本大约是多少美元？",
+        "tag": "visual",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2100,
+          1800,
+          3900
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-005",
+        "q": "根据PPT，为了稳定训练并提高对离策略更新的容忍度，所引入的二元掩码M被用于哪个损失函数？",
+        "tag": "visual",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3000,
+          3300,
+          2700
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-006",
+        "q": "根据PPT，在Dense Warm-up阶段，用于初始化lightning indexer的损失函数是什么？",
+        "tag": "visual",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1800,
+          1500,
+          2100
+        ]
+      }
+    ],
+    "vectorOnly": [
+      {
+        "id": "bv1sg8c6jefw-full-exact-001",
+        "q": "DeepSeek-V3.2-Special 在哪些竞赛中获得了金牌？",
+        "tag": "exact",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          0,
+          300,
+          3900
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-002",
+        "q": "根据研究，开源大语言模型在复杂任务上存在哪三个关键限制？",
+        "tag": "exact",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          600,
+          900,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-003",
+        "q": "DeepSeek-V3.2 相比 DeepSeek-V3.1-Terminus 唯一的架构修改是什么？",
+        "tag": "exact",
+        "expectedStartSec": 1200,
+        "relevantStartSecs": [
+          1200
+        ],
+        "rank": 4,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          300,
+          0,
+          1800
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-004",
+        "q": "在DeepSeek-V3.2的DSA机制中，Lightning Indexer使用什么激活函数来过滤掉负相似度的q-k对？",
+        "tag": "exact",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1500,
+          1200,
+          1800
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-005",
+        "q": "DeepSeek-V3.2的后训练阶段包含哪两个核心过程？",
+        "tag": "exact",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2100,
+          1800,
+          0
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-006",
+        "q": "在 Scaling GRPO 中，优势 A_i,t 是如何计算的？",
+        "tag": "exact",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2700,
+          3300,
+          0
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-007",
+        "q": "在 DeepSeek-V3.2 的 Off-Policy Sequence Masking 中，满足什么条件时二元掩码 \\(M_{i,t}\\) 会被置为 0？置零后该样本如何参与策略梯度更新？",
+        "tag": "exact",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3000,
+          3300,
+          0
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-008",
+        "q": "在DeepSeek-V3-0324之后的RL训练流程中，采用了哪个操作来确保MoE模型的稳定性？",
+        "tag": "exact",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3600,
+          1800,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-009",
+        "q": "技术报告的主要部分在哪个时间点讲完了？",
+        "tag": "exact",
+        "expectedStartSec": 4200,
+        "relevantStartSecs": [
+          4200
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          4200,
+          0,
+          900
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-001",
+        "q": "这个模型的高计算版本在哪些国际学科竞赛中表现最佳？",
+        "tag": "fuzzy",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          3900,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-002",
+        "q": "为什么说开源模型在应对复杂工作时，能力提升不如闭源模型快？",
+        "tag": "fuzzy",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          600,
+          900,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-003",
+        "q": "这个模型的新版本在结构上只做了一个关键改动，具体是什么？",
+        "tag": "fuzzy",
+        "expectedStartSec": 1200,
+        "relevantStartSecs": [
+          1200
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          300,
+          1200,
+          600
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-004",
+        "q": "在动态稀疏注意力机制中，第一步计算相似度时如何排除不相关的查询和键值对？",
+        "tag": "fuzzy",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1500,
+          300,
+          2100
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-005",
+        "q": "在模型优化的后训练阶段，需要经过哪两个主要的训练步骤？",
+        "tag": "fuzzy",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2100,
+          1800,
+          3300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-006",
+        "q": "在强化学习算法中，如何判断模型生成的某个回答比同组的其他回答更好？",
+        "tag": "fuzzy",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2700,
+          2400,
+          3300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-007",
+        "q": "在训练和推理阶段，如何确保模型对同一个问题选择相同的专家路径？",
+        "tag": "fuzzy",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          3600,
+          3300,
+          2100
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-008",
+        "q": "为了在训练和推理时保持专家路径一致，避免参数子空间突变，他们采用了什么方法？",
+        "tag": "fuzzy",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          3300,
+          3600,
+          2400
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-009",
+        "q": "这份文档的核心内容大概在什么时候结束？",
+        "tag": "fuzzy",
+        "expectedStartSec": 4200,
+        "relevantStartSecs": [
+          4200
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          4200,
+          900,
+          0
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-001",
+        "q": "根据表格，哪种智能体任务的环境和提示词均为合成的？",
+        "tag": "visual",
+        "expectedStartSec": 3900,
+        "relevantStartSecs": [
+          3900
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3900,
+          1800,
+          1200
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-002",
+        "q": "根据PPT，为了解决开源模型在复杂任务中的关键限制，提出的第一个解决方案是什么？",
+        "tag": "visual",
+        "expectedStartSec": 900,
+        "relevantStartSecs": [
+          900
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          600,
+          900,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-003",
+        "q": "根据PPT，为了解决工具调用场景中的令牌效率问题，提出的上下文管理规则是什么？",
+        "tag": "visual",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          1200,
+          3600,
+          3900
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-004",
+        "q": "根据PPT中的图表，在解码阶段，当Token Position为128K时，DeepSeek-V3.2的推理成本大约是多少美元？",
+        "tag": "visual",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          300,
+          0,
+          2100
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-005",
+        "q": "根据PPT，为了稳定训练并提高对离策略更新的容忍度，所引入的二元掩码M被用于哪个损失函数？",
+        "tag": "visual",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3000,
+          3300,
+          2700
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-006",
+        "q": "根据PPT，在Dense Warm-up阶段，用于初始化lightning indexer的损失函数是什么？",
+        "tag": "visual",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1800,
+          1500,
+          2700
+        ]
+      }
+    ],
+    "oldKeywordOnly": [
+      {
+        "id": "bv1sg8c6jefw-full-exact-001",
+        "q": "DeepSeek-V3.2-Special 在哪些竞赛中获得了金牌？",
+        "tag": "exact",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 10,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          900,
+          1200,
+          2100
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-002",
+        "q": "根据研究，开源大语言模型在复杂任务上存在哪三个关键限制？",
+        "tag": "exact",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-003",
+        "q": "DeepSeek-V3.2 相比 DeepSeek-V3.1-Terminus 唯一的架构修改是什么？",
+        "tag": "exact",
+        "expectedStartSec": 1200,
+        "relevantStartSecs": [
+          1200
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          900,
+          1200,
+          2100
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-004",
+        "q": "在DeepSeek-V3.2的DSA机制中，Lightning Indexer使用什么激活函数来过滤掉负相似度的q-k对？",
+        "tag": "exact",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 5,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          900,
+          1200,
+          1800
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-005",
+        "q": "DeepSeek-V3.2的后训练阶段包含哪两个核心过程？",
+        "tag": "exact",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          900,
+          1200,
+          2100
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-006",
+        "q": "在 Scaling GRPO 中，优势 A_i,t 是如何计算的？",
+        "tag": "exact",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 10,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-007",
+        "q": "在 DeepSeek-V3.2 的 Off-Policy Sequence Masking 中，满足什么条件时二元掩码 \\(M_{i,t}\\) 会被置为 0？置零后该样本如何参与策略梯度更新？",
+        "tag": "exact",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 12,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          900,
+          1200,
+          2100
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-008",
+        "q": "在DeepSeek-V3-0324之后的RL训练流程中，采用了哪个操作来确保MoE模型的稳定性？",
+        "tag": "exact",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 13,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-exact-009",
+        "q": "技术报告的主要部分在哪个时间点讲完了？",
+        "tag": "exact",
+        "expectedStartSec": 4200,
+        "relevantStartSecs": [
+          4200
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          4200,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-001",
+        "q": "这个模型的高计算版本在哪些国际学科竞赛中表现最佳？",
+        "tag": "fuzzy",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-002",
+        "q": "为什么说开源模型在应对复杂工作时，能力提升不如闭源模型快？",
+        "tag": "fuzzy",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          600,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-003",
+        "q": "这个模型的新版本在结构上只做了一个关键改动，具体是什么？",
+        "tag": "fuzzy",
+        "expectedStartSec": 1200,
+        "relevantStartSecs": [
+          1200
+        ],
+        "rank": 5,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-004",
+        "q": "在动态稀疏注意力机制中，第一步计算相似度时如何排除不相关的查询和键值对？",
+        "tag": "fuzzy",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 5,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          1200,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-005",
+        "q": "在模型优化的后训练阶段，需要经过哪两个主要的训练步骤？",
+        "tag": "fuzzy",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 8,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-006",
+        "q": "在强化学习算法中，如何判断模型生成的某个回答比同组的其他回答更好？",
+        "tag": "fuzzy",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 4,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          3300,
+          600,
+          2400
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-007",
+        "q": "在训练和推理阶段，如何确保模型对同一个问题选择相同的专家路径？",
+        "tag": "fuzzy",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 12,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-008",
+        "q": "为了在训练和推理时保持专家路径一致，避免参数子空间突变，他们采用了什么方法？",
+        "tag": "fuzzy",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 13,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-fuzzy-009",
+        "q": "这份文档的核心内容大概在什么时候结束？",
+        "tag": "fuzzy",
+        "expectedStartSec": 4200,
+        "relevantStartSecs": [
+          4200
+        ],
+        "rank": 15,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-001",
+        "q": "根据表格，哪种智能体任务的环境和提示词均为合成的？",
+        "tag": "visual",
+        "expectedStartSec": 3900,
+        "relevantStartSecs": [
+          3900
+        ],
+        "rank": 14,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          600,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-002",
+        "q": "根据PPT，为了解决开源模型在复杂任务中的关键限制，提出的第一个解决方案是什么？",
+        "tag": "visual",
+        "expectedStartSec": 900,
+        "relevantStartSecs": [
+          900
+        ],
+        "rank": 4,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          600,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-003",
+        "q": "根据PPT，为了解决工具调用场景中的令牌效率问题，提出的上下文管理规则是什么？",
+        "tag": "visual",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 13,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-004",
+        "q": "根据PPT中的图表，在解码阶段，当Token Position为128K时，DeepSeek-V3.2的推理成本大约是多少美元？",
+        "tag": "visual",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          900,
+          1200,
+          2100
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-005",
+        "q": "根据PPT，为了稳定训练并提高对离策略更新的容忍度，所引入的二元掩码M被用于哪个损失函数？",
+        "tag": "visual",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3000,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1sg8c6jefw-full-visual-006",
+        "q": "根据PPT，在Dense Warm-up阶段，用于初始化lightning indexer的损失函数是什么？",
+        "tag": "visual",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1800,
+          1500,
+          0
+        ]
+      }
+    ]
+  }
+}

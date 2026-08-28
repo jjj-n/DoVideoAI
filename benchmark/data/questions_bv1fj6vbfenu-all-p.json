@@ -1,0 +1,218 @@
+[
+  {
+    "id": "bv1fj6vbfenu-all-p-exact-001",
+    "q": "视频中提到，当线性函数无法接近真实数据时，需要引入什么函数来将其转化为非线性函数？",
+    "tag": "exact",
+    "relevantSecs": [
+      240
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1fj6vbfenu-all-p-exact-002",
+    "q": "在线性回归示例中，讲师分别用什么数学符号表示真实值和预测值？",
+    "tag": "exact",
+    "relevantSecs": [
+      600
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1fj6vbfenu-all-p-exact-003",
+    "q": "在神经网络训练中，为了防止过拟合，除了简化模型复杂度和增加训练数据，还有哪些方法？",
+    "tag": "exact",
+    "relevantSecs": [
+      1320
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1fj6vbfenu-all-p-exact-004",
+    "q": "一张 30×30 的灰度图像展平为 900 个输入神经元，并与下一层的 1000 个神经元全连接；不考虑偏置时，这一层共有多少个连接权重？",
+    "tag": "exact",
+    "relevantSecs": [
+      1860
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1fj6vbfenu-all-p-exact-005",
+    "q": "把一句话中所有词的向量直接拼接成一个大向量送入神经网络，会带来哪两个问题？",
+    "tag": "exact",
+    "relevantSecs": [
+      2400
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1fj6vbfenu-all-p-exact-006",
+    "q": "在Transformer的多头注意力机制中，每个词的多组qkv是如何产生的？",
+    "tag": "exact",
+    "relevantSecs": [
+      3000
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1fj6vbfenu-all-p-exact-007",
+    "q": "控制大语言模型输出随机性的参数叫什么？",
+    "tag": "exact",
+    "relevantSecs": [
+      3660
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1fj6vbfenu-all-p-exact-008",
+    "q": "视频中提到的Transformer架构由哪三大块组成？",
+    "tag": "exact",
+    "relevantSecs": [
+      4260
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1fj6vbfenu-all-p-exact-009",
+    "q": "在PyTorch中，如何创建一个词嵌入矩阵？",
+    "tag": "exact",
+    "relevantSecs": [
+      4800
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1fj6vbfenu-all-p-fuzzy-001",
+    "q": "在人工智能的发展中，当用直线方程无法很好地拟合数据时，人们采用什么方法来增强模型的表达能力？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      240
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1fj6vbfenu-all-p-fuzzy-002",
+    "q": "在评估模型拟合好坏时，除了直观感受，我们如何量化模型预测结果和实际数据之间的差距？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      660
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1fj6vbfenu-all-p-fuzzy-003",
+    "q": "如果一个模型在训练数据上表现很好，但在没见过的数据上表现很差，这种现象叫什么？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      1260
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1fj6vbfenu-all-p-fuzzy-004",
+    "q": "将图片像素平铺作为神经网络输入，会带来哪两个主要缺陷？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      1860
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1fj6vbfenu-all-p-fuzzy-005",
+    "q": "在自然语言处理中，直接把所有词的向量拼在一起送入网络有什么主要缺陷？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      2400
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1fj6vbfenu-all-p-fuzzy-006",
+    "q": "在Transformer架构中，为了让模型能学到词语之间不同类型的关系，对每个词的查询、键、值向量做了什么处理？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      3000
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1fj6vbfenu-all-p-fuzzy-007",
+    "q": "视频中，哪个参数过高时容易让模型胡说八道，过低时又会使回答过于保守？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      3660
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1fj6vbfenu-all-p-fuzzy-008",
+    "q": "视频里说为了解决算力和数据不足的问题，人们想出了什么主要办法？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      4200
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1fj6vbfenu-all-p-fuzzy-009",
+    "q": "视频中演示的简单模型类，其前向传播方法是如何根据输入的标识符获取对应的向量表示的？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      4860
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1fj6vbfenu-all-p-visual-001",
+    "q": "根据论文《Attention Is All You Need》的摘要，该模型在WMT 2014英法翻译任务上达到的BLEU分数是多少？",
+    "tag": "visual",
+    "relevantSecs": [
+      3300
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1fj6vbfenu-all-p-visual-002",
+    "q": "在代码中，ShankeModel 类的前向传播方法返回的是什么？",
+    "tag": "visual",
+    "relevantSecs": [
+      4800
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1fj6vbfenu-all-p-visual-003",
+    "q": "在卷积神经网络的锐化（sharpen）演示中，画面显示的 3×3 卷积核矩阵是什么？",
+    "tag": "visual",
+    "relevantSecs": [
+      2100
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1fj6vbfenu-all-p-visual-004",
+    "q": "在 AI 编程的演示界面中，画面列出的示例请求要求生成什么系统？",
+    "tag": "visual",
+    "relevantSecs": [
+      3780
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1fj6vbfenu-all-p-visual-005",
+    "q": "在Transformer的采样策略中，Top-k方法保留了多少个最可能的token？",
+    "tag": "visual",
+    "relevantSecs": [
+      4320
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1fj6vbfenu-all-p-visual-006",
+    "q": "在卷积神经网络演示中，输入图像经过卷积核处理后，每个新像素值是如何计算得出的？",
+    "tag": "visual",
+    "relevantSecs": [
+      1980
+    ],
+    "reviewed": true
+  }
+]

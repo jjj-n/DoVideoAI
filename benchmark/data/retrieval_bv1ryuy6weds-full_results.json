@@ -1,0 +1,2524 @@
+{
+  "metadata": {
+    "datasetId": "bv1ryuy6weds-full",
+    "sourceVideo": "source.mp4",
+    "sourceUrl": "https://www.bilibili.com/video/BV1ryuy6WEDs/",
+    "durationSeconds": 3893,
+    "segmentMs": 60000,
+    "chunkMs": 300000,
+    "asrModel": "TeleAI/TeleSpeechASR",
+    "embeddingModel": "BAAI/bge-m3",
+    "llmModel": "deepseek-ai/DeepSeek-V3.2",
+    "preparedAt": "2026-08-26T03:20:26.154Z",
+    "scoringScope": "chunk recall; segment reranking does not change whether the expected chunk is selected",
+    "questionsEnrichedAt": "2026-08-28T05:54:38.312Z",
+    "comparedAt": "2026-08-28T05:55:57.202Z",
+    "historicalFormula": "0.7*cosine(raw query, chunk embedding) + 0.3*historical keyword score",
+    "currentFormula": "0.6*semantic + 0.25*text terms + 0.15*OCR visual terms",
+    "currentFormulaOnlyIntent": "raw query embedding + production fallback terms",
+    "currentFullIntent": "LLM semanticQuery/keywords/visualKeywords"
+  },
+  "summary": {
+    "oldHybrid": {
+      "n": 24,
+      "hitAt1": 0.625,
+      "hitAt3": 0.75,
+      "recallAt3": 0.75,
+      "mrrAt3": 0.6806,
+      "exact": {
+        "n": 9,
+        "hitAt1": 0.7778,
+        "hitAt3": 0.8889,
+        "recallAt3": 0.8889,
+        "mrrAt3": 0.8333
+      },
+      "fuzzy": {
+        "n": 9,
+        "hitAt1": 0.7778,
+        "hitAt3": 0.8889,
+        "recallAt3": 0.8889,
+        "mrrAt3": 0.8333
+      },
+      "visual": {
+        "n": 6,
+        "hitAt1": 0.1667,
+        "hitAt3": 0.3333,
+        "recallAt3": 0.3333,
+        "mrrAt3": 0.2222
+      }
+    },
+    "currentFormulaOnly": {
+      "n": 24,
+      "hitAt1": 0.5833,
+      "hitAt3": 0.7917,
+      "recallAt3": 0.7917,
+      "mrrAt3": 0.6736,
+      "exact": {
+        "n": 9,
+        "hitAt1": 0.7778,
+        "hitAt3": 0.8889,
+        "recallAt3": 0.8889,
+        "mrrAt3": 0.8148
+      },
+      "fuzzy": {
+        "n": 9,
+        "hitAt1": 0.6667,
+        "hitAt3": 1,
+        "recallAt3": 1,
+        "mrrAt3": 0.8148
+      },
+      "visual": {
+        "n": 6,
+        "hitAt1": 0.1667,
+        "hitAt3": 0.3333,
+        "recallAt3": 0.3333,
+        "mrrAt3": 0.25
+      }
+    },
+    "currentFull": {
+      "n": 24,
+      "hitAt1": 0.5833,
+      "hitAt3": 0.9167,
+      "recallAt3": 0.9167,
+      "mrrAt3": 0.7361,
+      "exact": {
+        "n": 9,
+        "hitAt1": 0.6667,
+        "hitAt3": 1,
+        "recallAt3": 1,
+        "mrrAt3": 0.8333
+      },
+      "fuzzy": {
+        "n": 9,
+        "hitAt1": 0.4444,
+        "hitAt3": 0.8889,
+        "recallAt3": 0.8889,
+        "mrrAt3": 0.6296
+      },
+      "visual": {
+        "n": 6,
+        "hitAt1": 0.6667,
+        "hitAt3": 0.8333,
+        "recallAt3": 0.8333,
+        "mrrAt3": 0.75
+      }
+    },
+    "vectorOnly": {
+      "n": 24,
+      "hitAt1": 0.5833,
+      "hitAt3": 0.75,
+      "recallAt3": 0.75,
+      "mrrAt3": 0.6597,
+      "exact": {
+        "n": 9,
+        "hitAt1": 0.7778,
+        "hitAt3": 0.8889,
+        "recallAt3": 0.8889,
+        "mrrAt3": 0.8333
+      },
+      "fuzzy": {
+        "n": 9,
+        "hitAt1": 0.7778,
+        "hitAt3": 1,
+        "recallAt3": 1,
+        "mrrAt3": 0.8889
+      },
+      "visual": {
+        "n": 6,
+        "hitAt1": 0,
+        "hitAt3": 0.1667,
+        "recallAt3": 0.1667,
+        "mrrAt3": 0.0556
+      }
+    },
+    "oldKeywordOnly": {
+      "n": 24,
+      "hitAt1": 0.25,
+      "hitAt3": 0.5417,
+      "recallAt3": 0.5417,
+      "mrrAt3": 0.3819,
+      "exact": {
+        "n": 9,
+        "hitAt1": 0.2222,
+        "hitAt3": 0.7778,
+        "recallAt3": 0.7778,
+        "mrrAt3": 0.4815
+      },
+      "fuzzy": {
+        "n": 9,
+        "hitAt1": 0.3333,
+        "hitAt3": 0.5556,
+        "recallAt3": 0.5556,
+        "mrrAt3": 0.4259
+      },
+      "visual": {
+        "n": 6,
+        "hitAt1": 0.1667,
+        "hitAt3": 0.1667,
+        "recallAt3": 0.1667,
+        "mrrAt3": 0.1667
+      }
+    }
+  },
+  "uplift": {
+    "currentFormulaOnlyVsOld": {
+      "hitAt1AbsolutePoints": -4.17,
+      "hitAt3AbsolutePoints": 4.17,
+      "recallAt3AbsolutePoints": 4.17,
+      "recallAt3RelativePercent": 5.56,
+      "hitAt3RelativePercent": 5.56,
+      "mrrAt3Absolute": -0.007,
+      "exactHitAt3Points": 0,
+      "fuzzyHitAt3Points": 11.11,
+      "gainedQueries": [
+        "对于刚开始刷数据结构题单的学习者，主讲人给出了什么关于题目难度的建议？",
+        "在 _merge_data 方法中，计算 cnt 时，除了 a_cnt 和 b_cnt 的和，还加上了哪两项的乘积并减去了哪两项的乘积？"
+      ],
+      "lostQueries": [
+        "在题单的『常用数据结构』部分，列出了哪几个具体的数据结构或技巧？"
+      ],
+      "pairedBootstrap95": {
+        "hitAt3Points": [
+          -8.33,
+          16.67
+        ],
+        "recallAt3Points": [
+          -8.33,
+          16.67
+        ],
+        "mrrAt3": [
+          -0.1528,
+          0.1319
+        ]
+      }
+    },
+    "currentFullVsOld": {
+      "hitAt1AbsolutePoints": -4.17,
+      "hitAt3AbsolutePoints": 16.67,
+      "recallAt3AbsolutePoints": 16.67,
+      "recallAt3RelativePercent": 22.23,
+      "hitAt3RelativePercent": 22.23,
+      "mrrAt3Absolute": 0.0555,
+      "exactHitAt3Points": 11.11,
+      "fuzzyHitAt3Points": 0,
+      "gainedQueries": [
+        "对于想通过数据结构题单打基础的学习者，主讲人建议先完成难度分低于多少的题目？",
+        "对于刚开始刷数据结构题单的学习者，主讲人给出了什么关于题目难度的建议？",
+        "在 _merge_data 方法中，计算 cnt 时，除了 a_cnt 和 b_cnt 的和，还加上了哪两项的乘积并减去了哪两项的乘积？",
+        "在题单的『核心刷题路线』图例中，『枚举技巧』之后紧接着哪两个专题？",
+        "在题单的『7.5 子矩形 DP』部分，列出了哪道题是统计全为 1 的正方形子矩阵？",
+        "在题单的『单调栈』部分，列出了哪道题是子数组最小乘积的最大值？"
+      ],
+      "lostQueries": [
+        "对于学习过程中遇到的难题，视频中给出的建议是什么？",
+        "在题单的『常用数据结构』部分，列出了哪几个具体的数据结构或技巧？"
+      ],
+      "pairedBootstrap95": {
+        "hitAt3Points": [
+          -4.17,
+          37.5
+        ],
+        "recallAt3Points": [
+          -4.17,
+          37.5
+        ],
+        "mrrAt3": [
+          -0.1736,
+          0.2986
+        ]
+      }
+    }
+  },
+  "detail": {
+    "oldHybrid": [
+      {
+        "id": "bv1ryuy6weds-full-exact-001",
+        "q": "在力扣第514场周赛第一题中，为了最小化所有商品最终价格之和，讲解者建议使用什么数学不等式？",
+        "tag": "exact",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          0,
+          2400,
+          2100
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-002",
+        "q": "在解决寻找两个不重叠全1正方形的问题时，如何将左右关系的情况转化为上下关系来处理？",
+        "tag": "exact",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          600,
+          900,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-003",
+        "q": "主讲人提到的通过矩阵旋转来复用代码，具体是如何将枚举水平分割线的算法转化为枚举垂直分割线的算法的？",
+        "tag": "exact",
+        "expectedStartSec": 900,
+        "relevantStartSecs": [
+          900
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          900,
+          600,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-004",
+        "q": "在计算包含封顶的峰值子数组个数时，线段树的 _merge_data 函数中，用于合并两个区间 a 和 b 的核心公式是什么？",
+        "tag": "exact",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1500,
+          1800,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-005",
+        "q": "在解决峰值子数组问题的线段树中，每个节点维护的五个信息分别是什么？",
+        "tag": "exact",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1800,
+          1500,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-006",
+        "q": "主讲人在评估第 514 场周赛第四题“4017. 数组中的峰值 II”时，最初给出的难度分是多少？",
+        "tag": "exact",
+        "expectedStartSec": 2400,
+        "relevantStartSecs": [
+          2400
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2400,
+          2100,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-007",
+        "q": "对于想通过数据结构题单打基础的学习者，主讲人建议先完成难度分低于多少的题目？",
+        "tag": "exact",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 6,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          3300,
+          2400,
+          3000
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-008",
+        "q": "主讲人认为LeetCode 2100分以下的选手瓶颈是什么？",
+        "tag": "exact",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3300,
+          1800,
+          2400
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-009",
+        "q": "在学习算法题单时，主讲人建议把前几道题当作什么，并采用什么方式学习？",
+        "tag": "exact",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          3300,
+          3600,
+          3000
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-001",
+        "q": "视频中提到，为了让打折后的总价最低，应该怎样分配折扣和商品？",
+        "tag": "fuzzy",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          0,
+          300,
+          900
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-002",
+        "q": "为了减少代码重复，处理两个正方形左右排列的情况可以采取什么技巧？",
+        "tag": "fuzzy",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          600,
+          900,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-003",
+        "q": "在讲解算法优化时，提到了一种避免重复编写相似逻辑的技巧，这个技巧具体是怎么操作的？",
+        "tag": "fuzzy",
+        "expectedStartSec": 900,
+        "relevantStartSecs": [
+          900
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          900,
+          600,
+          2100
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-004",
+        "q": "在“数组中的峰值 II”的线段树做法中，合并左右区间时，新区间的峰值子数组数量如何计算？",
+        "tag": "fuzzy",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          1800,
+          1500,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-005",
+        "q": "当修改数组中的一个元素时，最多会影响多少个位置的峰值状态？",
+        "tag": "fuzzy",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1800,
+          1500,
+          2100
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-006",
+        "q": "主讲人为什么认为，只刷完 Hot 150 的人，在周赛第三、第四题中遇到自己熟悉解法的概率较低？",
+        "tag": "fuzzy",
+        "expectedStartSec": 2400,
+        "relevantStartSecs": [
+          2400
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2400,
+          3000,
+          2100
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-007",
+        "q": "对于刚开始刷数据结构题单的学习者，主讲人给出了什么关于题目难度的建议？",
+        "tag": "fuzzy",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 4,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          3300,
+          2400,
+          3000
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-008",
+        "q": "对于算法水平还不太高的学习者，视频中认为他们进步慢的主要原因是什么？",
+        "tag": "fuzzy",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3300,
+          2400,
+          3000
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-009",
+        "q": "对于学习过程中遇到的难题，视频中给出的建议是什么？",
+        "tag": "fuzzy",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3600,
+          3300,
+          3000
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-001",
+        "q": "在 _merge_data 方法中，计算 cnt 时，除了 a_cnt 和 b_cnt 的和，还加上了哪两项的乘积并减去了哪两项的乘积？",
+        "tag": "visual",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 9,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          300,
+          1200,
+          1500
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-002",
+        "q": "在 countOfPeaks 方法中，处理 op 为 2 的查询时，for 循环中 j 的取值范围是什么？",
+        "tag": "visual",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          1500,
+          1200,
+          2100
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-003",
+        "q": "在题单的『核心刷题路线』图例中，『枚举技巧』之后紧接着哪两个专题？",
+        "tag": "visual",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 5,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          3300,
+          2700,
+          3600
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-004",
+        "q": "在题单的『7.5 子矩形 DP』部分，列出了哪道题是统计全为 1 的正方形子矩阵？",
+        "tag": "visual",
+        "expectedStartSec": 2400,
+        "relevantStartSecs": [
+          2400
+        ],
+        "rank": 7,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          900,
+          1200,
+          600
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-005",
+        "q": "在题单的『常用数据结构』部分，列出了哪几个具体的数据结构或技巧？",
+        "tag": "visual",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3300,
+          2400,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-006",
+        "q": "在题单的『单调栈』部分，列出了哪道题是子数组最小乘积的最大值？",
+        "tag": "visual",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 12,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          3300,
+          1200,
+          1500
+        ]
+      }
+    ],
+    "currentFormulaOnly": [
+      {
+        "id": "bv1ryuy6weds-full-exact-001",
+        "q": "在力扣第514场周赛第一题中，为了最小化所有商品最终价格之和，讲解者建议使用什么数学不等式？",
+        "tag": "exact",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          0,
+          2100,
+          900
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-002",
+        "q": "在解决寻找两个不重叠全1正方形的问题时，如何将左右关系的情况转化为上下关系来处理？",
+        "tag": "exact",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          600,
+          900,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-003",
+        "q": "主讲人提到的通过矩阵旋转来复用代码，具体是如何将枚举水平分割线的算法转化为枚举垂直分割线的算法的？",
+        "tag": "exact",
+        "expectedStartSec": 900,
+        "relevantStartSecs": [
+          900
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          900,
+          1200,
+          600
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-004",
+        "q": "在计算包含封顶的峰值子数组个数时，线段树的 _merge_data 函数中，用于合并两个区间 a 和 b 的核心公式是什么？",
+        "tag": "exact",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1500,
+          1200,
+          1800
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-005",
+        "q": "在解决峰值子数组问题的线段树中，每个节点维护的五个信息分别是什么？",
+        "tag": "exact",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1800,
+          1200,
+          2100
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-006",
+        "q": "主讲人在评估第 514 场周赛第四题“4017. 数组中的峰值 II”时，最初给出的难度分是多少？",
+        "tag": "exact",
+        "expectedStartSec": 2400,
+        "relevantStartSecs": [
+          2400
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          2100,
+          1500,
+          2400
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-007",
+        "q": "对于想通过数据结构题单打基础的学习者，主讲人建议先完成难度分低于多少的题目？",
+        "tag": "exact",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 6,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          3000,
+          2400,
+          3600
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-008",
+        "q": "主讲人认为LeetCode 2100分以下的选手瓶颈是什么？",
+        "tag": "exact",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3300,
+          2400,
+          2100
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-009",
+        "q": "在学习算法题单时，主讲人建议把前几道题当作什么，并采用什么方式学习？",
+        "tag": "exact",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3600,
+          3000,
+          2700
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-001",
+        "q": "视频中提到，为了让打折后的总价最低，应该怎样分配折扣和商品？",
+        "tag": "fuzzy",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          0,
+          300,
+          900
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-002",
+        "q": "为了减少代码重复，处理两个正方形左右排列的情况可以采取什么技巧？",
+        "tag": "fuzzy",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          600,
+          900,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-003",
+        "q": "在讲解算法优化时，提到了一种避免重复编写相似逻辑的技巧，这个技巧具体是怎么操作的？",
+        "tag": "fuzzy",
+        "expectedStartSec": 900,
+        "relevantStartSecs": [
+          900
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          900,
+          300,
+          2100
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-004",
+        "q": "在“数组中的峰值 II”的线段树做法中，合并左右区间时，新区间的峰值子数组数量如何计算？",
+        "tag": "fuzzy",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          1800,
+          1500,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-005",
+        "q": "当修改数组中的一个元素时，最多会影响多少个位置的峰值状态？",
+        "tag": "fuzzy",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1800,
+          1500,
+          2100
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-006",
+        "q": "主讲人为什么认为，只刷完 Hot 150 的人，在周赛第三、第四题中遇到自己熟悉解法的概率较低？",
+        "tag": "fuzzy",
+        "expectedStartSec": 2400,
+        "relevantStartSecs": [
+          2400
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          3000,
+          2100,
+          2400
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-007",
+        "q": "对于刚开始刷数据结构题单的学习者，主讲人给出了什么关于题目难度的建议？",
+        "tag": "fuzzy",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          3000,
+          2700,
+          3600
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-008",
+        "q": "对于算法水平还不太高的学习者，视频中认为他们进步慢的主要原因是什么？",
+        "tag": "fuzzy",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3300,
+          2400,
+          3000
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-009",
+        "q": "对于学习过程中遇到的难题，视频中给出的建议是什么？",
+        "tag": "fuzzy",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3600,
+          3300,
+          3000
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-001",
+        "q": "在 _merge_data 方法中，计算 cnt 时，除了 a_cnt 和 b_cnt 的和，还加上了哪两项的乘积并减去了哪两项的乘积？",
+        "tag": "visual",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          1200,
+          1800,
+          1500
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-002",
+        "q": "在 countOfPeaks 方法中，处理 op 为 2 的查询时，for 循环中 j 的取值范围是什么？",
+        "tag": "visual",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2100,
+          1800,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-003",
+        "q": "在题单的『核心刷题路线』图例中，『枚举技巧』之后紧接着哪两个专题？",
+        "tag": "visual",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 5,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          2700,
+          3600,
+          3300
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-004",
+        "q": "在题单的『7.5 子矩形 DP』部分，列出了哪道题是统计全为 1 的正方形子矩阵？",
+        "tag": "visual",
+        "expectedStartSec": 2400,
+        "relevantStartSecs": [
+          2400
+        ],
+        "rank": 4,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          900,
+          1200,
+          600
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-005",
+        "q": "在题单的『常用数据结构』部分，列出了哪几个具体的数据结构或技巧？",
+        "tag": "visual",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 12,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          1200,
+          300,
+          2100
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-006",
+        "q": "在题单的『单调栈』部分，列出了哪道题是子数组最小乘积的最大值？",
+        "tag": "visual",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 12,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          1200,
+          1500,
+          2100
+        ]
+      }
+    ],
+    "currentFull": [
+      {
+        "id": "bv1ryuy6weds-full-exact-001",
+        "q": "在力扣第514场周赛第一题中，为了最小化所有商品最终价格之和，讲解者建议使用什么数学不等式？",
+        "tag": "exact",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          0,
+          2700,
+          2100
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-002",
+        "q": "在解决寻找两个不重叠全1正方形的问题时，如何将左右关系的情况转化为上下关系来处理？",
+        "tag": "exact",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          600,
+          900,
+          300
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-003",
+        "q": "主讲人提到的通过矩阵旋转来复用代码，具体是如何将枚举水平分割线的算法转化为枚举垂直分割线的算法的？",
+        "tag": "exact",
+        "expectedStartSec": 900,
+        "relevantStartSecs": [
+          900
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          900,
+          600,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-004",
+        "q": "在计算包含封顶的峰值子数组个数时，线段树的 _merge_data 函数中，用于合并两个区间 a 和 b 的核心公式是什么？",
+        "tag": "exact",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          1800,
+          1500,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-005",
+        "q": "在解决峰值子数组问题的线段树中，每个节点维护的五个信息分别是什么？",
+        "tag": "exact",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1800,
+          1500,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-006",
+        "q": "主讲人在评估第 514 场周赛第四题“4017. 数组中的峰值 II”时，最初给出的难度分是多少？",
+        "tag": "exact",
+        "expectedStartSec": 2400,
+        "relevantStartSecs": [
+          2400
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          2100,
+          2400,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-007",
+        "q": "对于想通过数据结构题单打基础的学习者，主讲人建议先完成难度分低于多少的题目？",
+        "tag": "exact",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2700,
+          3000,
+          3600
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-008",
+        "q": "主讲人认为LeetCode 2100分以下的选手瓶颈是什么？",
+        "tag": "exact",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3300,
+          2700,
+          2400
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-009",
+        "q": "在学习算法题单时，主讲人建议把前几道题当作什么，并采用什么方式学习？",
+        "tag": "exact",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          2700,
+          3600,
+          3000
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-001",
+        "q": "视频中提到，为了让打折后的总价最低，应该怎样分配折扣和商品？",
+        "tag": "fuzzy",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          0,
+          300,
+          900
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-002",
+        "q": "为了减少代码重复，处理两个正方形左右排列的情况可以采取什么技巧？",
+        "tag": "fuzzy",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          900,
+          600,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-003",
+        "q": "在讲解算法优化时，提到了一种避免重复编写相似逻辑的技巧，这个技巧具体是怎么操作的？",
+        "tag": "fuzzy",
+        "expectedStartSec": 900,
+        "relevantStartSecs": [
+          900
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          2100,
+          3000,
+          900
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-004",
+        "q": "在“数组中的峰值 II”的线段树做法中，合并左右区间时，新区间的峰值子数组数量如何计算？",
+        "tag": "fuzzy",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          1200,
+          1800,
+          1500
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-005",
+        "q": "当修改数组中的一个元素时，最多会影响多少个位置的峰值状态？",
+        "tag": "fuzzy",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1800,
+          2100,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-006",
+        "q": "主讲人为什么认为，只刷完 Hot 150 的人，在周赛第三、第四题中遇到自己熟悉解法的概率较低？",
+        "tag": "fuzzy",
+        "expectedStartSec": 2400,
+        "relevantStartSecs": [
+          2400
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2400,
+          2700,
+          2100
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-007",
+        "q": "对于刚开始刷数据结构题单的学习者，主讲人给出了什么关于题目难度的建议？",
+        "tag": "fuzzy",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          3000,
+          2700,
+          3600
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-008",
+        "q": "对于算法水平还不太高的学习者，视频中认为他们进步慢的主要原因是什么？",
+        "tag": "fuzzy",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3300,
+          3000,
+          3600
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-009",
+        "q": "对于学习过程中遇到的难题，视频中给出的建议是什么？",
+        "tag": "fuzzy",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 4,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          2700,
+          3300,
+          3000
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-001",
+        "q": "在 _merge_data 方法中，计算 cnt 时，除了 a_cnt 和 b_cnt 的和，还加上了哪两项的乘积并减去了哪两项的乘积？",
+        "tag": "visual",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1800,
+          1200,
+          1500
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-002",
+        "q": "在 countOfPeaks 方法中，处理 op 为 2 的查询时，for 循环中 j 的取值范围是什么？",
+        "tag": "visual",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          1800,
+          2100,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-003",
+        "q": "在题单的『核心刷题路线』图例中，『枚举技巧』之后紧接着哪两个专题？",
+        "tag": "visual",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3000,
+          2700,
+          3600
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-004",
+        "q": "在题单的『7.5 子矩形 DP』部分，列出了哪道题是统计全为 1 的正方形子矩阵？",
+        "tag": "visual",
+        "expectedStartSec": 2400,
+        "relevantStartSecs": [
+          2400
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2400,
+          600,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-005",
+        "q": "在题单的『常用数据结构』部分，列出了哪几个具体的数据结构或技巧？",
+        "tag": "visual",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 6,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          2700,
+          3000,
+          2400
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-006",
+        "q": "在题单的『单调栈』部分，列出了哪道题是子数组最小乘积的最大值？",
+        "tag": "visual",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2700,
+          2100,
+          3000
+        ]
+      }
+    ],
+    "vectorOnly": [
+      {
+        "id": "bv1ryuy6weds-full-exact-001",
+        "q": "在力扣第514场周赛第一题中，为了最小化所有商品最终价格之和，讲解者建议使用什么数学不等式？",
+        "tag": "exact",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          0,
+          2100,
+          900
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-002",
+        "q": "在解决寻找两个不重叠全1正方形的问题时，如何将左右关系的情况转化为上下关系来处理？",
+        "tag": "exact",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          600,
+          900,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-003",
+        "q": "主讲人提到的通过矩阵旋转来复用代码，具体是如何将枚举水平分割线的算法转化为枚举垂直分割线的算法的？",
+        "tag": "exact",
+        "expectedStartSec": 900,
+        "relevantStartSecs": [
+          900
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          900,
+          1200,
+          600
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-004",
+        "q": "在计算包含封顶的峰值子数组个数时，线段树的 _merge_data 函数中，用于合并两个区间 a 和 b 的核心公式是什么？",
+        "tag": "exact",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1500,
+          1200,
+          1800
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-005",
+        "q": "在解决峰值子数组问题的线段树中，每个节点维护的五个信息分别是什么？",
+        "tag": "exact",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1800,
+          1200,
+          2100
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-006",
+        "q": "主讲人在评估第 514 场周赛第四题“4017. 数组中的峰值 II”时，最初给出的难度分是多少？",
+        "tag": "exact",
+        "expectedStartSec": 2400,
+        "relevantStartSecs": [
+          2400
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          2100,
+          2400,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-007",
+        "q": "对于想通过数据结构题单打基础的学习者，主讲人建议先完成难度分低于多少的题目？",
+        "tag": "exact",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 6,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          3000,
+          2400,
+          3600
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-008",
+        "q": "主讲人认为LeetCode 2100分以下的选手瓶颈是什么？",
+        "tag": "exact",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3300,
+          2400,
+          2100
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-009",
+        "q": "在学习算法题单时，主讲人建议把前几道题当作什么，并采用什么方式学习？",
+        "tag": "exact",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3600,
+          3000,
+          2700
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-001",
+        "q": "视频中提到，为了让打折后的总价最低，应该怎样分配折扣和商品？",
+        "tag": "fuzzy",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          0,
+          300,
+          900
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-002",
+        "q": "为了减少代码重复，处理两个正方形左右排列的情况可以采取什么技巧？",
+        "tag": "fuzzy",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          600,
+          900,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-003",
+        "q": "在讲解算法优化时，提到了一种避免重复编写相似逻辑的技巧，这个技巧具体是怎么操作的？",
+        "tag": "fuzzy",
+        "expectedStartSec": 900,
+        "relevantStartSecs": [
+          900
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          900,
+          300,
+          2100
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-004",
+        "q": "在“数组中的峰值 II”的线段树做法中，合并左右区间时，新区间的峰值子数组数量如何计算？",
+        "tag": "fuzzy",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          1800,
+          1500,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-005",
+        "q": "当修改数组中的一个元素时，最多会影响多少个位置的峰值状态？",
+        "tag": "fuzzy",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1800,
+          1500,
+          2100
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-006",
+        "q": "主讲人为什么认为，只刷完 Hot 150 的人，在周赛第三、第四题中遇到自己熟悉解法的概率较低？",
+        "tag": "fuzzy",
+        "expectedStartSec": 2400,
+        "relevantStartSecs": [
+          2400
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2400,
+          3000,
+          2100
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-007",
+        "q": "对于刚开始刷数据结构题单的学习者，主讲人给出了什么关于题目难度的建议？",
+        "tag": "fuzzy",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          3000,
+          2700,
+          3600
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-008",
+        "q": "对于算法水平还不太高的学习者，视频中认为他们进步慢的主要原因是什么？",
+        "tag": "fuzzy",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3300,
+          2400,
+          3000
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-009",
+        "q": "对于学习过程中遇到的难题，视频中给出的建议是什么？",
+        "tag": "fuzzy",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3600,
+          3300,
+          3000
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-001",
+        "q": "在 _merge_data 方法中，计算 cnt 时，除了 a_cnt 和 b_cnt 的和，还加上了哪两项的乘积并减去了哪两项的乘积？",
+        "tag": "visual",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 9,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          300,
+          1200,
+          1500
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-002",
+        "q": "在 countOfPeaks 方法中，处理 op 为 2 的查询时，for 循环中 j 的取值范围是什么？",
+        "tag": "visual",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          1500,
+          1200,
+          2100
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-003",
+        "q": "在题单的『核心刷题路线』图例中，『枚举技巧』之后紧接着哪两个专题？",
+        "tag": "visual",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 5,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          2700,
+          3600,
+          3300
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-004",
+        "q": "在题单的『7.5 子矩形 DP』部分，列出了哪道题是统计全为 1 的正方形子矩阵？",
+        "tag": "visual",
+        "expectedStartSec": 2400,
+        "relevantStartSecs": [
+          2400
+        ],
+        "rank": 6,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          900,
+          1200,
+          600
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-005",
+        "q": "在题单的『常用数据结构』部分，列出了哪几个具体的数据结构或技巧？",
+        "tag": "visual",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 12,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          1200,
+          300,
+          2100
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-006",
+        "q": "在题单的『单调栈』部分，列出了哪道题是子数组最小乘积的最大值？",
+        "tag": "visual",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 12,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          1200,
+          1500,
+          2100
+        ]
+      }
+    ],
+    "oldKeywordOnly": [
+      {
+        "id": "bv1ryuy6weds-full-exact-001",
+        "q": "在力扣第514场周赛第一题中，为了最小化所有商品最终价格之和，讲解者建议使用什么数学不等式？",
+        "tag": "exact",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          2400,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-002",
+        "q": "在解决寻找两个不重叠全1正方形的问题时，如何将左右关系的情况转化为上下关系来处理？",
+        "tag": "exact",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-003",
+        "q": "主讲人提到的通过矩阵旋转来复用代码，具体是如何将枚举水平分割线的算法转化为枚举垂直分割线的算法的？",
+        "tag": "exact",
+        "expectedStartSec": 900,
+        "relevantStartSecs": [
+          900
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          600,
+          900,
+          0
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-004",
+        "q": "在计算包含封顶的峰值子数组个数时，线段树的 _merge_data 函数中，用于合并两个区间 a 和 b 的核心公式是什么？",
+        "tag": "exact",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1500,
+          1800,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-005",
+        "q": "在解决峰值子数组问题的线段树中，每个节点维护的五个信息分别是什么？",
+        "tag": "exact",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          1500,
+          1800,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-006",
+        "q": "主讲人在评估第 514 场周赛第四题“4017. 数组中的峰值 II”时，最初给出的难度分是多少？",
+        "tag": "exact",
+        "expectedStartSec": 2400,
+        "relevantStartSecs": [
+          2400
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2400,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-007",
+        "q": "对于想通过数据结构题单打基础的学习者，主讲人建议先完成难度分低于多少的题目？",
+        "tag": "exact",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 11,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          3300,
+          2400,
+          0
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-008",
+        "q": "主讲人认为LeetCode 2100分以下的选手瓶颈是什么？",
+        "tag": "exact",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          1800,
+          3300,
+          0
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-exact-009",
+        "q": "在学习算法题单时，主讲人建议把前几道题当作什么，并采用什么方式学习？",
+        "tag": "exact",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 13,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          3300,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-001",
+        "q": "视频中提到，为了让打折后的总价最低，应该怎样分配折扣和商品？",
+        "tag": "fuzzy",
+        "expectedStartSec": 0,
+        "relevantStartSecs": [
+          0
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-002",
+        "q": "为了减少代码重复，处理两个正方形左右排列的情况可以采取什么技巧？",
+        "tag": "fuzzy",
+        "expectedStartSec": 600,
+        "relevantStartSecs": [
+          600
+        ],
+        "rank": 3,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.3333333333333333,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-003",
+        "q": "在讲解算法优化时，提到了一种避免重复编写相似逻辑的技巧，这个技巧具体是怎么操作的？",
+        "tag": "fuzzy",
+        "expectedStartSec": 900,
+        "relevantStartSecs": [
+          900
+        ],
+        "rank": 2,
+        "hitAt1": false,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 0.5,
+        "top3StartSec": [
+          600,
+          900,
+          2100
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-004",
+        "q": "在“数组中的峰值 II”的线段树做法中，合并左右区间时，新区间的峰值子数组数量如何计算？",
+        "tag": "fuzzy",
+        "expectedStartSec": 1500,
+        "relevantStartSecs": [
+          1500
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          1500,
+          1800,
+          1200
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-005",
+        "q": "当修改数组中的一个元素时，最多会影响多少个位置的峰值状态？",
+        "tag": "fuzzy",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 7,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-006",
+        "q": "主讲人为什么认为，只刷完 Hot 150 的人，在周赛第三、第四题中遇到自己熟悉解法的概率较低？",
+        "tag": "fuzzy",
+        "expectedStartSec": 2400,
+        "relevantStartSecs": [
+          2400
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          2400,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-007",
+        "q": "对于刚开始刷数据结构题单的学习者，主讲人给出了什么关于题目难度的建议？",
+        "tag": "fuzzy",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 11,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          3300,
+          2400,
+          0
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-008",
+        "q": "对于算法水平还不太高的学习者，视频中认为他们进步慢的主要原因是什么？",
+        "tag": "fuzzy",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 12,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-fuzzy-009",
+        "q": "对于学习过程中遇到的难题，视频中给出的建议是什么？",
+        "tag": "fuzzy",
+        "expectedStartSec": 3600,
+        "relevantStartSecs": [
+          3600
+        ],
+        "rank": 13,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-001",
+        "q": "在 _merge_data 方法中，计算 cnt 时，除了 a_cnt 和 b_cnt 的和，还加上了哪两项的乘积并减去了哪两项的乘积？",
+        "tag": "visual",
+        "expectedStartSec": 1800,
+        "relevantStartSecs": [
+          1800
+        ],
+        "rank": 7,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-002",
+        "q": "在 countOfPeaks 方法中，处理 op 为 2 的查询时，for 循环中 j 的取值范围是什么？",
+        "tag": "visual",
+        "expectedStartSec": 2100,
+        "relevantStartSecs": [
+          2100
+        ],
+        "rank": 8,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          0,
+          300,
+          600
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-003",
+        "q": "在题单的『核心刷题路线』图例中，『枚举技巧』之后紧接着哪两个专题？",
+        "tag": "visual",
+        "expectedStartSec": 3000,
+        "relevantStartSecs": [
+          3000
+        ],
+        "rank": 12,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          3300,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-004",
+        "q": "在题单的『7.5 子矩形 DP』部分，列出了哪道题是统计全为 1 的正方形子矩阵？",
+        "tag": "visual",
+        "expectedStartSec": 2400,
+        "relevantStartSecs": [
+          2400
+        ],
+        "rank": 10,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          3300,
+          0,
+          300
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-005",
+        "q": "在题单的『常用数据结构』部分，列出了哪几个具体的数据结构或技巧？",
+        "tag": "visual",
+        "expectedStartSec": 3300,
+        "relevantStartSecs": [
+          3300
+        ],
+        "rank": 1,
+        "hitAt1": true,
+        "hitAt3": true,
+        "recallAt3": 1,
+        "rrAt3": 1,
+        "top3StartSec": [
+          3300,
+          2400,
+          0
+        ]
+      },
+      {
+        "id": "bv1ryuy6weds-full-visual-006",
+        "q": "在题单的『单调栈』部分，列出了哪道题是子数组最小乘积的最大值？",
+        "tag": "visual",
+        "expectedStartSec": 2700,
+        "relevantStartSecs": [
+          2700
+        ],
+        "rank": 11,
+        "hitAt1": false,
+        "hitAt3": false,
+        "recallAt3": 0,
+        "rrAt3": 0,
+        "top3StartSec": [
+          3300,
+          0,
+          300
+        ]
+      }
+    ]
+  }
+}

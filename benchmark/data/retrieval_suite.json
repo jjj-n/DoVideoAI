@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "suiteId": "retrieval-current-v2",
-  "status": "expanding",
+  "status": "ready",
   "primaryMode": "currentFull",
   "primaryMetric": "recallAt3",
   "chunkSeconds": 300,
@@ -60,59 +60,63 @@
       "id": "bv1ryuy6weds-full",
       "role": "primary",
       "split": "dev",
-      "status": "review-pending",
+      "status": "ready",
       "sourceUrl": "https://www.bilibili.com/video/BV1ryuy6WEDs/",
       "durationSeconds": 3893,
       "chunkCount": 13,
-      "questionCount": 0,
-      "candidateQuestionCount": 24,
+      "questionCount": 24,
+      "questionsFile": "questions_bv1ryuy6weds-full.json",
+      "resultsFile": "retrieval_bv1ryuy6weds-full_results.json",
       "localSource": "../local/sources/bv1ryuy6weds/source.mp4",
       "localDataset": "../local/corpora/bv1ryuy6weds-full/dataset.json",
-      "notes": "ASR/OCR, 13 VideoChunks, Embeddings, and 24 draft questions are ready; human question review is pending."
+      "notes": "ASR/OCR, 13 VideoChunks, Chunk and reviewed-query embeddings, and 24 human-reviewed questions are ready."
     },
     {
       "id": "bv1ah4y1s7nx-all-p",
       "role": "primary",
       "split": "test",
-      "status": "review-pending",
+      "status": "ready",
       "sourceUrl": "https://www.bilibili.com/video/BV1Ah4y1S7NX/",
       "durationSeconds": 2950,
       "chunkCount": 10,
-      "questionCount": 0,
-      "candidateQuestionCount": 24,
+      "questionCount": 24,
+      "questionsFile": "questions_bv1ah4y1s7nx-all-p.json",
+      "resultsFile": "retrieval_bv1ah4y1s7nx-all-p_results.json",
       "partCount": 7,
       "localSource": "../local/sources/bv1ah4y1s7nx/combined.mp4",
       "localDataset": "../local/corpora/bv1ah4y1s7nx-all-p/dataset.json",
-      "notes": "All seven parts were combined; ASR/OCR, 10 VideoChunks, Embeddings, and 24 draft questions are ready; human question review is pending."
+      "notes": "All seven parts were combined; ASR/OCR, 10 VideoChunks, Chunk and reviewed-query embeddings, and 24 human-reviewed questions are ready."
     },
     {
       "id": "bv1fj6vbfenu-all-p",
       "role": "primary",
       "split": "test",
-      "status": "review-pending",
+      "status": "ready",
       "sourceUrl": "https://www.bilibili.com/video/BV1fj6vBfEnu/",
       "durationSeconds": 5029,
       "chunkCount": 17,
-      "questionCount": 0,
-      "candidateQuestionCount": 24,
+      "questionCount": 24,
+      "questionsFile": "questions_bv1fj6vbfenu-all-p.json",
+      "resultsFile": "retrieval_bv1fj6vbfenu-all-p_results.json",
       "partCount": 9,
       "localSource": "../local/sources/bv1fj6vbfenu/combined.mp4",
       "localDataset": "../local/corpora/bv1fj6vbfenu-all-p/dataset.json",
-      "notes": "All nine parts were combined; ASR/OCR, 17 VideoChunks, Embeddings, and 24 draft questions are ready; human question review is pending."
+      "notes": "All nine parts were combined; ASR/OCR, 17 VideoChunks, Chunk and reviewed-query embeddings, and 24 human-reviewed questions are ready."
     },
     {
       "id": "bv1sg8c6jefw-full",
       "role": "primary",
       "split": "test",
-      "status": "review-pending",
+      "status": "ready",
       "sourceUrl": "https://www.bilibili.com/video/BV1Sg8C6JEfW/",
       "durationSeconds": 4212,
       "chunkCount": 15,
-      "questionCount": 0,
-      "candidateQuestionCount": 24,
+      "questionCount": 24,
+      "questionsFile": "questions_bv1sg8c6jefw-full.json",
+      "resultsFile": "retrieval_bv1sg8c6jefw-full_results.json",
       "localSource": "../local/sources/bv1sg8c6jefw/source.mp4",
       "localDataset": "../local/corpora/bv1sg8c6jefw-full/dataset.json",
-      "notes": "ASR/OCR, 15 VideoChunks, Embeddings, and 24 draft questions are ready; human question review is pending."
+      "notes": "ASR/OCR, 15 VideoChunks, Chunk and reviewed-query embeddings, and 24 human-reviewed questions are ready."
     }
   ]
 }

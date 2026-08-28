@@ -1,0 +1,218 @@
+[
+  {
+    "id": "bv1ryuy6weds-full-exact-001",
+    "q": "在力扣第514场周赛第一题中，为了最小化所有商品最终价格之和，讲解者建议使用什么数学不等式？",
+    "tag": "exact",
+    "relevantSecs": [
+      0
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ryuy6weds-full-exact-002",
+    "q": "在解决寻找两个不重叠全1正方形的问题时，如何将左右关系的情况转化为上下关系来处理？",
+    "tag": "exact",
+    "relevantSecs": [
+      840
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ryuy6weds-full-exact-003",
+    "q": "主讲人提到的通过矩阵旋转来复用代码，具体是如何将枚举水平分割线的算法转化为枚举垂直分割线的算法的？",
+    "tag": "exact",
+    "relevantSecs": [
+      900
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ryuy6weds-full-exact-004",
+    "q": "在计算包含封顶的峰值子数组个数时，线段树的 _merge_data 函数中，用于合并两个区间 a 和 b 的核心公式是什么？",
+    "tag": "exact",
+    "relevantSecs": [
+      1620
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ryuy6weds-full-exact-005",
+    "q": "在解决峰值子数组问题的线段树中，每个节点维护的五个信息分别是什么？",
+    "tag": "exact",
+    "relevantSecs": [
+      1860
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ryuy6weds-full-exact-006",
+    "q": "主讲人在评估第 514 场周赛第四题“4017. 数组中的峰值 II”时，最初给出的难度分是多少？",
+    "tag": "exact",
+    "relevantSecs": [
+      2400
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ryuy6weds-full-exact-007",
+    "q": "对于想通过数据结构题单打基础的学习者，主讲人建议先完成难度分低于多少的题目？",
+    "tag": "exact",
+    "relevantSecs": [
+      2760
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ryuy6weds-full-exact-008",
+    "q": "主讲人认为LeetCode 2100分以下的选手瓶颈是什么？",
+    "tag": "exact",
+    "relevantSecs": [
+      3300
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ryuy6weds-full-exact-009",
+    "q": "在学习算法题单时，主讲人建议把前几道题当作什么，并采用什么方式学习？",
+    "tag": "exact",
+    "relevantSecs": [
+      3720
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ryuy6weds-full-fuzzy-001",
+    "q": "视频中提到，为了让打折后的总价最低，应该怎样分配折扣和商品？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      120
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ryuy6weds-full-fuzzy-002",
+    "q": "为了减少代码重复，处理两个正方形左右排列的情况可以采取什么技巧？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      840
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ryuy6weds-full-fuzzy-003",
+    "q": "在讲解算法优化时，提到了一种避免重复编写相似逻辑的技巧，这个技巧具体是怎么操作的？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      900
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ryuy6weds-full-fuzzy-004",
+    "q": "在“数组中的峰值 II”的线段树做法中，合并左右区间时，新区间的峰值子数组数量如何计算？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      1620
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ryuy6weds-full-fuzzy-005",
+    "q": "当修改数组中的一个元素时，最多会影响多少个位置的峰值状态？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      2040
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ryuy6weds-full-fuzzy-006",
+    "q": "主讲人为什么认为，只刷完 Hot 150 的人，在周赛第三、第四题中遇到自己熟悉解法的概率较低？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      2580
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ryuy6weds-full-fuzzy-007",
+    "q": "对于刚开始刷数据结构题单的学习者，主讲人给出了什么关于题目难度的建议？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      2820
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ryuy6weds-full-fuzzy-008",
+    "q": "对于算法水平还不太高的学习者，视频中认为他们进步慢的主要原因是什么？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      3300
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ryuy6weds-full-fuzzy-009",
+    "q": "对于学习过程中遇到的难题，视频中给出的建议是什么？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      3780
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ryuy6weds-full-visual-001",
+    "q": "在 _merge_data 方法中，计算 cnt 时，除了 a_cnt 和 b_cnt 的和，还加上了哪两项的乘积并减去了哪两项的乘积？",
+    "tag": "visual",
+    "relevantSecs": [
+      1860
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ryuy6weds-full-visual-002",
+    "q": "在 countOfPeaks 方法中，处理 op 为 2 的查询时，for 循环中 j 的取值范围是什么？",
+    "tag": "visual",
+    "relevantSecs": [
+      2160
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ryuy6weds-full-visual-003",
+    "q": "在题单的『核心刷题路线』图例中，『枚举技巧』之后紧接着哪两个专题？",
+    "tag": "visual",
+    "relevantSecs": [
+      3120
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ryuy6weds-full-visual-004",
+    "q": "在题单的『7.5 子矩形 DP』部分，列出了哪道题是统计全为 1 的正方形子矩阵？",
+    "tag": "visual",
+    "relevantSecs": [
+      2640
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ryuy6weds-full-visual-005",
+    "q": "在题单的『常用数据结构』部分，列出了哪几个具体的数据结构或技巧？",
+    "tag": "visual",
+    "relevantSecs": [
+      3540
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ryuy6weds-full-visual-006",
+    "q": "在题单的『单调栈』部分，列出了哪道题是子数组最小乘积的最大值？",
+    "tag": "visual",
+    "relevantSecs": [
+      2820
+    ],
+    "reviewed": true
+  }
+]

@@ -1,0 +1,218 @@
+[
+  {
+    "id": "bv1ah4y1s7nx-all-p-exact-001",
+    "q": "gRPC课程介绍的四种主要通信模式分别是什么？",
+    "tag": "exact",
+    "relevantSecs": [
+      1260
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ah4y1s7nx-all-p-exact-002",
+    "q": "在 gRPC 开发中，通过 .proto 文件定义服务和消息后，代码生成工具会自动生成哪些代码，服务端还需要手动实现什么？",
+    "tag": "exact",
+    "relevantSecs": [
+      300
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ah4y1s7nx-all-p-exact-003",
+    "q": "在演示中，执行哪个Gradle命令来生成Java代码？",
+    "tag": "exact",
+    "relevantSecs": [
+      600
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ah4y1s7nx-all-p-exact-004",
+    "q": "在ProtoBuf3中，定义集合类型需要使用哪个关键字？",
+    "tag": "exact",
+    "relevantSecs": [
+      1080
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ah4y1s7nx-all-p-exact-005",
+    "q": "在gRPC的客户端流式模式中，客户端发送了多少个请求？",
+    "tag": "exact",
+    "relevantSecs": [
+      1620
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ah4y1s7nx-all-p-exact-006",
+    "q": "在演示的gRPC服务器端流式代码中，服务端向客户端推送了多少次消息？",
+    "tag": "exact",
+    "relevantSecs": [
+      1800
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ah4y1s7nx-all-p-exact-007",
+    "q": "在gRPC中，如何配置服务端拦截器？",
+    "tag": "exact",
+    "relevantSecs": [
+      2160
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ah4y1s7nx-all-p-exact-008",
+    "q": "在Spring Boot和gRPC实现的聊天室中，服务端使用什么数据结构来维护用户名与客户端StreamObserver的映射关系？",
+    "tag": "exact",
+    "relevantSecs": [
+      2520
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ah4y1s7nx-all-p-exact-009",
+    "q": "在gRPC聊天室客户端代码中，调用Stub的哪个方法来建立加入房间的双向流？",
+    "tag": "exact",
+    "relevantSecs": [
+      2700
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ah4y1s7nx-all-p-fuzzy-001",
+    "q": "gRPC课程会介绍几种客户端与服务端传递请求和响应消息的方式？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      0
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ah4y1s7nx-all-p-fuzzy-002",
+    "q": "在创建gRPC服务时，定义好接口描述文件后，哪些代码是工具自动提供的，哪些部分仍然需要开发者自己编写？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      300
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ah4y1s7nx-all-p-fuzzy-003",
+    "q": "接口和消息定义完成后，需要在项目根目录运行什么命令，才能生成gRPC开发所需的Java代码？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      600
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ah4y1s7nx-all-p-fuzzy-004",
+    "q": "如果要在一个消息里表示多个相同类型的元素，应该用什么方式定义？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      1080
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ah4y1s7nx-all-p-fuzzy-005",
+    "q": "在gRPC中，客户端连续发送多个请求、服务端最后统一响应一次的演示里，客户端一共发送了多少个请求？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      1680
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ah4y1s7nx-all-p-fuzzy-006",
+    "q": "在 gRPC 演示中，客户端只发送一次请求、服务端连续返回多条响应时，客户端一共接收并处理了多少条响应？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      1800
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ah4y1s7nx-all-p-fuzzy-007",
+    "q": "在 gRPC 拦截器的代码讲解中，拦截器可以在目标方法调用前后执行哪些操作？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      2100
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ah4y1s7nx-all-p-fuzzy-008",
+    "q": "聊天室中有人发送消息后，服务端为什么能够继续把这条消息推送给其他在线用户？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      2580
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ah4y1s7nx-all-p-fuzzy-009",
+    "q": "在课程最后的聊天室运行演示中，服务端启动成功后使用的是哪个端口？",
+    "tag": "fuzzy",
+    "relevantSecs": [
+      2760
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ah4y1s7nx-all-p-visual-001",
+    "q": "在 Hello World gRPC 的服务端代码中，ServerBuilder.forPort(9090) 之后调用了哪个方法注册服务实现？",
+    "tag": "visual",
+    "relevantSecs": [
+      720
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ah4y1s7nx-all-p-visual-002",
+    "q": "在配置服务端拦截器的代码中，ServerBuilder.forPort(9090)之后调用了哪个方法来添加拦截器？",
+    "tag": "visual",
+    "relevantSecs": [
+      2160
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ah4y1s7nx-all-p-visual-003",
+    "q": "在 ServerLoggingInterceptor 的日志语句中，代码通过 call 的哪个方法获取被拦截调用的方法描述符？",
+    "tag": "visual",
+    "relevantSecs": [
+      2100
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ah4y1s7nx-all-p-visual-004",
+    "q": "在客户端代码中，StreamObserver<Mode.Response> 的 onNext 方法打印日志时，使用了哪个变量来获取响应消息？",
+    "tag": "visual",
+    "relevantSecs": [
+      1680
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ah4y1s7nx-all-p-visual-005",
+    "q": "在聊天室客户端代码中，joinStreamObserver 是通过调用 stub 的哪个方法获得的？",
+    "tag": "visual",
+    "relevantSecs": [
+      2700
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "bv1ah4y1s7nx-all-p-visual-006",
+    "q": "在ChatServiceImpl的joinRoom方法中，当用户加入聊天室时，会调用哪个方法来广播用户加入的消息？",
+    "tag": "visual",
+    "relevantSecs": [
+      2580
+    ],
+    "reviewed": true
+  }
+]
