@@ -99,6 +99,8 @@ Evidence frame_000125.jpg
 
 当前检索评测以生产链路为基线，在同一批 Chunk、标签和 Embedding 上比较纯向量、纯关键词、历史公式、当前公式和完整 Query Rewrite 链路。2026-08-28 完成人工审核后，正式评测集包含 5 条长视频、67 个五分钟 Chunk 和 120 道问题；完整链路的 `Recall@3` 为 **90.83%**，`Hit@1` 为 **68.33%**，`MRR@3` 为 **0.7861**。详细分组结果、对照实验和统计限制见 [`benchmark/`](./benchmark/)。
 
+最终答案层另提供一份包含 43 道保留题的冻结评测套件，公开问题、金标答案、证据摘要、引用要求和评分规则，供审查“答案如何评测”及后续复用。该文件不包含本次重新执行的系统回答或答案质量汇总分，因此不能把题目审核状态当作答案通过率；范围和使用方式见 [`benchmark/data/answer_suite_v1.json`](./benchmark/data/answer_suite_v1.json) 与 [`benchmark/README.md`](./benchmark/README.md)。
+
 ## 系统流程
 
 ```mermaid

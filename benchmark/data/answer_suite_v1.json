@@ -1,0 +1,1986 @@
+{
+  "schemaVersion": 1,
+  "suiteId": "answer-current-v1",
+  "status": "frozen",
+  "artifactType": "frozen-evaluation-suite",
+  "scope": {
+    "includesGoldLabels": true,
+    "includesSystemOutputs": false,
+    "includesPublishedAnswerMetrics": false,
+    "purpose": "Methodology review and future answer evaluation; not a new system run."
+  },
+  "generatedAt": "2026-08-28T09:24:04.063Z",
+  "source": {
+    "workbook": "DoVideoAI_回答测评审核_冻结版.xlsx",
+    "workbookSha256": "975b585298a902fc22538f0d4e046ea0e5e1c7d441888ff4c12aff7e4ea87859",
+    "reviewReport": "claude-review.md",
+    "sourceArtifactsCommitted": false
+  },
+  "summary": {
+    "candidateQuestions": 48,
+    "retainedQuestions": 43,
+    "excludedQuestions": 5,
+    "questionReviewDisposition": {
+      "passed": 35,
+      "modified": 8
+    },
+    "byAnswerability": {
+      "answerable": 36,
+      "unanswerable": 7
+    },
+    "byTag": {
+      "exact": 16,
+      "fuzzy": 12,
+      "unanswerable": 7,
+      "visual": 8
+    },
+    "bySplit": {
+      "dev": 18,
+      "test": 25
+    },
+    "byDataset": {
+      "大模型学习路线（60 分钟）": 10,
+      "力扣周赛 514": 8,
+      "DeepSeek-V3.2": 8,
+      "gRPC 课程（全 7P）": 10,
+      "Transformer 动画课程（全 9P）": 7
+    }
+  },
+  "scoring": {
+    "rubricVersion": "answer-rubric-v1",
+    "maxScoreByAnswerability": {
+      "answerable": 10,
+      "unanswerable": 2
+    },
+    "dimensions": [
+      {
+        "id": "answerCorrectness",
+        "appliesTo": "answerable",
+        "maxScore": 2,
+        "hardGate": true,
+        "basis": "referenceAnswer"
+      },
+      {
+        "id": "factualCompleteness",
+        "appliesTo": "answerable",
+        "maxScore": 2,
+        "hardGate": false,
+        "basis": "requiredFacts"
+      },
+      {
+        "id": "evidenceFidelity",
+        "appliesTo": "answerable",
+        "maxScore": 2,
+        "hardGate": true,
+        "basis": "forbiddenClaims+evidence"
+      },
+      {
+        "id": "citationCorrectness",
+        "appliesTo": "answerable",
+        "maxScore": 2,
+        "hardGate": true,
+        "basis": "citationRequirement"
+      },
+      {
+        "id": "citationSupport",
+        "appliesTo": "answerable",
+        "maxScore": 2,
+        "hardGate": true,
+        "basis": "evidence"
+      },
+      {
+        "id": "refusalAbility",
+        "appliesTo": "unanswerable",
+        "maxScore": 2,
+        "hardGate": true,
+        "basis": "referenceAnswer+forbiddenClaims"
+      }
+    ],
+    "reporting": {
+      "questionUnit": "one scored system answer per question",
+      "groupBy": [
+        "split",
+        "tag",
+        "answerability"
+      ],
+      "recommendedMetrics": [
+        "normalizedScore",
+        "hardGatePassRate"
+      ],
+      "claimRequirement": "Store system outputs and per-question scores before reporting answer-quality metrics."
+    }
+  },
+  "questions": [
+    {
+      "id": "answer-v0-bv1x-exact-004",
+      "sampleId": "bv1xhovyzetu-60m",
+      "dataset": "大模型学习路线（60 分钟）",
+      "split": "dev",
+      "q": "AlexNet 和 ResNet 有什么作用",
+      "tag": "exact",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        1650
+      ],
+      "evidence": {
+        "timestamp": "27:30",
+        "chunkStartSeconds": 1500,
+        "channel": "asr",
+        "summary": "视频片段中，主讲人推荐了李沐的论文讲解课程，认为对于深度学习进阶阶段的学习者，重点应学习AlexNet、ResNet、Transformer和BERT这四篇经典论文，以理解AI从论文到网络结构、思想及实操的完整路径。此外，也提到了VIT、Swin Transformer和MAE等模型，并解释MAE是视觉领域的BERT，两者思想类似（完形填空）。主讲人强调大模型门槛很高，需要扎实的基础。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "AlexNet和ResNet是深度学习进阶阶段需要重点学习的经典论文。学习它们可以帮助理解AI从论文到网络结构、思想及实操的完整路径。",
+        "requiredFacts": [
+          "AlexNet是深度学习进阶阶段需要重点学习的经典论文之一。",
+          "ResNet是深度学习进阶阶段需要重点学习的经典论文之一。",
+          "学习AlexNet和ResNet可以帮助理解AI从论文到网络结构、思想及实操的完整路径。"
+        ],
+        "forbiddenClaims": [
+          "AlexNet和ResNet是用于图像分类的模型。",
+          "AlexNet和ResNet的具体网络结构细节。",
+          "AlexNet和ResNet在哪个数据集上取得了突破。",
+          "AlexNet和ResNet的作者是谁。",
+          "AlexNet和ResNet的发表年份。"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "视频证据明确指出了AlexNet和ResNet在深度学习进阶学习中的作用和意义。答案严格基于证据，未添加任何技术细节或外部知识。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1xhovYZEtU/"
+    },
+    {
+      "id": "answer-v0-bv1x-exact-006",
+      "sampleId": "bv1xhovyzetu-60m",
+      "dataset": "大模型学习路线（60 分钟）",
+      "split": "dev",
+      "q": "BERT 模型训练有哪些组件",
+      "tag": "exact",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        2250
+      ],
+      "evidence": {
+        "timestamp": "37:30",
+        "chunkStartSeconds": 2100,
+        "channel": "asr",
+        "summary": "视频片段讨论了HuggingFace Transformers课程的结构与重要性。主讲人强调，从基础入门到实战演练，课程完整涵盖了模型训练流程（如分词、模型、数据、训练、验证），并指出实战部分虽以NLP模型（如BERT）为主，但仍是学习Transformers组件使用的关键。高效微调篇介绍了多种微调方法，低精度训练篇则以LLaMA2和ChatGLM3为例，讲解了在显存有限时使用半精度、量化等技术。最后，分布式训练（特别是DeepSpeed）对于多卡训练至关重要。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "视频在以 BERT 为主的训练实战中列出的核心组件是 tokenizer、model、dataset、training 和 validation，也就是分词器、模型、数据集、训练与验证。",
+        "requiredFacts": [
+          "tokenizer（分词器）",
+          "model（模型）",
+          "dataset（数据集）",
+          "training（训练）",
+          "validation（验证）"
+        ],
+        "forbiddenClaims": [
+          "不得把 LoRA、低精度训练或分布式训练混入这道题所问的五个核心组件"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "优先",
+        "confidence": "中",
+        "modelNotes": "证据明确提到了训练流程中的组件（分词、模型、数据、训练、验证），以及高效微调、低精度训练和分布式训练作为相关技术。但证据未直接列出所有组件为‘BERT训练组件’，而是从课程结构中间接推导。需要人工确认这些组件是否专门针对BERT训练，还是通用Transformers训练组件。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1xhovYZEtU/"
+    },
+    {
+      "id": "answer-v0-bv1x-exact-008",
+      "sampleId": "bv1xhovyzetu-60m",
+      "dataset": "大模型学习路线（60 分钟）",
+      "split": "dev",
+      "q": "视频提到的入门多模态课程示例使用了哪种模型组合，还需要对 special token 做什么处理？",
+      "tag": "exact",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        3150
+      ],
+      "evidence": {
+        "timestamp": "52:30",
+        "chunkStartSeconds": 3000,
+        "channel": "asr",
+        "summary": "视频讨论了从零开始训练多模态大模型（如LLaVA、Qwen2.5-VL、Yalus Pro）的局限性，指出这些模型通常强制使用特定的视觉编码器（如OpenCLIP、SigLIP）和语言模型（如LLaMA、DeepSeek-V3），灵活性较低。但作者仍推荐此类教程，因为它们能帮助初学者深入理解模型架构，例如学习如何添加特殊标记（special token）到配置文件中。视频还提到，某些进阶课程（如“从零开始实现多模态”）虽然代码质量高，但要求学习者已掌握Transformers、环境配置和数据处理等基础知识，否则难以理解。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "视频里的课程示例使用 Qwen2.5 作为大语言模型、OpenCLIP 作为视觉编码器，并在配置中添加和训练所需的 special token。",
+        "requiredFacts": [
+          "大语言模型使用 Qwen2.5",
+          "视觉编码器使用 OpenCLIP",
+          "需要在配置中添加并训练所需的 special token"
+        ],
+        "forbiddenClaims": [
+          "不得把 Qwen2.5 + OpenCLIP 说成所有多模态模型唯一或通用的架构",
+          "不得补充证据未提到的课程组件"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "modified",
+        "priority": "优先",
+        "confidence": "中",
+        "modelNotes": "视频证据主要围绕一个具体教程案例（Qwen2.5+OpenCLIP）和其教学价值展开，并未系统性地列举或定义“从零训练多模态大模型用什么架构”的所有可能或通用架构。答案是基于证据中提到的实例和特点（特定组合、低灵活性、需改配置）进行的概括。需注意问题可能期望更通用的架构描述（如视觉编码器+LLM+投影层），但证据未明确提及投影层等组件。",
+        "humanNotes": "原题“用什么架构”存在歧义；同段还讲到通用的视觉编码器、LLM 与连接层，并列举多个模型。修订后限定为课程示例。"
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1xhovYZEtU/"
+    },
+    {
+      "id": "answer-v0-bv1x-exact-009",
+      "sampleId": "bv1xhovyzetu-60m",
+      "dataset": "大模型学习路线（60 分钟）",
+      "split": "dev",
+      "q": "文本编码器和视觉编码器怎么选择",
+      "tag": "exact",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        3450
+      ],
+      "evidence": {
+        "timestamp": "57:30",
+        "chunkStartSeconds": 3300,
+        "channel": "asr",
+        "summary": "视频片段讨论了AI学习路径中关于模型训练和论文学习的建议。主讲人首先介绍了一种灵活性高的“从零训练”方法，指出其基于Lava框架，可选择不同文本编码器和ViT，但难度较大。随后，主讲人推荐了论文学习资源，强调在进阶阶段需关注CLIP、GPT系列、InstructGPT、GPT4、LLaMA3.1等大模型和多模态工作。他特别推荐了UP主“EZ-Encoder”的《DeepSeek论文详解》合集，认为该合集以DeepSeek为例，系统串讲了大模型的预训练、微调、强化学习及推理等全流程发展，内容深入浅出，适合反复学习。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "在视频介绍的“从零训练”方法中，文本侧可以按需选择大语言模型，视觉侧的 ViT/视觉编码器也可以按需选择，因此灵活性很高，但实现难度比前述方法更高。",
+        "requiredFacts": [
+          "存在一种“从零训练”的方法",
+          "文本侧可以按需选择大语言模型",
+          "视觉侧可以按需选择 ViT/视觉编码器",
+          "该方法的灵活性很高",
+          "该方法比前述介绍的方法更难"
+        ],
+        "forbiddenClaims": [
+          "视频给出了适用于所有场景的具体编码器选型标准",
+          "视频比较了各编码器的性能优劣",
+          "视频要求固定使用某一个文本编码器或视觉编码器"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "modified",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "问题“文本编码器和视觉编码器怎么选择”可能期望一个更普适或指导性的答案。视频证据仅描述了在特定“从零训练”方法中编码器选择的灵活性，并未提供通用的选择标准、原则或不同场景下的建议。答案严格基于这一具体上下文。",
+        "humanNotes": "删除无法从 ASR 噪声“梁目录”可靠还原的专名，只保留可确定的难度比较；同时避免把冲突的框架归属设为必备事实。"
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1xhovYZEtU/"
+    },
+    {
+      "id": "answer-v0-bv1x-fuzzy-004",
+      "sampleId": "bv1xhovyzetu-60m",
+      "dataset": "大模型学习路线（60 分钟）",
+      "split": "dev",
+      "q": "看不懂大模型的内部原理怎么办",
+      "tag": "fuzzy",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        1050
+      ],
+      "evidence": {
+        "timestamp": "17:30",
+        "chunkStartSeconds": 900,
+        "channel": "asr",
+        "summary": "讲述者分享学习李沐《动手学深度学习》课程的经验，建议课程看两遍但不必纠结代码实现，重点学习思路。他提到课程中Transformer和BERT部分对初学者较难理解，并推荐了B站UP主“LLM张老师”的短视频系列，该系列将Transformer注意力机制拆解讲解，有助于理解原理。此外，还提及了“蓝斯诺特”的一个从代码层面讲解Transformer的视频，并会将其整理到文档中。",
+        "retrievalStatus": "Top-3 未命中"
+      },
+      "evaluation": {
+        "referenceAnswer": "可以观看B站UP主“LLM张老师”的短视频系列，该系列将Transformer的注意力机制拆开讲解，有助于理解其原理。对于初学者，不必纠结于代码实现，重点在于理解思路。",
+        "requiredFacts": [
+          "可以观看B站UP主“LLM张老师”的短视频系列来帮助理解。",
+          "该短视频系列将Transformer的注意力机制拆开讲解。",
+          "这种讲解方式有助于理解Transformer的原理。",
+          "对于初学者，不必纠结于代码实现，重点在于理解思路。"
+        ],
+        "forbiddenClaims": [
+          "视频推荐了“蓝斯诺特”的Transformer讲解视频（虽然提及，但未在核心证据中作为主要推荐）",
+          "课程《动手学深度学习》必须看两遍（证据中建议看两遍，但非强制）",
+          "Transformer的底层实现需要掌握（证据指出现在基本会用即可，底层不需要实现）"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "优先",
+        "confidence": "高",
+        "modelNotes": "证据明确推荐了LLM张老师的短视频系列及其讲解方式（拆解Transformer），并给出了学习建议（不必纠结代码，理解思路）。答案基于此整合。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1xhovYZEtU/"
+    },
+    {
+      "id": "answer-v0-bv1x-fuzzy-007",
+      "sampleId": "bv1xhovyzetu-60m",
+      "dataset": "大模型学习路线（60 分钟）",
+      "split": "dev",
+      "q": "训练模型前要准备哪些东西",
+      "tag": "fuzzy",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        2250
+      ],
+      "evidence": {
+        "timestamp": "37:30",
+        "chunkStartSeconds": 2100,
+        "channel": "asr",
+        "summary": "视频片段讨论了HuggingFace Transformers课程的结构与重要性。主讲人强调，从基础入门到实战演练，课程完整涵盖了模型训练流程（如分词、模型、数据、训练、验证），并指出实战部分虽以NLP模型（如BERT）为主，但仍是学习Transformers组件使用的关键。高效微调篇介绍了多种微调方法，低精度训练篇则以LLaMA2和ChatGLM3为例，讲解了在显存有限时使用半精度、量化等技术。最后，分布式训练（特别是DeepSpeed）对于多卡训练至关重要。",
+        "retrievalStatus": "Top-3 未命中"
+      },
+      "evaluation": {
+        "referenceAnswer": "按视频介绍的训练流程，需要准备并处理数据、下载模型，并掌握如何使用 Transformers 的组件完成训练。",
+        "requiredFacts": [
+          "准备数据",
+          "处理数据",
+          "下载模型",
+          "使用 Transformers 组件完成训练"
+        ],
+        "forbiddenClaims": [
+          "不得扩展为视频未列出的硬件、软件环境或通用训练前置清单"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "优先",
+        "confidence": "中",
+        "modelNotes": "证据明确提到了准备数据、处理数据、下载模型和用组件训练，这些都是训练前的准备工作。但证据是围绕一个课程结构展开的，并未直接、系统地列出所有必需物品（如硬件、软件环境），而是侧重于学习使用Transformers库的流程。因此，答案是基于课程内容推断出的“需要学习/准备”的事项，而非一个普适的清单。置信度为中等。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1xhovYZEtU/"
+    },
+    {
+      "id": "answer-v0-bv1x-fuzzy-011",
+      "sampleId": "bv1xhovyzetu-60m",
+      "dataset": "大模型学习路线（60 分钟）",
+      "split": "dev",
+      "q": "从零到入门整体学习路线是什么样的",
+      "tag": "fuzzy",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        150
+      ],
+      "evidence": {
+        "timestamp": "2:30",
+        "chunkStartSeconds": 0,
+        "channel": "asr",
+        "summary": "视频作者分享自己作为AI新手的入门经验，定位为从零开始学习大模型的路线指南。他提到自己学习仅两三个月，但有前置基础。视频将涵盖各阶段的学习资源（如推荐的B站课程“炮哥带你学”）、学习方法以及个人踩坑经历。作者认为在大模型时代，入门机器学习只需掌握线性回归和逻辑回归等基础知识即可，无需深入传统机器学习全部内容。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "从零到入门的整体学习路线是：对于完全不懂AI的小白，首先需要接触机器学习、深度学习和PyTorch这三个概念。作者推荐从B站UP主“炮哥带你学”的课程开始，具体包括《手把手教学》入门机器学习和深度学习课程，以及《PyTorch框架与经典卷积神经网络与实战》入门深度学习和PyTorch的课程。在大模型时代，入门机器学习只需掌握线性回归和逻辑回归等基础知识，无需深入学习传统机器学习的全部内容。",
+        "requiredFacts": [
+          "学习路线针对完全不懂AI的小白。",
+          "入门需要接触机器学习、深度学习和PyTorch这三个概念。",
+          "作者推荐B站UP主“炮哥带你学”的课程。",
+          "具体推荐的课程包括《手把手教学》入门机器学习和深度学习。",
+          "具体推荐的课程还包括《PyTorch框架与经典卷积神经网络与实战》入门深度学习和PyTorch。",
+          "在大模型时代，入门机器学习只需掌握线性回归和逻辑回归等基础知识，无需深入学习传统机器学习的全部内容。"
+        ],
+        "forbiddenClaims": [
+          "作者提供了完整的学习时间表或阶段划分细节。",
+          "作者详细解释了如何学习线性回归和逻辑回归。",
+          "作者比较了不同UP主或课程平台的优劣。",
+          "路线中包含了数学或编程基础的具体要求。",
+          "路线中明确提到了学习大模型本身的具体步骤。"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "证据明确提供了针对小白的入门概念、推荐的具体课程和在大模型时代下对机器学习基础范围的限定。所有关键点均有直接证据支持。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1xhovYZEtU/"
+    },
+    {
+      "id": "answer-v0-bv1x-fuzzy-010",
+      "sampleId": "bv1xhovyzetu-60m",
+      "dataset": "大模型学习路线（60 分钟）",
+      "split": "dev",
+      "q": "想自己动手训一个能看图的模型",
+      "tag": "fuzzy",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        3150
+      ],
+      "evidence": {
+        "timestamp": "52:30",
+        "chunkStartSeconds": 3000,
+        "channel": "asr",
+        "summary": "视频讨论了从零开始训练多模态大模型（如LLaVA、Qwen2.5-VL、Yalus Pro）的局限性，指出这些模型通常强制使用特定的视觉编码器（如OpenCLIP、SigLIP）和语言模型（如LLaMA、DeepSeek-V3），灵活性较低。但作者仍推荐此类教程，因为它们能帮助初学者深入理解模型架构，例如学习如何添加特殊标记（special token）到配置文件中。视频还提到，某些进阶课程（如“从零开始实现多模态”）虽然代码质量高，但要求学习者已掌握Transformers、环境配置和数据处理等基础知识，否则难以理解。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "视频推荐了一个从零搭建多模态大模型的入门课程。这个课程以Qwen2.5作为大语言模型，结合OpenCLIP视觉编码器，并讲解了如何添加和训练新的special token（例如，通过修改配置文件）。",
+        "requiredFacts": [
+          "视频推荐了一个从零搭建多模态大模型的入门课程。",
+          "该课程使用Qwen2.5作为大语言模型。",
+          "该课程使用OpenCLIP作为视觉编码器。",
+          "课程讲解了如何添加新的special token。",
+          "添加special token涉及修改配置文件。",
+          "课程讲解了需要训练新添加的special token。"
+        ],
+        "forbiddenClaims": [
+          "课程详细讲解了如何训练整个视觉编码器。",
+          "课程使用SigLIP作为视觉编码器。",
+          "课程使用DeepSeek-V3作为大语言模型。",
+          "课程代码不需要任何前置知识就能轻松运行。",
+          "视频提供了完整的训练代码和数据集。"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "答案严格基于提供的focusedEvidence和nearbyEvidence。问题‘想自己动手训一个能看图的模型’较为模糊，但证据直接指向一个具体的入门课程，该课程涉及搭建（包含训练special token）一个能看图（多模态）的模型，因此是可回答的。注意，证据未说明该课程是否完全‘从零开始’训练整个模型，还是主要关于搭建和添加特殊标记。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1xhovYZEtU/"
+    },
+    {
+      "id": "answer-v0-bv1ryuy6weds-full-exact-002",
+      "sampleId": "bv1ryuy6weds-full",
+      "dataset": "力扣周赛 514",
+      "split": "dev",
+      "q": "在解决寻找两个不重叠全1正方形的问题时，如何将左右关系的情况转化为上下关系来处理？",
+      "tag": "exact",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        840
+      ],
+      "evidence": {
+        "timestamp": "14:00",
+        "chunkStartSeconds": 600,
+        "channel": "asr",
+        "summary": "讲解如何解决一个算法问题：在二进制矩阵中寻找两个不重叠的全1正方形。核心思路是将问题转化为经典的最大正方形问题（LeetCode 221）。通过枚举所有可能的分割线（左右或上下），将矩阵分为两部分，分别在两部分中寻找最大正方形。两个正方形的最终边长取两部分最大边长的较小值。论证了枚举所有分割线必然能覆盖最优解。最后提到代码优化：只需实现处理上下关系的算法，对于左右关系，将矩阵转置即可复用同一算法。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "可以把矩阵旋转 90 度或者做转置，使左右排列关系变成上下排列关系，从而复用已有的上下关系处理算法。",
+        "requiredFacts": [
+          "可以通过旋转 90 度或转置交换矩阵的横纵方向",
+          "变换后，左右排列关系变成上下排列关系",
+          "可以复用已有的上下关系处理算法"
+        ],
+        "forbiddenClaims": [
+          "必须分别写两份独立代码处理左右关系和上下关系",
+          "必须先旋转 90 度再转置，两个操作缺一不可",
+          "变换后仍不能复用处理上下关系的算法"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "modified",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": null,
+        "humanNotes": "视频 @840s 原话同时允许“旋转 90 度或者转置一下”；原禁止断言把其中一个正确做法列为错误，已修正。"
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1ryuy6WEDs/"
+    },
+    {
+      "id": "answer-v0-bv1ryuy6weds-full-exact-005",
+      "sampleId": "bv1ryuy6weds-full",
+      "dataset": "力扣周赛 514",
+      "split": "dev",
+      "q": "在解决峰值子数组问题的线段树中，每个节点维护的五个信息分别是什么？",
+      "tag": "exact",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        1860
+      ],
+      "evidence": {
+        "timestamp": "31:00",
+        "chunkStartSeconds": 1800,
+        "channel": "asr",
+        "summary": "视频片段讲解如何用线段树解决LeetCode“峰值子数组”问题。主讲人详细解释了线段树节点维护的五个信息：峰值个数(cnt)、左端点到第一个峰值的长度(pre)、最后一个峰值到右端点的长度(suf)、区间长度(len)以及区间内是否有峰值(has)。他阐述了叶节点的初始化逻辑，并重点说明了合并两个子节点数据的公式。最后，他讨论了单点更新操作，指出修改一个数组元素会影响其自身及相邻两个位置的峰值状态，因此更新时需要循环检查最多三个位置。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "每个节点维护五个信息：峰值个数（cnt）、左端点到第一个峰值的长度（pre）、最后一个峰值到右端点的长度（suf）、区间长度（len）以及区间内是否有峰值（has）。",
+        "requiredFacts": [
+          "节点维护峰值个数（cnt）",
+          "节点维护左端点到第一个峰值的长度（pre）",
+          "节点维护最后一个峰值到右端点的长度（suf）",
+          "节点维护区间长度（len）",
+          "节点维护区间内是否有峰值（has）"
+        ],
+        "forbiddenClaims": [
+          "节点维护左端点到最后一个峰值的长度",
+          "节点维护右端点到第一个峰值的长度",
+          "节点维护峰值位置列表",
+          "节点维护区间最大值",
+          "节点维护区间和"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": null,
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1ryuy6WEDs/"
+    },
+    {
+      "id": "answer-v0-bv1ryuy6weds-full-exact-008",
+      "sampleId": "bv1ryuy6weds-full",
+      "dataset": "力扣周赛 514",
+      "split": "dev",
+      "q": "主讲人认为LeetCode 2100分以下的选手瓶颈是什么？",
+      "tag": "exact",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        3300
+      ],
+      "evidence": {
+        "timestamp": "55:00",
+        "chunkStartSeconds": 3300,
+        "channel": "asr",
+        "summary": "视频片段讨论了算法刷题的方法与瓶颈。主讲人认为对于LeetCode 2100分以下的选手，瓶颈主要在于题目做得不够多，建议针对薄弱知识点刷题单。他提到瓶颈有两层含义：一是LeetCode平台题目相比专业OJ偏简单；二是个人能力瓶颈，但多数人远未到拼天赋的阶段。他建议初学者按题单系统刷题，后期可结合随机刷题来锻炼题型判断能力，并强调养成每日刷题习惯、放平心态、与过去的自己比较进步最为重要。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "主讲人认为，对于LeetCode 2100分以下的选手，瓶颈主要在于题目做得不够多，还没有到需要谈论个人能力或天赋瓶颈的阶段。他建议针对薄弱的知识点刷对应的题单。",
+        "requiredFacts": [
+          "主讲人认为LeetCode 2100分以下的选手瓶颈在于题目做得不够多。",
+          "主讲人认为对于LeetCode 2100分以下的选手，还没有到谈论个人能力或天赋瓶颈的阶段。",
+          "主讲人建议针对薄弱的知识点刷对应的题单。"
+        ],
+        "forbiddenClaims": [
+          "瓶颈是LeetCode平台题目太简单（这是针对更高水平或平台本身的另一层意思，不是针对2100分以下选手的主要瓶颈）",
+          "需要换到Codeforces等专业OJ平台练习（这是针对‘你要真的在网上’的假设情况，并非对2100分以下选手的普遍建议）",
+          "瓶颈是数学不好（这只是举例，并非普遍结论）",
+          "需要每天随机刷题（这是后期建议，并非针对瓶颈的核心建议）"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "证据明确支持核心观点：2100分以下瓶颈是题目做少了，未到拼天赋阶段，应刷题单补弱点。需注意区分‘瓶颈’的两层含义，避免将‘平台题目相对简单’这层意思误判为对2100分以下选手的主要瓶颈描述。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1ryuy6WEDs/"
+    },
+    {
+      "id": "answer-v0-bv1ryuy6weds-full-fuzzy-005",
+      "sampleId": "bv1ryuy6weds-full",
+      "dataset": "力扣周赛 514",
+      "split": "dev",
+      "q": "当修改数组中的一个元素时，最多会影响多少个位置的峰值状态？",
+      "tag": "fuzzy",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        2040
+      ],
+      "evidence": {
+        "timestamp": "34:00",
+        "chunkStartSeconds": 1800,
+        "channel": "asr",
+        "summary": "视频片段讲解如何用线段树解决LeetCode“峰值子数组”问题。主讲人详细解释了线段树节点维护的五个信息：峰值个数(cnt)、左端点到第一个峰值的长度(pre)、最后一个峰值到右端点的长度(suf)、区间长度(len)以及区间内是否有峰值(has)。他阐述了叶节点的初始化逻辑，并重点说明了合并两个子节点数据的公式。最后，他讨论了单点更新操作，指出修改一个数组元素会影响其自身及相邻两个位置的峰值状态，因此更新时需要循环检查最多三个位置。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "修改数组中的一个元素时，最多会影响三个位置的峰值状态：被修改位置本身，以及它左右相邻的两个位置；其他位置不受影响。",
+        "requiredFacts": [
+          "修改数组中的一个元素会影响其自身位置的峰值状态。",
+          "修改数组中的一个元素会影响其左侧相邻位置的峰值状态。",
+          "修改数组中的一个元素会影响其右侧相邻位置的峰值状态。",
+          "最多有三个位置的峰值状态会受影响。",
+          "其他位置的峰值状态不会改变。"
+        ],
+        "forbiddenClaims": [
+          "修改一个元素会影响超过三个位置。",
+          "修改一个元素只会影响该元素自身。",
+          "修改一个元素会影响所有位置的峰值状态。",
+          "需要更新线段树中所有节点。"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "modified",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": null,
+        "humanNotes": "已把原来与本题无关的 1800–1980s 节选替换为 2040–2100s 的直接证据。"
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1ryuy6WEDs/"
+    },
+    {
+      "id": "answer-v0-bv1ryuy6weds-full-fuzzy-007",
+      "sampleId": "bv1ryuy6weds-full",
+      "dataset": "力扣周赛 514",
+      "split": "dev",
+      "q": "对于刚开始刷数据结构题单的学习者，主讲人给出了什么关于题目难度的建议？",
+      "tag": "fuzzy",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        2820
+      ],
+      "evidence": {
+        "timestamp": "47:00",
+        "chunkStartSeconds": 2700,
+        "channel": "asr",
+        "summary": "视频片段中，主讲人分享了算法刷题的方法。他建议按照专题（如动态规划、单调栈）进行系统性刷题，而非随机刷题，以提高效率并深刻理解算法。他提到力扣（LeetCode）已有上千道题目，知识点基本覆盖，并展示了一份完整的算法题单。对于庞大的题量，他建议制定长期计划（如1-2年），每天定量完成，或针对薄弱知识点进行短期专题强化。他强调应科学分配时间，先完成难度较低（如1700分以下）的题目打好基础，再挑战更难的题目。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "主讲人建议刚开始刷数据结构题单的学习者，不要全部都做，可以先做难度分1700分以下的题目。如果觉得太难，也可以跳过，重点是把常见的题型至少都见一遍。",
+        "requiredFacts": [
+          "主讲人建议刚开始刷数据结构题单时，不要全部都做。",
+          "主讲人建议可以先做难度分1700分以下的题目。",
+          "主讲人建议如果觉得太难，也可以跳过。",
+          "主讲人强调的重点是把常见的题型至少都见一遍。"
+        ],
+        "forbiddenClaims": [
+          "建议按照专题刷题（虽然视频其他部分提到，但本段focusedEvidence未直接针对数据结构题单给出此建议）",
+          "建议制定长期计划（如1-2年）",
+          "建议每天定量完成",
+          "建议针对薄弱知识点进行短期专题强化",
+          "建议先完成难度分<1700的题目打好基础，再挑战更难的题目（这是chunkSummary的总结，但focusedEvidence只提到先做1700分以下的题，未明确提及“打好基础”和“再挑战更难”的递进关系）"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "问题明确询问‘关于题目难度的建议’，focusedEvidence直接给出了针对数据结构题单的难度建议（1700分以下）。虽然chunkSummary和nearbyEvidence包含了更广泛的刷题策略（如按专题、长期计划），但核心的难度建议在focusedEvidence中已明确。因此draftAnswerable为true。注意区分focusedEvidence的直接建议与chunkSummary的概括性转述。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1ryuy6WEDs/"
+    },
+    {
+      "id": "answer-v0-bv1ryuy6weds-full-visual-005",
+      "sampleId": "bv1ryuy6weds-full",
+      "dataset": "力扣周赛 514",
+      "split": "dev",
+      "q": "在题单的『常用数据结构』部分，列出了哪几个具体的数据结构或技巧？",
+      "tag": "visual",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        3540
+      ],
+      "evidence": {
+        "timestamp": "59:00",
+        "chunkStartSeconds": 3300,
+        "channel": "ocr",
+        "summary": "视频片段讨论了算法刷题的方法与瓶颈。主讲人认为对于LeetCode 2100分以下的选手，瓶颈主要在于题目做得不够多，建议针对薄弱知识点刷题单。他提到瓶颈有两层含义：一是LeetCode平台题目相比专业OJ偏简单；二是个人能力瓶颈，但多数人远未到拼天赋的阶段。他建议初学者按题单系统刷题，后期可结合随机刷题来锻炼题型判断能力，并强调养成每日刷题习惯、放平心态、与过去的自己比较进步最为重要。",
+        "retrievalStatus": "Top-3 未命中"
+      },
+      "evaluation": {
+        "referenceAnswer": "在题单的『常用数据结构』部分，列出了枚举技巧、前缀和、差分、栈、队列、堆、字典树、并查集、树状数组和线段树。",
+        "requiredFacts": [
+          "枚举技巧",
+          "前缀和",
+          "差分",
+          "栈",
+          "队列",
+          "堆",
+          "字典树",
+          "并查集",
+          "树状数组",
+          "线段树"
+        ],
+        "forbiddenClaims": [
+          "不得漏项或把相邻专题中的内容混入『常用数据结构』列表"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "优先",
+        "confidence": "高",
+        "modelNotes": "OCR文本中『常用数据结构』后的括号是中文尖括号〈〉，内容清晰可辨。答案直接提取了括号内的所有项目。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1ryuy6WEDs/"
+    },
+    {
+      "id": "answer-v0-bv1ryuy6weds-full-visual-004",
+      "sampleId": "bv1ryuy6weds-full",
+      "dataset": "力扣周赛 514",
+      "split": "dev",
+      "q": "在题单的『7.5 子矩形 DP』部分，列出了哪道题是统计全为 1 的正方形子矩阵？",
+      "tag": "visual",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        2640
+      ],
+      "evidence": {
+        "timestamp": "44:00",
+        "chunkStartSeconds": 2400,
+        "channel": "ocr",
+        "summary": "视频片段中，讲述者正在评估一道算法题（可能是LeetCode 221. 最大正方形或类似题目）的难度分数。他认为该题难度膨胀，根据当前标准可评为2600分，但若按几年前标准或考虑其有多种解法（如树状数组加有序集合），可能更高（2700-2800分）或更低。随后他讨论了周赛的难度，指出新手通常只能做出前两题，因为后两题需要丰富的算法技巧（如动态规划、数据结构）。他认为要稳定做出第三题需要刷题量约500-1000道，而做出第四题则需要更多练习、天赋或遇到简单场次。最后他建议，如果周赛中某题不会，应去补做其题解中推荐的特定题单。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "题单列出的是 LeetCode 1277《统计全为 1 的正方形子矩阵》。",
+        "requiredFacts": [
+          "题号是 1277",
+          "题名是《统计全为 1 的正方形子矩阵》"
+        ],
+        "forbiddenClaims": [
+          "不得沿用 OCR 误识别出的『子和矩阵』"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "OCR文本中题目名称为『统计全为 1 的正方形子和矩阵』，其中『子和』可能是『子』的识别错误，实际应为『子矩阵』。但根据上下文和常见算法题名称，可以确定是LeetCode 1277题。人工复核时需确认该识别不影响答案正确性。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1ryuy6WEDs/"
+    },
+    {
+      "id": "answer-v0-bv1ah4y1s7nx-all-p-exact-003",
+      "sampleId": "bv1ah4y1s7nx-all-p",
+      "dataset": "gRPC 课程（全 7P）",
+      "split": "test",
+      "q": "在演示中，执行哪个Gradle命令来生成Java代码？",
+      "tag": "exact",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        600
+      ],
+      "evidence": {
+        "timestamp": "10:00",
+        "chunkStartSeconds": 600,
+        "channel": "asr",
+        "summary": "视频片段演示了如何基于gRPC的.proto文件生成Java代码并实现一个简单的Hello World服务。首先，讲师展示了在项目根目录下执行`./gradlew generateProto`命令来生成Java代码。生成的代码包括服务接口`HelloAPIGrpc`和实体类`HelloRequest`、`HelloReply`。接着，讲师实现了服务端接口`HelloServiceIpl`，它接收一个包含名字的请求，并返回“Hello, [名字]”的问候语。然后，通过`HelloServer`类在9090端口启动gRPC服务。最后，创建了一个客户端`HelloClient`，它连接到本地服务，发送一个名字为“Alice”的请求，并成功打印出服务端返回的“Hello, Alice”调用结果，完成了完整的gRPC请…",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "在演示中，执行了 `./gradlew generateProto` 命令来生成Java代码。",
+        "requiredFacts": [
+          "执行了Gradle命令",
+          "该命令是 `./gradlew generateProto`",
+          "该命令用于生成Java代码"
+        ],
+        "forbiddenClaims": [
+          "命令是在非项目根目录下执行的",
+          "命令是 `gradle generateProto`（未指定 `./gradlew`）",
+          "命令生成了除Java外的其他语言代码",
+          "命令是 `./gradlew build` 或其他任务"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "ASR中“Generator produ”可能指“generateProto”，与chunkSummary的明确描述一致。证据清晰支持答案。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1Ah4y1S7NX/"
+    },
+    {
+      "id": "answer-v0-bv1ah4y1s7nx-all-p-exact-005",
+      "sampleId": "bv1ah4y1s7nx-all-p",
+      "dataset": "gRPC 课程（全 7P）",
+      "split": "test",
+      "q": "在gRPC的客户端流式模式中，客户端发送了多少个请求？",
+      "tag": "exact",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        1620
+      ],
+      "evidence": {
+        "timestamp": "27:00",
+        "chunkStartSeconds": 1500,
+        "channel": "asr",
+        "summary": "该片段讲解了gRPC的客户端流式通信模式。演示了客户端如何通过流式发送多个请求（例如发送五个请求）到服务端，而服务端在接收完所有请求后，仅返回一个统一的响应。视频通过运行代码展示了这一过程：服务端依次接收了五个请求，但只在客户端结束请求流后，才返回一个“消息处理完成”的响应。同时，视频也简要提及了服务端流式模式，指出两者的主要区别在于Protocol Buffer中“stream”关键字修饰的是请求流还是响应流。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "在视频演示的 gRPC 客户端流式模式中，客户端循环发送了五个请求。",
+        "requiredFacts": [
+          "客户端发送了五个请求。"
+        ],
+        "forbiddenClaims": [
+          "客户端只发送了一个请求。",
+          "客户端发送请求的数量是固定的（视频中演示了五次，但未声明所有客户端流式模式都固定发送五个请求）。"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "modified",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "问题询问的是‘在gRPC的客户端流式模式中，客户端发送了多少个请求？’。视频证据明确展示了在代码演示中，客户端通过循环发送了五个请求。因此，答案基于该具体演示。但需注意，问题可能期望一个通用答案（如‘多个’或‘流式发送’），而证据给出的是具体示例数量。参考答案已基于证据给出具体数字。",
+        "humanNotes": "已补入 1620–1680s 的直接证据：客户端循环五次并发送五个请求。"
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1Ah4y1S7NX/"
+    },
+    {
+      "id": "answer-v0-bv1ah4y1s7nx-all-p-exact-008",
+      "sampleId": "bv1ah4y1s7nx-all-p",
+      "dataset": "gRPC 课程（全 7P）",
+      "split": "test",
+      "q": "在Spring Boot和gRPC实现的聊天室中，服务端使用什么数据结构来维护用户名与客户端StreamObserver的映射关系？",
+      "tag": "exact",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        2520
+      ],
+      "evidence": {
+        "timestamp": "42:00",
+        "chunkStartSeconds": 2400,
+        "channel": "asr",
+        "summary": "本片段讲解如何使用Spring Boot和gRPC框架搭建一个简单的聊天室。首先介绍了服务端搭建的步骤：创建Spring Boot项目、配置依赖、定义ProtoBuf消息文件、生成Java文件、实现核心聊天逻辑。核心逻辑包括通过一个Map维护用户名与客户端StreamObserver的映射，以实现消息广播。客户端则需要拷贝服务端生成的Java文件，通过Stub调用服务，并监听控制台输入以发送消息和接收广播。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "服务端使用一个 ConcurrentHashMap 来维护用户名与客户端 StreamObserver 的映射关系。",
+        "requiredFacts": [
+          "服务端使用了一个 Map 数据结构。",
+          "该 Map 是 ConcurrentHashMap 类型。",
+          "该 Map 的键是用户名（String 类型）。",
+          "该 Map 的值是客户端的 StreamObserver（具体为 StreamObserver<Chat.ChatMessage> 类型）。",
+          "该 Map 用于维护用户名与客户端 StreamObserver 的映射关系。"
+        ],
+        "forbiddenClaims": [
+          "该 Map 是 HashMap 或其他非 ConcurrentHashMap 类型。",
+          "该 Map 的键是用户 ID 或其他非用户名的标识。",
+          "该 Map 的值是 Channel 或其他非 StreamObserver 的对象。",
+          "该数据结构用于维护客户端连接以外的其他信息。"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "证据中 ASR 提到‘channel’，但结合 OCR 显示的代码和上下文，明确使用的是 ConcurrentHashMap<String, StreamObserver<Chat.ChatMessage>>。答案已据此调整。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1Ah4y1S7NX/"
+    },
+    {
+      "id": "answer-v0-bv1ah4y1s7nx-all-p-fuzzy-001",
+      "sampleId": "bv1ah4y1s7nx-all-p",
+      "dataset": "gRPC 课程（全 7P）",
+      "split": "test",
+      "q": "gRPC课程会介绍几种客户端与服务端传递请求和响应消息的方式？",
+      "tag": "fuzzy",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        0
+      ],
+      "evidence": {
+        "timestamp": "0:00",
+        "chunkStartSeconds": 0,
+        "channel": "asr",
+        "summary": "本片段是gRPC课程的介绍部分。讲师首先介绍了课程大纲，包括gRPC入门、Hello World示例、ProtoBuf3语法、四种通信模式实战、拦截器以及整合SpringBoot实现聊天室。随后，讲师开始讲解gRPC的理论知识，将其定义为一种高性能、开源的远程过程调用（RPC）框架。它基于HTTP/2协议和Protocol Buffers序列化，支持多语言开发，允许不同计算机上的应用像调用本地方法一样通信，并具备强类型和双向流式通信等优势。",
+        "retrievalStatus": "Top-3 未命中"
+      },
+      "evaluation": {
+        "referenceAnswer": "该gRPC课程会介绍四种客户端与服务端传递请求和响应消息的方式。课程中会学习gRPC的四种通信模式，并对每种模式进行代码实战和案例介绍。",
+        "requiredFacts": [
+          "课程会介绍gRPC的通信模式。",
+          "课程介绍的通信模式数量是四种。",
+          "课程会对每种通信模式进行代码实战。",
+          "课程会对每种通信模式进行案例介绍。"
+        ],
+        "forbiddenClaims": [
+          "课程会介绍超过四种通信模式。",
+          "课程会介绍具体的通信模式名称（如一元RPC、服务端流式RPC等）。",
+          "课程会深入讲解HTTP/2协议或Protocol Buffers的底层细节。",
+          "课程会介绍除这四种模式外的其他消息传递方式。"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "优先",
+        "confidence": "高",
+        "modelNotes": "证据明确提到了“四种通信模式”以及相应的“代码实战”和“案例介绍”，直接回答了问题。无需额外猜测。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1Ah4y1S7NX/"
+    },
+    {
+      "id": "answer-v0-bv1ah4y1s7nx-all-p-fuzzy-004",
+      "sampleId": "bv1ah4y1s7nx-all-p",
+      "dataset": "gRPC 课程（全 7P）",
+      "split": "test",
+      "q": "如果要在一个消息里表示多个相同类型的元素，应该用什么方式定义？",
+      "tag": "fuzzy",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        1080
+      ],
+      "evidence": {
+        "timestamp": "18:00",
+        "chunkStartSeconds": 900,
+        "channel": "asr",
+        "summary": "讲师演示了gRPC服务开发的基本流程：定义消息体和服务结构，生成Java代码，实现服务端接口，启动并注册服务，最后通过客户端调用。随后，课程转入ProtoBuf3基本使用的介绍，重点讲解了其基本类型（如string、int32、bool等）、嵌套类型、集合类型（使用repeated关键字）、枚举类型、导入其他proto文件以及Map类型，并提及了不同语言间的类型映射关系。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "在 ProtoBuf 3 中，如果要在一个消息里表示多个相同类型的元素，应该使用 `repeated` 关键字来定义集合类型。",
+        "requiredFacts": [
+          "在 ProtoBuf 3 中，表示多个相同类型的元素应使用集合类型。",
+          "在 ProtoBuf 3 中，集合类型使用 `repeated` 关键字定义。"
+        ],
+        "forbiddenClaims": [
+          "使用 `list` 关键字定义",
+          "使用 `array` 关键字定义",
+          "使用 `import` 关键字定义",
+          "使用 `map` 关键字定义",
+          "使用嵌套类型定义"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "证据明确指出了在 ProtoBuf 3 中，集合类型（对应 list）使用 `repeated` 关键字定义。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1Ah4y1S7NX/"
+    },
+    {
+      "id": "answer-v0-bv1ah4y1s7nx-all-p-fuzzy-008",
+      "sampleId": "bv1ah4y1s7nx-all-p",
+      "dataset": "gRPC 课程（全 7P）",
+      "split": "test",
+      "q": "聊天室中有人发送消息后，服务端为什么能够继续把这条消息推送给其他在线用户？",
+      "tag": "fuzzy",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        2580
+      ],
+      "evidence": {
+        "timestamp": "43:00",
+        "chunkStartSeconds": 2400,
+        "channel": "asr",
+        "summary": "本片段讲解如何使用Spring Boot和gRPC框架搭建一个简单的聊天室。首先介绍了服务端搭建的步骤：创建Spring Boot项目、配置依赖、定义ProtoBuf消息文件、生成Java文件、实现核心聊天逻辑。核心逻辑包括通过一个Map维护用户名与客户端StreamObserver的映射，以实现消息广播。客户端则需要拷贝服务端生成的Java文件，通过Stub调用服务，并监听控制台输入以发送消息和接收广播。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "服务端在用户加入聊天室时，会将用户名和对应的客户端响应观察者（StreamObserver）保存在一个映射（Map）中。当有客户端发送消息后，服务端通过遍历这个映射，找到所有其他客户端的观察者，从而将消息推送给他们。",
+        "requiredFacts": [
+          "服务端在用户加入聊天室时，会获取用户名。",
+          "服务端将用户名与客户端的StreamObserver（响应观察者）建立映射关系并保存。",
+          "当有客户端发送消息到服务端后，服务端会遍历保存的所有客户端StreamObserver。",
+          "服务端通过遍历到的每个StreamObserver，将消息推送给对应的其他客户端。"
+        ],
+        "forbiddenClaims": [
+          "服务端使用数据库存储用户连接",
+          "消息推送依赖于特定的消息队列（如Kafka）",
+          "服务端通过HTTP长轮询推送消息",
+          "连接保持依赖于WebSocket协议（证据中未提及具体协议，只提及gRPC和StreamObserver）",
+          "服务端会持久化存储聊天消息"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "证据清晰地描述了映射保存和广播遍历的机制。虽然提到了‘channel’，但核心是使用Map保存StreamObserver。回答聚焦于gRPC StreamObserver模式，未涉及其他网络协议细节。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1Ah4y1S7NX/"
+    },
+    {
+      "id": "answer-v0-bv1ah4y1s7nx-all-p-visual-002",
+      "sampleId": "bv1ah4y1s7nx-all-p",
+      "dataset": "gRPC 课程（全 7P）",
+      "split": "test",
+      "q": "在配置服务端拦截器的代码中，ServerBuilder.forPort(9090)之后调用了哪个方法来添加拦截器？",
+      "tag": "visual",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        2160
+      ],
+      "evidence": {
+        "timestamp": "36:00",
+        "chunkStartSeconds": 2100,
+        "channel": "ocr",
+        "summary": "视频演示了gRPC拦截器的实现与配置。讲解了服务端拦截器（ServerInterceptor）和客户端拦截器（ClientInterceptor）的工作原理，通过继承相应类并实现interceptCall等方法，可以在方法调用前后进行拦截，用于日志打印或监控。通过代码演示展示了拦截器如何捕获并打印“发送请求”和“收到响应”等消息。最后预告下一节课程将整合SpringBoot实现一个简单聊天室。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "在 ServerBuilder.forPort(9090) 之后，调用了 .intercept(new ServerLoggingInterceptor()) 方法来添加拦截器。",
+        "requiredFacts": [
+          "配置服务端拦截器时，在 ServerBuilder.forPort(9090) 之后调用了 .intercept 方法",
+          "调用 .intercept 方法时传入的参数是 new ServerLoggingInterceptor()"
+        ],
+        "forbiddenClaims": [
+          "调用了 .addInterceptor 方法",
+          "拦截器是 ClientLoggingInterceptor",
+          "拦截器是添加到客户端",
+          "方法调用发生在 .build() 之后"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "视频中的 OCR 证据清晰显示了代码调用链。问题非常具体，证据直接对应。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1Ah4y1S7NX/"
+    },
+    {
+      "id": "answer-v0-bv1ah4y1s7nx-all-p-visual-006",
+      "sampleId": "bv1ah4y1s7nx-all-p",
+      "dataset": "gRPC 课程（全 7P）",
+      "split": "test",
+      "q": "在ChatServiceImpl的joinRoom方法中，当用户加入聊天室时，会调用哪个方法来广播用户加入的消息？",
+      "tag": "visual",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        2580
+      ],
+      "evidence": {
+        "timestamp": "43:00",
+        "chunkStartSeconds": 2400,
+        "channel": "ocr",
+        "summary": "本片段讲解如何使用Spring Boot和gRPC框架搭建一个简单的聊天室。首先介绍了服务端搭建的步骤：创建Spring Boot项目、配置依赖、定义ProtoBuf消息文件、生成Java文件、实现核心聊天逻辑。核心逻辑包括通过一个Map维护用户名与客户端StreamObserver的映射，以实现消息广播。客户端则需要拷贝服务端生成的Java文件，通过Stub调用服务，并监听控制台输入以发送消息和接收广播。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "在ChatServiceImpl的joinRoom方法中，当用户加入聊天室时，会调用broadcastMessage方法来广播用户加入的消息。",
+        "requiredFacts": [
+          "ChatServiceImpl类中有一个joinRoom方法。",
+          "在joinRoom方法内部，当用户加入时，会调用broadcastMessage方法。",
+          "调用broadcastMessage方法是为了广播用户加入的消息。"
+        ],
+        "forbiddenClaims": [
+          "广播消息的方法是sendMessage。",
+          "广播消息是通过直接调用responseObserver.onNext完成的。",
+          "广播消息的方法在onError或onCompleted中被调用。"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "证据清晰，代码片段直接显示了在onNext方法中调用broadcastMessage(username, \"joined the room.\")。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1Ah4y1S7NX/"
+    },
+    {
+      "id": "answer-v0-bv1fj6vbfenu-all-p-exact-002",
+      "sampleId": "bv1fj6vbfenu-all-p",
+      "dataset": "Transformer 动画课程（全 9P）",
+      "split": "test",
+      "q": "在线性回归示例中，讲师分别用什么数学符号表示真实值和预测值？",
+      "tag": "exact",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        600
+      ],
+      "evidence": {
+        "timestamp": "10:00",
+        "chunkStartSeconds": 600,
+        "channel": "asr",
+        "summary": "该片段讲解了线性回归中如何通过损失函数（如均方误差MSE）评估模型拟合效果，并寻找最优参数w和b使预测值最接近真实数据。通过具体例子演示了如何通过求导（或偏导）最小化损失函数，并简要提及神经网络中更复杂的非线性损失函数需要通过迭代调整参数来优化。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "在线性回归示例中，讲师用 y 表示真实值，用 y hat 表示预测值。",
+        "requiredFacts": [
+          "讲师用 y 表示真实值。",
+          "讲师用 y hat 表示预测值。"
+        ],
+        "forbiddenClaims": [
+          "讲师用其他符号（如 y'、y_pred）表示预测值。",
+          "讲师用其他符号（如 t、target）表示真实值。",
+          "讲师在示例中使用了其他模型（如逻辑回归）。"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "证据直接且明确地给出了符号定义，无需额外推断。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1fj6vBfEnu/"
+    },
+    {
+      "id": "answer-v0-bv1fj6vbfenu-all-p-exact-005",
+      "sampleId": "bv1fj6vbfenu-all-p",
+      "dataset": "Transformer 动画课程（全 9P）",
+      "split": "test",
+      "q": "把一句话中所有词的向量直接拼接成一个大向量送入神经网络，会带来哪两个问题？",
+      "tag": "exact",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        2400
+      ],
+      "evidence": {
+        "timestamp": "40:00",
+        "chunkStartSeconds": 2400,
+        "channel": "asr",
+        "summary": "视频片段讲解了将词嵌入向量输入神经网络时遇到的问题：输入层过大且长度可变，且无法体现词语顺序。为解决此问题，引入了循环神经网络（RNN）的概念。通过让前一个词的隐藏状态参与后一个词的计算，RNN能够捕捉词语间的顺序关系，并将信息在序列中传递，从而适用于判断词性、文本生成等自然语言处理任务。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "这样做会带来两个问题。一是输入层太大，并且其大小会随着句子中词语数量的变化而变化，是不确定的。二是无法体现词语之间的先后顺序，只是将它们生硬地平铺成一个很大的向量。",
+        "requiredFacts": [
+          "问题一：输入层太大。",
+          "问题一：输入层大小会随句子中词语数量变化，是变长、不确定的。",
+          "问题二：无法体现词语的先后顺序。",
+          "问题二：只是将词语生硬地平铺成一个很大的向量送入输入层。"
+        ],
+        "forbiddenClaims": [
+          "这样做会导致计算效率低下（视频未提及效率问题）",
+          "这样做会丢失语义信息（视频未提及语义信息丢失）",
+          "这样做无法处理长句子（视频未特指长句子）",
+          "这样做需要大量的内存（视频未提及内存）",
+          "这样做会导致梯度消失或爆炸（视频未提及训练问题）"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": null,
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1fj6vBfEnu/"
+    },
+    {
+      "id": "answer-v0-bv1fj6vbfenu-all-p-exact-008",
+      "sampleId": "bv1fj6vbfenu-all-p",
+      "dataset": "Transformer 动画课程（全 9P）",
+      "split": "test",
+      "q": "视频中提到的Transformer架构由哪三大块组成？",
+      "tag": "exact",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        4260
+      ],
+      "evidence": {
+        "timestamp": "1:11:00",
+        "chunkStartSeconds": 4200,
+        "channel": "asr",
+        "summary": "视频解释了为何不能直接暴力训练大神经网络，并引入“拆解”思想。通过识别两个数字的例子，说明将复杂任务拆解为简单子任务（如先拆分图像再分别识别）能有效降低训练难度。由此引出Transformer架构，其核心是将单词转换为向量（Embedding），通过注意力机制让向量互相包含信息（Transformer Block），最后输出每个词的概率（Probabilities）。这种拆解是对当前算力和数据不足的妥协，其成功关键在于能有效训练并产生规模效应。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "Transformer架构整体上分为三大块：开头的Embedding层，中间的Transformer Block，以及结尾映射词表概率的Probabilities部分。",
+        "requiredFacts": [
+          "Transformer架构整体上分为三大块。",
+          "第一块是开头的Embedding层。",
+          "第二块是中间的Transformer Block。",
+          "第三块是结尾映射词表概率的Probabilities部分。"
+        ],
+        "forbiddenClaims": [
+          "Transformer架构由编码器、解码器和注意力机制组成。",
+          "三大块是输入层、隐藏层和输出层。",
+          "Transformer Block只有一个。",
+          "结尾部分直接输出单词。"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "证据直接、清晰地列出了三大组成部分，无需额外推断。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1fj6vBfEnu/"
+    },
+    {
+      "id": "answer-v0-bv1fj6vbfenu-all-p-fuzzy-002",
+      "sampleId": "bv1fj6vbfenu-all-p",
+      "dataset": "Transformer 动画课程（全 9P）",
+      "split": "test",
+      "q": "在评估模型拟合好坏时，除了直观感受，我们如何量化模型预测结果和实际数据之间的差距？",
+      "tag": "fuzzy",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        660
+      ],
+      "evidence": {
+        "timestamp": "11:00",
+        "chunkStartSeconds": 600,
+        "channel": "asr",
+        "summary": "该片段讲解了线性回归中如何通过损失函数（如均方误差MSE）评估模型拟合效果，并寻找最优参数w和b使预测值最接近真实数据。通过具体例子演示了如何通过求导（或偏导）最小化损失函数，并简要提及神经网络中更复杂的非线性损失函数需要通过迭代调整参数来优化。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "可以通过损失函数来量化模型预测结果和实际数据之间的差距。例如，均方误差（MSE）就是一种常用的损失函数，它计算预测值与真实值误差的平方的平均值，以评估整体拟合效果。",
+        "requiredFacts": [
+          "量化模型预测和实际数据差距的方法是使用损失函数。",
+          "损失函数表示预测数据与真实数据之间的误差。",
+          "均方误差（MSE）是损失函数的一种具体形式。",
+          "均方误差通过计算预测值与真实值误差的平方的平均值来评估整体拟合效果。"
+        ],
+        "forbiddenClaims": [
+          "损失函数只用于线性回归模型。",
+          "只有均方误差一种损失函数。",
+          "通过求导等于零是优化损失函数的唯一方法。",
+          "损失函数必须包含参数w和b。"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "证据明确支持使用损失函数（特别是均方误差）来量化预测与真实数据的差距。问题中的‘量化’与证据中的‘表示’、‘评估整体拟合效果’直接对应。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1fj6vBfEnu/"
+    },
+    {
+      "id": "answer-v0-bv1fj6vbfenu-all-p-fuzzy-008",
+      "sampleId": "bv1fj6vbfenu-all-p",
+      "dataset": "Transformer 动画课程（全 9P）",
+      "split": "test",
+      "q": "视频里说为了解决算力和数据不足的问题，人们想出了什么主要办法？",
+      "tag": "fuzzy",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        4200
+      ],
+      "evidence": {
+        "timestamp": "1:10:00",
+        "chunkStartSeconds": 4200,
+        "channel": "asr",
+        "summary": "视频解释了为何不能直接暴力训练大神经网络，并引入“拆解”思想。通过识别两个数字的例子，说明将复杂任务拆解为简单子任务（如先拆分图像再分别识别）能有效降低训练难度。由此引出Transformer架构，其核心是将单词转换为向量（Embedding），通过注意力机制让向量互相包含信息（Transformer Block），最后输出每个词的概率（Probabilities）。这种拆解是对当前算力和数据不足的妥协，其成功关键在于能有效训练并产生规模效应。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "为了解决算力和数据不足的问题，人们想出的主要办法是“拆解”。具体来说，就是将复杂的任务拆解成更简单的子任务，直到每个环节的训练变得简单为止。经过努力，发现将任务拆解成Transformer架构来训练效果很好。",
+        "requiredFacts": [
+          "为了解决算力和数据不足的问题，人们想出的主要办法是“拆解”。",
+          "拆解是指将复杂的任务拆解成更简单的子任务。",
+          "拆解的目标是让每个环节的训练变得简单。",
+          "经过努力，发现将任务拆解成Transformer架构来训练效果很好。"
+        ],
+        "forbiddenClaims": [
+          "拆解是唯一的方法。",
+          "拆解完全解决了算力和数据不足的问题。",
+          "Transformer是拆解思想的唯一实现方式。",
+          "视频详细解释了Transformer的完整架构细节。",
+          "拆解思想只适用于图像识别任务。"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "视频明确将“拆解”作为解决算力和数据不足问题的主要办法，并直接关联到Transformer架构。答案严格基于提供的证据。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1fj6vBfEnu/"
+    },
+    {
+      "id": "answer-v0-bv1fj6vbfenu-all-p-visual-003",
+      "sampleId": "bv1fj6vbfenu-all-p",
+      "dataset": "Transformer 动画课程（全 9P）",
+      "split": "test",
+      "q": "在卷积神经网络的锐化（sharpen）演示中，画面显示的 3×3 卷积核矩阵是什么？",
+      "tag": "visual",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        2100
+      ],
+      "evidence": {
+        "timestamp": "35:00",
+        "chunkStartSeconds": 2100,
+        "channel": "ocr",
+        "summary": "本片段讲解了从全连接层到卷积神经网络（CNN）的演进，指出CNN通过卷积运算替代矩阵乘法，减少了参数并更好地提取图像局部特征。随后引出CNN处理静态数据的局限性，并过渡到处理动态数据（如文本、语音）所需的神经网络。重点介绍了文本编码的两种极端方式（单一数字标识和One-Hot编码）及其缺点，进而引入词嵌入（Word Embedding）概念。词嵌入通过训练得到中等维度的词向量，能用数学方法（如点积或余弦相似度）衡量词语间的语义相关性，并可投影到低维空间进行可视化。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "画面在 sharpen 选项下显示的 3×3 卷积核是 [[0, -1, 0], [-1, 5, -1], [0, -1, 0]]。",
+        "requiredFacts": [
+          "第一行是 0、-1、0",
+          "第二行是 -1、5、-1",
+          "第三行是 0、-1、0"
+        ],
+        "forbiddenClaims": [
+          "不得把随后切换到 blur 时显示的高斯模糊核误写成 sharpen 核",
+          "不得根据常见卷积核知识替换画面实际显示的数值"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "modified",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "证据清晰，卷积核矩阵的数值和用途（sharpen）都直接显示在提供的 OCR 文本中。",
+        "humanNotes": "已回看本地原始帧：2138.609s/2140.543s 为 sharpen，显示 [[0,-1,0],[-1,5,-1],[0,-1,0]]；2142.143s 切换为 blur 后才显示原答案中的高斯核。"
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1fj6vBfEnu/"
+    },
+    {
+      "id": "answer-v0-bv1fj6vbfenu-all-p-visual-005",
+      "sampleId": "bv1fj6vbfenu-all-p",
+      "dataset": "Transformer 动画课程（全 9P）",
+      "split": "test",
+      "q": "在Transformer的采样策略中，Top-k方法保留了多少个最可能的token？",
+      "tag": "visual",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        4320
+      ],
+      "evidence": {
+        "timestamp": "1:12:00",
+        "chunkStartSeconds": 4200,
+        "channel": "ocr",
+        "summary": "视频解释了为何不能直接暴力训练大神经网络，并引入“拆解”思想。通过识别两个数字的例子，说明将复杂任务拆解为简单子任务（如先拆分图像再分别识别）能有效降低训练难度。由此引出Transformer架构，其核心是将单词转换为向量（Embedding），通过注意力机制让向量互相包含信息（Transformer Block），最后输出每个词的概率（Probabilities）。这种拆解是对当前算力和数据不足的妥协，其成功关键在于能有效训练并产生规模效应。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "Top-k方法保留了k个最可能的token。视频中举例说明了当k=5时的情况。",
+        "requiredFacts": [
+          "Top-k方法保留了k个最可能的token。",
+          "视频中举例说明了当k=5时的情况。"
+        ],
+        "forbiddenClaims": [
+          "Top-k方法保留了所有token",
+          "Top-k方法保留了概率超过某个阈值的token",
+          "Top-k方法中的k是一个固定的值（如5）",
+          "Top-k方法只保留一个最可能的token"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "证据明确说明了Top-k方法保留k个最可能的token，并有一个k=5的示例。答案基于此，未超出证据范围。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1fj6vBfEnu/"
+    },
+    {
+      "id": "answer-v0-bv1sg8c6jefw-full-exact-002",
+      "sampleId": "bv1sg8c6jefw-full",
+      "dataset": "DeepSeek-V3.2",
+      "split": "test",
+      "q": "根据研究，开源大语言模型在复杂任务上存在哪三个关键限制？",
+      "tag": "exact",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        600
+      ],
+      "evidence": {
+        "timestamp": "10:00",
+        "chunkStartSeconds": 600,
+        "channel": "asr",
+        "summary": "该片段讨论了开源与闭源大语言模型在复杂任务上的性能差距正在扩大。作者指出了开源模型的三个关键限制：1）传统Transformer架构对长文本处理效率低下；2）资源分配上，后训练阶段投入不足；3）在泛化性和指令跟随能力上弱于闭源模型。作为解决方案，DeepSeek-V3.2模型提出了三大创新：高效的稀疏注意力机制（DSA）、可扩展的强化学习框架以及大规模智能体任务合成流程，以提升模型在长上下文、推理和智能体任务中的性能。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "根据研究，开源大语言模型在复杂任务上的三个关键限制是：第一，在架构上，主要依赖传统的Transformer注意力机制，这严重限制了处理长序列的效率；第二，在资源分配上，后训练阶段的计算投入不足；第三，在泛化性和指令跟随能力上弱于闭源模型。",
+        "requiredFacts": [
+          "限制一：在架构上，主要依赖传统的Transformer注意力机制，这严重限制了处理长序列的效率。",
+          "限制二：在资源分配上，后训练阶段的计算投入不足。",
+          "限制三：在泛化性和指令跟随能力上弱于闭源模型。"
+        ],
+        "forbiddenClaims": [
+          "开源模型在简单任务上表现不佳。",
+          "开源模型完全无法处理长文本。",
+          "开源模型缺乏任何创新。",
+          "闭源模型没有限制。",
+          "这三个限制是导致性能差距的唯一原因。"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "证据中关于第三个限制（泛化性和指令跟随能力）的原文（OCR）因排版问题不完整，但chunkSummary提供了清晰、一致的转述，且与上下文逻辑吻合。因此，综合判断证据充分。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1Sg8C6JEfW/"
+    },
+    {
+      "id": "answer-v0-bv1sg8c6jefw-full-exact-005",
+      "sampleId": "bv1sg8c6jefw-full",
+      "dataset": "DeepSeek-V3.2",
+      "split": "test",
+      "q": "DeepSeek-V3.2的后训练阶段包含哪两个核心过程？",
+      "tag": "exact",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        2220
+      ],
+      "evidence": {
+        "timestamp": "37:00",
+        "chunkStartSeconds": 2100,
+        "channel": "asr",
+        "summary": "该片段讲解DeepSeek-V3.2模型的后训练阶段。首先通过图表说明，采用稀疏注意力机制(DSA)的V3.2推理成本显著低于V3.1。后训练包含两个核心步骤：1) 专家蒸馏：在数学、编程、逻辑推理等六个专业领域分别训练专家模型，生成各领域的思维链推理和直接回答数据；2) 混合强化学习训练：使用GRPO算法，合并推理、代理任务和对齐训练，平衡多领域性能并避免灾难性遗忘。整个过程基于V3.1 Terminus进行两阶段持续预训练后，再用专家生成的数据进行训练。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "DeepSeek-V3.2 的后训练阶段包含两个核心过程：专家蒸馏和混合强化学习训练。",
+        "requiredFacts": [
+          "后训练阶段包含专家蒸馏",
+          "后训练阶段包含混合强化学习训练"
+        ],
+        "forbiddenClaims": [
+          "不得把后训练的两个核心过程说成持续预训练和 DSA 稀疏训练",
+          "不得遗漏“专家蒸馏”或“混合强化学习训练”中的任一项",
+          "不得把 GRPO、六个领域、思维链/直接回答数据等细节误写成第三个核心过程"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "modified",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "证据直接给出了两个过程的名称，回答简洁准确。注意避免在答案中扩展具体细节。",
+        "humanNotes": "原禁止断言包含视频中的真命题：后训练接在预训练之后、RL 使用 GRPO，且专家蒸馏的领域与数据细节也有视频依据。已改成只禁止错误核心过程。"
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1Sg8C6JEfW/"
+    },
+    {
+      "id": "answer-v0-bv1sg8c6jefw-full-exact-008",
+      "sampleId": "bv1sg8c6jefw-full",
+      "dataset": "DeepSeek-V3.2",
+      "split": "test",
+      "q": "在DeepSeek-V3-0324之后的RL训练流程中，采用了哪个操作来确保MoE模型的稳定性？",
+      "tag": "exact",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        3660
+      ],
+      "evidence": {
+        "timestamp": "1:01:00",
+        "chunkStartSeconds": 3600,
+        "channel": "asr",
+        "summary": "视频片段讨论了DeepSeek模型在强化学习训练中的两个关键技术：Keep Routing和Keep Sampling Mask，用于稳定MoE模型的训练并确保新旧模型在token采样和专家路由上的一致性。随后介绍了工具调用场景下的创新点“Thinking in Tool-Use”，通过保留历史推理内容和工具调用记录来提升效率，但指出某些框架（如Roo Code）可能无法充分利用此优化，建议使用非推理模型。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "在DeepSeek-V3-0324之后的RL训练流程中，采用了Keep Routing操作来确保MoE模型的稳定性。该操作通过保留推理框架中采样时使用的专家路由路径，并在训练时强制执行相同的路径，从而稳定优化过程。",
+        "requiredFacts": [
+          "在DeepSeek-V3-0324之后的RL训练流程中，采用了一个操作来确保MoE模型的稳定性。",
+          "这个操作是Keep Routing。",
+          "Keep Routing操作保留了推理框架中采样时使用的专家路由路径。",
+          "Keep Routing操作在训练时强制执行相同的专家路由路径。",
+          "Keep Routing操作确保了优化的专家参数是相同的。",
+          "Keep Routing操作对MoE模型的RL训练稳定性至关重要。"
+        ],
+        "forbiddenClaims": [
+          "采用了Keep Sampling Mask操作来确保MoE模型的稳定性。",
+          "该操作是为了解决token采样不一致的问题。",
+          "该操作是DeepSeek-V3-0324之前采用的。",
+          "该操作是第三个创新点。",
+          "该操作与工具调用（Thinking in Tool-Use）直接相关。"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "证据明确指出了自DeepSeek-V3-0324起在RL训练流程中采用了Keep Routing操作以确保MoE模型的稳定性。无需补充其他信息。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1Sg8C6JEfW/"
+    },
+    {
+      "id": "answer-v0-bv1sg8c6jefw-full-fuzzy-006",
+      "sampleId": "bv1sg8c6jefw-full",
+      "dataset": "DeepSeek-V3.2",
+      "split": "test",
+      "q": "在强化学习算法中，如何判断模型生成的某个回答比同组的其他回答更好？",
+      "tag": "fuzzy",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        2760
+      ],
+      "evidence": {
+        "timestamp": "46:00",
+        "chunkStartSeconds": 2700,
+        "channel": "asr",
+        "summary": "视频片段讲解了DeepSeek V3.2中强化学习部分对GRPO算法的应用与改进。主讲人首先回顾了GRPO算法的目标函数，该算法通过优化策略模型来最大化一组回答的奖励。关键概念“优势”（A_i,t）通过计算单个回答奖励与组内平均奖励的差值并标准化得出，用于评估模型回答的优劣。此外，视频介绍了在传统GRPO基础上的创新“Scaling GRPO”，其中第一个创新涉及对KL散度估计的调整，通过重要性采样比率来获得无偏估计，以稳定训练并避免梯度爆炸，从而促进模型收敛。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "在GRPO算法中，通过计算“优势”（A_i,t）来判断一个回答是否比同组其他回答更好。具体方法是：对于一个问题的n个回答，先计算每个回答的奖励分数，然后求出组内平均奖励和标准差。用单个回答的奖励减去平均奖励，再除以标准差，得到该回答的优势值。如果优势值大于零，就说明这个回答比同组的平均回答更好。",
+        "requiredFacts": [
+          "判断方法基于GRPO算法中的“优势”（A_i,t）概念。",
+          "对于一个问题的n个回答，需要先计算出每个回答对应的奖励分数。",
+          "需要计算这n个回答奖励分数的平均值。",
+          "需要计算这n个回答奖励分数的标准差。",
+          "单个回答的优势值等于其奖励分数减去平均奖励，再除以标准差。",
+          "如果计算出的优势值大于零，则说明该回答比同组的其他回答更好。"
+        ],
+        "forbiddenClaims": [
+          "优势值是通过与一个“准确答案”的分数比较得出的。",
+          "优势值仅通过奖励分数减去平均值即可得出，无需标准化。",
+          "优势值大于零说明回答完全正确。",
+          "该方法适用于所有强化学习算法。",
+          "优势值直接用于计算模型的最终损失。"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "证据明确描述了优势的计算方法和判断标准。但需注意，证据中提及“准确答案的那个那个分数”，这可能与“单个回答的奖励分数”混淆，在参考答案和评分点中已根据上下文修正为使用回答自身的奖励分数进行计算。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1Sg8C6JEfW/"
+    },
+    {
+      "id": "answer-v0-bv1sg8c6jefw-full-visual-006",
+      "sampleId": "bv1sg8c6jefw-full",
+      "dataset": "DeepSeek-V3.2",
+      "split": "test",
+      "q": "根据PPT，在Dense Warm-up阶段，用于初始化lightning indexer的损失函数是什么？",
+      "tag": "visual",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        1980
+      ],
+      "evidence": {
+        "timestamp": "33:00",
+        "chunkStartSeconds": 1800,
+        "channel": "ocr",
+        "summary": "该片段详细介绍了DeepSeek-V3.2模型的训练过程。模型基于DeepSeek-V3.1-Terminus进行训练，分为两个阶段：首先是密集热身阶段，仅训练新引入的Lightning Indexer模块，使用完整注意力机制，通过KL散度损失使其输出与主注意力分布对齐；其次是稀疏训练阶段，开放所有模型参数，并引入细粒度令牌选择机制，使用稀疏注意力（DSA）进行训练。最后提到模型在标准基准测试和人类偏好评估（使用ChatbotArena框架）中表现优异，与V3.1-Terminus性能相当。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "在 Dense Warm-up 阶段，用于初始化 lightning indexer 的损失函数是 KL 散度损失（KL-divergence loss），用于使索引器输出分布与主注意力分布对齐。",
+        "requiredFacts": [
+          "阶段是 Dense Warm-up",
+          "目标是初始化 lightning indexer",
+          "使用 KL 散度损失（KL-divergence loss）",
+          "损失用于使索引器输出分布与主注意力分布对齐"
+        ],
+        "forbiddenClaims": [
+          "损失函数是交叉熵损失",
+          "损失函数包含 L1 正则化（L1 归一化目标分布不等于 L1 正则化）",
+          "该阶段同时训练所有模型参数",
+          "该阶段使用稀疏注意力"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "modified",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "证据明确指出了阶段、目标和损失函数类型。虽然公式（3）在证据中显示为“= » Dx (Pe: | Softmax(I,,:))”，这显然是KL散度公式的OCR识别错误，但结合上下文“KL-divergence loss”和公式符号，可以确认。因此参考答案和评分点基于此。",
+        "humanNotes": "幻灯片本身给出了 KL 损失公式，写出正确公式不应被判错，因此删除原禁止断言中的公式条目。"
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1Sg8C6JEfW/"
+    },
+    {
+      "id": "answer-v0-bv1sg8c6jefw-full-visual-003",
+      "sampleId": "bv1sg8c6jefw-full",
+      "dataset": "DeepSeek-V3.2",
+      "split": "test",
+      "q": "根据PPT，为了解决工具调用场景中的令牌效率问题，提出的上下文管理规则是什么？",
+      "tag": "visual",
+      "answerability": "answerable",
+      "reviewed": true,
+      "relevantSecs": [
+        3720
+      ],
+      "evidence": {
+        "timestamp": "1:02:00",
+        "chunkStartSeconds": 3600,
+        "channel": "ocr",
+        "summary": "视频片段讨论了DeepSeek模型在强化学习训练中的两个关键技术：Keep Routing和Keep Sampling Mask，用于稳定MoE模型的训练并确保新旧模型在token采样和专家路由上的一致性。随后介绍了工具调用场景下的创新点“Thinking in Tool-Use”，通过保留历史推理内容和工具调用记录来提升效率，但指出某些框架（如Roo Code）可能无法充分利用此优化，建议使用非推理模型。",
+        "retrievalStatus": "Hit@3"
+      },
+      "evaluation": {
+        "referenceAnswer": "为了解决工具调用场景中的令牌效率问题，提出的上下文管理规则是：仅当对话中引入新的用户消息时，才丢弃历史推理内容；如果只追加工具相关消息（如工具输出），则在整个交互过程中保留推理内容。当移除推理痕迹时，工具调用的历史及其结果仍保留在上下文中。",
+        "requiredFacts": [
+          "提出的上下文管理规则旨在解决工具调用场景中的令牌效率问题。",
+          "规则规定，仅当对话中引入新的用户消息时，才丢弃历史推理内容。",
+          "规则规定，如果只追加工具相关消息（如工具输出），则在整个交互过程中保留推理内容。",
+          "规则规定，当移除推理痕迹时，工具调用的历史及其结果仍保留在上下文中。"
+        ],
+        "forbiddenClaims": [
+          "该规则是DeepSeek-R1模型提出的。",
+          "该规则适用于所有代理框架。",
+          "该规则完全消除了令牌效率问题。",
+          "该规则要求始终保留所有历史内容。"
+        ],
+        "citationRequirement": "必须引用正确 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "常规",
+        "confidence": "高",
+        "modelNotes": "证据直接、清晰地描述了上下文管理规则的具体内容，与问题完全匹配。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1Sg8C6JEfW/"
+    },
+    {
+      "id": "answer-v0-unanswerable-001",
+      "sampleId": "bv1xhovyzetu-60m",
+      "dataset": "大模型学习路线（60 分钟）",
+      "split": "dev",
+      "q": "视频中推荐的机器学习课程是否提供结业证书？如果提供，申请条件是什么？",
+      "tag": "unanswerable",
+      "answerability": "unanswerable",
+      "reviewed": true,
+      "relevantSecs": [],
+      "evidence": {
+        "timestamp": null,
+        "chunkStartSeconds": 0,
+        "channel": "none",
+        "summary": "需确认整条视频未提供该信息。关键词初筛未命中：结业证书、证书申请条件。",
+        "retrievalStatus": "不适用（拒答题）"
+      },
+      "evaluation": {
+        "referenceAnswer": "视频证据中没有提供课程是否提供结业证书以及证书申请条件，因此无法仅根据该视频给出确定答案。",
+        "requiredFacts": [
+          "明确说明视频证据未提供足够信息",
+          "不猜测或引用视频外部信息"
+        ],
+        "forbiddenClaims": [
+          "不得声称课程一定提供或不提供证书",
+          "不得编造证书申请条件"
+        ],
+        "citationRequirement": "不应引用无关 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "优先",
+        "confidence": "需人工确认",
+        "modelNotes": "关键词零命中不能证明信息绝对不存在，请结合视频主题和整条证据复核。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1xhovYZEtU/"
+    },
+    {
+      "id": "answer-v0-unanswerable-002",
+      "sampleId": "bv1xhovyzetu-60m",
+      "dataset": "大模型学习路线（60 分钟）",
+      "split": "dev",
+      "q": "作者学习大模型期间每天固定学习多少小时，并连续学习了多少天？",
+      "tag": "unanswerable",
+      "answerability": "unanswerable",
+      "reviewed": true,
+      "relevantSecs": [],
+      "evidence": {
+        "timestamp": null,
+        "chunkStartSeconds": 0,
+        "channel": "none",
+        "summary": "需确认整条视频未提供该信息。关键词初筛未命中：每天固定学习、连续学习多少天。",
+        "retrievalStatus": "不适用（拒答题）"
+      },
+      "evaluation": {
+        "referenceAnswer": "视频证据中没有提供每天固定学习时长和连续学习天数，因此无法仅根据该视频给出确定答案。",
+        "requiredFacts": [
+          "明确说明视频证据未提供足够信息",
+          "不猜测或引用视频外部信息"
+        ],
+        "forbiddenClaims": [
+          "不得根据作者学习了几个月来换算每天时长或连续天数"
+        ],
+        "citationRequirement": "不应引用无关 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "优先",
+        "confidence": "需人工确认",
+        "modelNotes": "关键词零命中不能证明信息绝对不存在，请结合视频主题和整条证据复核。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1xhovYZEtU/"
+    },
+    {
+      "id": "answer-v0-unanswerable-003",
+      "sampleId": "bv1ryuy6weds-full",
+      "dataset": "力扣周赛 514",
+      "split": "dev",
+      "q": "讲解者参加第 514 场周赛时的最终排名和罚时分别是多少？",
+      "tag": "unanswerable",
+      "answerability": "unanswerable",
+      "reviewed": true,
+      "relevantSecs": [],
+      "evidence": {
+        "timestamp": null,
+        "chunkStartSeconds": 0,
+        "channel": "none",
+        "summary": "需确认整条视频未提供该信息。关键词初筛未命中：最终排名、罚时。",
+        "retrievalStatus": "不适用（拒答题）"
+      },
+      "evaluation": {
+        "referenceAnswer": "视频证据中没有提供讲解者本人的最终排名和罚时，因此无法仅根据该视频给出确定答案。",
+        "requiredFacts": [
+          "明确说明视频证据未提供足够信息",
+          "不猜测或引用视频外部信息"
+        ],
+        "forbiddenClaims": [
+          "不得把题目难度分、在线人数或其他排名当作讲解者的比赛排名"
+        ],
+        "citationRequirement": "不应引用无关 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "优先",
+        "confidence": "需人工确认",
+        "modelNotes": "关键词零命中不能证明信息绝对不存在，请结合视频主题和整条证据复核。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1ryuy6WEDs/"
+    },
+    {
+      "id": "answer-v0-unanswerable-004",
+      "sampleId": "bv1ah4y1s7nx-all-p",
+      "dataset": "gRPC 课程（全 7P）",
+      "split": "test",
+      "q": "课程中的 gRPC 服务在压测时达到的 QPS 和 P99 延迟分别是多少？",
+      "tag": "unanswerable",
+      "answerability": "unanswerable",
+      "reviewed": true,
+      "relevantSecs": [],
+      "evidence": {
+        "timestamp": null,
+        "chunkStartSeconds": 0,
+        "channel": "none",
+        "summary": "需确认整条视频未提供该信息。关键词初筛未命中：QPS、P99。",
+        "retrievalStatus": "不适用（拒答题）"
+      },
+      "evaluation": {
+        "referenceAnswer": "视频证据中没有提供实测 QPS 和 P99 延迟，因此无法仅根据该视频给出确定答案。",
+        "requiredFacts": [
+          "明确说明视频证据未提供足够信息",
+          "不猜测或引用视频外部信息"
+        ],
+        "forbiddenClaims": [
+          "不得用通用的 gRPC 性能数据代替视频中的实测结果"
+        ],
+        "citationRequirement": "不应引用无关 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "优先",
+        "confidence": "需人工确认",
+        "modelNotes": "关键词零命中不能证明信息绝对不存在，请结合视频主题和整条证据复核。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1Ah4y1S7NX/"
+    },
+    {
+      "id": "answer-v0-unanswerable-005",
+      "sampleId": "bv1ah4y1s7nx-all-p",
+      "dataset": "gRPC 课程（全 7P）",
+      "split": "test",
+      "q": "聊天室示例部署到生产环境时使用了多少台服务器，采用了哪种负载均衡策略？",
+      "tag": "unanswerable",
+      "answerability": "unanswerable",
+      "reviewed": true,
+      "relevantSecs": [],
+      "evidence": {
+        "timestamp": null,
+        "chunkStartSeconds": 0,
+        "channel": "none",
+        "summary": "需确认整条视频未提供该信息。关键词初筛未命中：多少台服务器、负载均衡策略。",
+        "retrievalStatus": "不适用（拒答题）"
+      },
+      "evaluation": {
+        "referenceAnswer": "视频证据中没有提供生产部署服务器数量和负载均衡策略，因此无法仅根据该视频给出确定答案。",
+        "requiredFacts": [
+          "明确说明视频证据未提供足够信息",
+          "不猜测或引用视频外部信息"
+        ],
+        "forbiddenClaims": [
+          "不得根据示例代码推断生产部署规模或负载均衡方案"
+        ],
+        "citationRequirement": "不应引用无关 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "优先",
+        "confidence": "需人工确认",
+        "modelNotes": "关键词零命中不能证明信息绝对不存在，请结合视频主题和整条证据复核。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1Ah4y1S7NX/"
+    },
+    {
+      "id": "answer-v0-unanswerable-007",
+      "sampleId": "bv1sg8c6jefw-full",
+      "dataset": "DeepSeek-V3.2",
+      "split": "test",
+      "q": "DeepSeek-V3.2 的训练集群使用了多少块 GPU，完整训练耗时多少天？",
+      "tag": "unanswerable",
+      "answerability": "unanswerable",
+      "reviewed": true,
+      "relevantSecs": [],
+      "evidence": {
+        "timestamp": null,
+        "chunkStartSeconds": 0,
+        "channel": "none",
+        "summary": "需确认整条视频未提供该信息。关键词初筛未命中：多少块GPU、训练耗时多少天。",
+        "retrievalStatus": "不适用（拒答题）"
+      },
+      "evaluation": {
+        "referenceAnswer": "视频证据中没有提供训练集群 GPU 数量和完整训练天数，因此无法仅根据该视频给出确定答案。",
+        "requiredFacts": [
+          "明确说明视频证据未提供足够信息",
+          "不猜测或引用视频外部信息"
+        ],
+        "forbiddenClaims": [
+          "不得引用其他 DeepSeek 版本或外部报道中的训练资源数据"
+        ],
+        "citationRequirement": "不应引用无关 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "优先",
+        "confidence": "需人工确认",
+        "modelNotes": "关键词零命中不能证明信息绝对不存在，请结合视频主题和整条证据复核。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1Sg8C6JEfW/"
+    },
+    {
+      "id": "answer-v0-unanswerable-008",
+      "sampleId": "bv1sg8c6jefw-full",
+      "dataset": "DeepSeek-V3.2",
+      "split": "test",
+      "q": "视频是否给出了 DeepSeek-V3.2 API 的官方输入和输出 Token 单价？分别是多少？",
+      "tag": "unanswerable",
+      "answerability": "unanswerable",
+      "reviewed": true,
+      "relevantSecs": [],
+      "evidence": {
+        "timestamp": null,
+        "chunkStartSeconds": 0,
+        "channel": "none",
+        "summary": "需确认整条视频未提供该信息。关键词初筛未命中：输入Token单价、输出Token单价、API定价。",
+        "retrievalStatus": "不适用（拒答题）"
+      },
+      "evaluation": {
+        "referenceAnswer": "视频证据中没有提供API 官方输入和输出 Token 单价，因此无法仅根据该视频给出确定答案。",
+        "requiredFacts": [
+          "明确说明视频证据未提供足够信息",
+          "不猜测或引用视频外部信息"
+        ],
+        "forbiddenClaims": [
+          "不得把图表中的推理成本当作 API 官方定价",
+          "不得引用视频外部的当前价格"
+        ],
+        "citationRequirement": "不应引用无关 Chunk"
+      },
+      "review": {
+        "status": "passed",
+        "priority": "优先",
+        "confidence": "需人工确认",
+        "modelNotes": "关键词零命中不能证明信息绝对不存在，请结合视频主题和整条证据复核。",
+        "humanNotes": null
+      },
+      "sourceUrl": "https://www.bilibili.com/video/BV1Sg8C6JEfW/"
+    }
+  ],
+  "excludedQuestions": [
+    {
+      "id": "answer-v0-bv1ryuy6weds-full-fuzzy-002",
+      "sequence": 12,
+      "dataset": "力扣周赛 514",
+      "split": "dev",
+      "question": "为了减少代码重复，处理两个正方形左右排列的情况可以采取什么技巧？",
+      "reason": "与 #9 使用同一证据且答案要点相同；保留 #9，按重复题剔除。"
+    },
+    {
+      "id": "answer-v0-bv1fj6vbfenu-all-p-fuzzy-005",
+      "sequence": 29,
+      "dataset": "Transformer 动画课程（全 9P）",
+      "split": "test",
+      "question": "在自然语言处理中，直接把所有词的向量拼在一起送入网络有什么主要缺陷？",
+      "reason": "与 #26 使用同一证据且答案要点相同；保留题干更具体的 #26，按重复题剔除。"
+    },
+    {
+      "id": "answer-v0-bv1sg8c6jefw-full-fuzzy-002",
+      "sequence": 36,
+      "dataset": "DeepSeek-V3.2",
+      "split": "test",
+      "question": "为什么说开源模型在应对复杂工作时，能力提升不如闭源模型快？",
+      "reason": "与 #33 高度重叠，均围绕开源模型的三个关键限制；按重复题剔除。"
+    },
+    {
+      "id": "answer-v0-bv1sg8c6jefw-full-fuzzy-008",
+      "sequence": 38,
+      "dataset": "DeepSeek-V3.2",
+      "split": "test",
+      "question": "为了在训练和推理时保持专家路径一致，避免参数子空间突变，他们采用了什么方法？",
+      "reason": "与 #35 同为 Keep Routing 问题且答案同义；保留 #35，按重复题剔除。"
+    },
+    {
+      "id": "answer-v0-unanswerable-006",
+      "sequence": 46,
+      "dataset": "Transformer 动画课程（全 9P）",
+      "split": "test",
+      "question": "手写数字识别演示中，模型在测试集上的最终准确率和误差率分别是多少？",
+      "reason": "Claude 全片扫描与本地帧复核发现，约 36:08 的训练面板显示“准确率: 1”。原题把准确率与误差率都设为全片缺失并要求整体拒答，拒答前提不成立，按审核规则剔除。"
+    }
+  ]
+}
