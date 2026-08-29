@@ -191,17 +191,19 @@ AudioExportService。
 ```
 阅读 FailedAnalysisTaskService 和相关 Replay 入口。
 
-Recovery 的定义：从 Checkpoint 恢复**同一个** AnalysisTask，
+Recovery 的定义：从 Checkpoint 恢复同一逻辑任务的当前执行，
 跳过已完成阶段。
-Replay 的定义：启动**新的** AnalysisTask，不恢复旧任务。
+Replay 的定义：在相同 `mediaId + goal + mode` 逻辑身份下启动一次全新执行；
+清除旧的 plan / Critic / result payload，保留可复用的 VideoContext / VideoChunk，
+不创建新的 taskId 或 runId。
 
 找出代码里可能违反这两个语义的地方：
-1. Replay 是否真的没有读 Checkpoint？
-2. Recovery 是否真的复用了 mediaId + contentHash？
-3. 失败任务进入 DEAD_LETTERED 时，Checkpoint 是否被标记为废弃？
+1. Replay 是否清除了旧 Agent payload，同时保留了内容级上下文和分块？
+2. Replay 重新投递的 mediaId、goal、mode 与原失败记录是否一致？
+3. canonical stage 是否从旧终态进入 MANUAL_REPLAY，而不是伪造新的任务身份？
 4. Replay 后原 failed_task 表的记录状态如何变化？
 
-违反语义会导致：同一视频被重复分析（成本浪费），或失败任务永远无法重新执行。
+违反语义会导致：旧结果被错误恢复、可复用上下文被重复构建，或失败任务无法重新执行。
 ```
 
 ---
@@ -219,7 +221,7 @@ Replay 的定义：启动**新的** AnalysisTask，不恢复旧任务。
 1. 客户端断开重连后，错过的事件如何对齐？
    是从最新阶段开始推送，还是有 event log 重放？
 2. SSE 连接的超时配置在哪？长时间没有事件会主动断开吗？
-3. 多个浏览器标签同时订阅同一个 taskId，会不会互相影响？
+3. 多个浏览器标签同时订阅同一个 `mediaId + goal + mode` 逻辑任务，会不会互相影响？
 4. 任务完成后 SSE 是否真的关闭，还是等客户端超时？
 ```
 

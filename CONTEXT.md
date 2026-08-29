@@ -58,7 +58,7 @@ ASR 的原始文本输出：`startMs`、`endMs`、`text`。它是 `VideoSegment`
 
 ### AnalysisTask
 
-一次分析的执行运行。它由 `TaskMessage` 触发，拥有 `TaskStage` 生命周期，通过 `Checkpoint` 持久化状态，最终产出 `AnalysisResult`。Revision（`REVISE_ANALYSIS`）会启动新的 `AnalysisTask`，并复用已有 `VideoContext`。
+由 `mediaId + UserGoal + AnalysisMode` 定位的逻辑分析任务。当前系统没有独立的 taskId 或 runId；HTTP 提交返回 `202 Accepted`，状态查询与 SSE 订阅继续使用这组逻辑身份。`TaskMessage` 触发一次执行，执行过程拥有 `TaskStage` 生命周期，通过 `Checkpoint` 持久化状态，最终产出 `AnalysisResult`。Revision（`REVISE_ANALYSIS`）使用修订后的目标发起新一次执行，并复用已有 `VideoContext`。
 
 避免只使用：任务、job、work item。
 
@@ -120,7 +120,7 @@ ASR 的原始文本输出：`startMs`、`endMs`、`text`。它是 `VideoSegment`
 
 ### Replay
 
-通过管理 API 手动重新投递 `FailedAnalysisTask`。Replay 启动新的 `AnalysisTask`，不恢复旧任务；失败任务进入 `DEAD_LETTERED` 并写入 `failed_task` 表。
+分析执行失败并进入人工处理时，任务进入 `DEAD_LETTERED` 并写入 `failed_task` 表。Replay 通过管理 API 重新投递该记录：清除旧的 plan、Critic 状态和结果等目标级 payload，保留可复用的 `VideoContext` 与 `VideoChunk`，再以相同的 `mediaId + UserGoal + AnalysisMode` 进入 `MANUAL_REPLAY`。因此 Replay 是同一逻辑任务身份下的全新执行尝试，不从旧 Agent payload 恢复，也不会创建独立的 taskId 或 runId。
 
 ## Modes and outputs
 

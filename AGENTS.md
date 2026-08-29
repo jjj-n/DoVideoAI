@@ -50,7 +50,7 @@ server/src/main/java/com/example/server/
 | P1     | **ASR/OCR 并行分支**        | `VideoTranscriptionService`、`SegmentedTranscriptionService`、`AudioExportService` | 有界线程池异常被吞；FFmpeg 子进程未 destroy；pHash 去重边界                         |
 | P1     | **混合检索降级**            | `VideoEvidenceRetrievalService`、`QdrantVectorStore`                               | Qdrant 不可用时降级路径；embedding 服务超时；TOP_K=3 vs MAX_USER_HITS=8 混用        |
 | P1     | **分片上传 + 合并**         | `ChunkUploadService`、`MediaIngestService`                                         | Redis Set TTL 1 天的边界；410 片上限；合并后 hash 计算与 dedup 的时序               |
-| P1     | **Recovery vs Replay 语义** | `FailedAnalysisTaskService`                                                        | Replay 应启动新任务而非恢复旧任务——容易写反                                         |
+| P1     | **Recovery vs Replay 语义** | `FailedAnalysisTaskService`                                                        | Replay 应在同一逻辑任务身份下启动全新执行；不要恢复旧 Agent payload，也不要假设存在新的 taskId |
 | P2     | **SSE 推送**                | `AnalysisStatusService`、`TaskEventService`                                        | 长连接断开后阶段丢失；客户端重连后状态对齐                                          |
 | P2     | **AI 客户端超时/重试**      | `AiService`                                                                        | `LLM_TIMEOUT_SECONDS=300` 默认值的副作用；指数退避未覆盖的失败码                    |
 
