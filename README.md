@@ -166,7 +166,7 @@ sequenceDiagram
 | 组件 | 要求 | 说明 |
 | :--- | :--- | :--- |
 | JDK | 21 | 后端运行环境 |
-| Node.js | 22 | Vue 与 Vite 构建环境 |
+| Node.js | 22.22.1+ | Vue、Vite 与前端开发工具的最低运行版本 |
 | Docker | Compose v2 | 启动 MySQL、Redis、MinIO、Qdrant 与 RocketMQ |
 | FFmpeg | 可在终端调用 | 音频切分与关键帧抽取 |
 | Tesseract | 安装 `chi_sim` 与 `eng` | 中英文关键帧 OCR |
