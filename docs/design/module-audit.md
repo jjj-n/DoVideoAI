@@ -1,6 +1,6 @@
 # Module Audit - Deep-Module Lens
 
-Using the vocabulary from `/codebase-design`: **Module** (interface + implementation), **Interface** (caller surface), **Implementation** (internal code), **Depth** (leverage per unit of interface), **Seam** (location of the interface), **Adapter** (what fills the seam), **Leverage** (caller benefit), **Locality** (maintainer benefit).
+This audit uses the following terms: **Module** (interface + implementation), **Interface** (caller surface), **Implementation** (internal code), **Depth** (leverage per unit of interface), **Seam** (location of the interface), **Adapter** (what fills the seam), **Leverage** (caller benefit), **Locality** (maintainer benefit).
 
 Audit snapshot: production code at commit `74478f3` (2026-08-29 review). Findings are a design backlog, not claims that every opportunity has been implemented.
 
@@ -14,7 +14,7 @@ Audited modules:
 
 | Module                 | Interface | Implementation | Verdict                                      |
 | ---------------------- | --------- | -------------- | -------------------------------------------- |
-| VideoEvidenceRetrieval | 3 methods | ~200 lines     | **Deep** - one chunk-ownership leak          |
+| VideoEvidenceRetrieval | 3 methods | ~200 lines     | **Deep** - explicit upstream chunk ownership |
 | AnalysisDispatch       | 5 + enum  | ~130 lines     | **Moderate** - dead overload, nullable param |
 | ChunkUpload            | 4 methods | ~180 lines     | **Deep** - one redundant param               |
 
@@ -42,7 +42,7 @@ The two query methods take three params and `index` takes two. Caller learns the
 
 ### Deepening opportunities
 
-1. **The `chunks` parameter leaks ownership.** Callers pass `List<VideoChunk>` to `retrieve`, `search`, _and_ `index`. The service writes to Qdrant via `index()` but still asks for chunks back on `retrieve()`/`search()`. The service should own the chunk lifecycle: `index(mediaId, chunks)` stores them (in-memory or Qdrant-backed), `retrieve(mediaId, goal)` and `search(mediaId, query)` load them internally. Removing `chunks` from two methods shrinks the interface and centralizes chunk storage - one place to add caching, one place to evict.
+1. **The `chunks` parameter exposes an upstream ownership decision.** `LongVideoContextService` owns the current Chunk lifecycle: it loads and saves chunks through `AgentCheckpointService`, then passes the resolved list into the stateless retrieval service. This boundary is defensible because retrieval stays focused on indexing and ranking instead of checkpoint persistence. The repeated parameter does make the caller surface wider. If more callers appear and that cost becomes material, introduce a `VideoChunkRepository` or read-only `VideoChunkProvider` seam shared by construction and retrieval; do not make `VideoEvidenceRetrievalService` own checkpoint persistence merely to remove two parameters.
 
 2. **`retrieve` vs `search` naming is ambiguous.** Same params, different return types, different limits (TOP_K=3 chunks for `retrieve`, MAX_USER_HITS=8 hits for `search`). The semantic difference is _consumer_: `retrieve` feeds the AgentLoop, `search` answers a user query. Rename to `retrieveForAgent` / `searchForUser`, or split into two Adapters behind one Interface - the latter only if the implementations diverge.
 
@@ -50,7 +50,7 @@ The two query methods take three params and `index` takes two. Caller learns the
 
 ### What to say in an interview
 
-> "This is a deep module - three methods, ~200 lines of hybrid retrieval behind them. The seam sits at the service boundary; Qdrant and the LLM are adapters behind it. The graceful degradation is invisible to callers, which is the right depth: the AgentLoop doesn't need to know Qdrant was down. The one thing I'd tighten is chunk ownership - the service writes chunks via `index()` but still asks callers to pass them back on `retrieve()`. That's a leak I'd fix by having the service own the chunk store."
+> "This is a deep module - three methods, ~200 lines of hybrid retrieval behind them. The seam sits at the service boundary; Qdrant and the LLM are adapters behind it. The graceful degradation is invisible to callers, which is the right depth: the AgentLoop doesn't need to know Qdrant was down. The explicit `chunks` parameter keeps checkpoint ownership in `LongVideoContextService` and keeps retrieval stateless, which is defensible. If caller count grows, I'd hide chunk loading behind a `VideoChunkRepository` or provider seam rather than move persistence into the retrieval service."
 
 ---
 
@@ -118,7 +118,7 @@ Four methods - one per phase of the chunked-upload protocol. The Implementation 
 
 1. **`totalChunks` on `uploadChunk` is redundant.** The caller already passed it to `initialize()`. The Implementation re-validates: `if (totalChunks != expectedChunks ...)`. This is defensive paranoia that leaks to the Interface - the caller has to remember a value the service already knows. Drop the param; validate `chunkIndex` against the stored `expectedChunks` only. One fewer param, one fewer thing for callers to get wrong.
 
-2. **`complete()` exception types encode HTTP status.** `BusinessException` (409) for "still merging" or "chunks incomplete"; `IllegalArgumentException` (500) for invalid input; `IllegalStateException` for MD5 unavailable. The comment explains this is deliberate - to avoid 500 for client-retryable states. The Interface doesn't declare this; callers have to read the code. Could be encoded as `CompletionResult` enum (SUCCESS, STILL_MERGING, INCOMPLETE, FAILED) returned from `complete()`, with `MediaFile` accessible on SUCCESS. But Spring's exception-to-status mapping is idiomatic, so the current shape is defensible.
+2. **`complete()` has an implicit exception contract.** Retryable merge states use `BusinessException(CONFLICT)` and map to HTTP 409; malformed, missing, or expired upload IDs use `IllegalArgumentException` and `ApiExceptionHandler` maps them to HTTP 400; authorization failures map to HTTP 403; unexpected internal failures such as MD5 unavailability fall through to HTTP 500. The distinction is deliberate and idiomatic in Spring, but the service interface does not make it visible. A typed `CompletionResult` would make retryable outcomes explicit, though the current exception-to-status mapping is defensible.
 
 3. **`complete()` returns `MediaFile`.** Couples the upload service to the media entity. Could return `Long mediaId` and let callers load `MediaFile` if they need it. But `MediaFile` is the natural "result" of a completed upload, and `MediaController` immediately returns it to the client, so this is probably fine.
 
