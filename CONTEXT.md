@@ -70,9 +70,13 @@ ASR 的原始文本输出：`startMs`、`endMs`、`text`。它是 `VideoSegment`
 
 ### TaskStage
 
-包含 28 个值的进度标签枚举。主用途是 `AnalysisTask` 生命周期：`QUEUED` -> `CONSUMING` -> `VIDEO_CONTEXT` -> `CONTEXT_COMPLETED` -> `CHUNKS_COMPLETED` -> `AGENT_LOOP` -> `PLAN_COMPLETED` -> `EXECUTOR_STARTED` -> `EXECUTOR_COMPLETED` -> `CRITIC_STARTED` -> `CRITIC_PASSED` / `CRITIC_RETRY_REQUIRED` -> `EVIDENCE_REFRESHED` -> `ANALYSIS_COMPLETED` -> `COMPLETED`。失败与特殊终态包括 `FAILED`、`DEAD_LETTERED`、`COMPLETED_REUSED` 和预算相关状态。它也用于 `TRANSCRIPTION`、`ASR`、`RETRIEVAL` 等独立操作的进度标记。
+共享的进度标签枚举，共有 28 个值，但不是所有值都属于同一套状态机。
 
-避免把 `TaskStage` 与独立持久化状态机混为一谈。
+`AnalysisStagePolicy` 管理其中 21 个 canonical `AnalysisTask` 生命周期阶段。主成功路径是 `QUEUED` -> `CONSUMING` -> `VIDEO_CONTEXT` -> `AGENT_LOOP` -> `PLAN_COMPLETED` -> `EXECUTOR_STARTED` -> `EXECUTOR_COMPLETED` -> `CRITIC_STARTED` -> `CRITIC_PASSED` -> `ANALYSIS_COMPLETED` -> `COMPLETED`。Critic 未通过时可进入 `CRITIC_RETRY_REQUIRED`，经 `EVIDENCE_REFRESHED` 或重新规划后再执行；第二轮仍未通过时进入 `ANALYSIS_COMPLETED_WITH_WARNINGS`。其他 lifecycle 状态包括 `RETRYING`、`FAILED`、`BUDGET_EXHAUSTED`、`DEAD_LETTERED`、`MANUAL_REPLAY`、`COMPLETED_REUSED` 和 `DISPATCH_FAILED`。
+
+其余 7 个值不通过 `AnalysisStageService.transition(...)` 迁移：`CONTEXT_COMPLETED` 和 `CHUNKS_COMPLETED` 是 VideoContext/VideoChunk checkpoint 的 payload 阶段元数据；`REVISION_PENDING` 和 `REVISION_APPLIED` 属于 revision checkpoint；`RETRIEVAL`、`TRANSCRIPTION` 和 `ASR` 是独立子流程或 telemetry 的进度标记。
+
+避免把 `TaskStage` 的全部枚举值画成一条 AnalysisTask 生命周期，也不要把 checkpoint payload 阶段当成 canonical observable stage。
 
 ## Agent roles
 
