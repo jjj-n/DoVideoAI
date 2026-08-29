@@ -27,13 +27,13 @@ coverage/
 *.bak
 *.swp
 
-# docs/ 下只保留 images/ 子目录，其余文档不上传
-docs/*
-!docs/images/
+# Project architecture and workflow docs are versioned. Personal interview
+# scripts remain local because they are preparation notes, not product docs.
+/docs/interview-qa*.md
 
-# Agent / domain docs 仅本地使用，不入 git
+# Local assistant configuration stays private. CONTEXT.md is the versioned
+# canonical domain vocabulary referenced by AGENTS.md.
 /CLAUDE.md
-/CONTEXT.md
 /CONTEXT-MAP.md
 
 # Build outputs
