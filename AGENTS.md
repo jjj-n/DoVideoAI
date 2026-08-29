@@ -7,7 +7,7 @@
 DoVideoAI：把长视频转化为可检索、可追溯、可继续追问的结构化知识的 Video Agent。
 
 - 后端：Java 21、Spring Boot 3.5.9、Undertow、MyBatis-Plus
-- 异步与缓存：RocketMQ 4.9、Redis 7、Redisson（锁 / 限流 / 去重）
+- 异步与缓存：RocketMQ 5.3.4、Redis 7.4、Redisson（分布式锁 / 限流）、Redis activeKey（去重）
 - 存储：MySQL 8、MinIO（视频对象）、Qdrant（向量）
 - AI：LangChain4j、DeepSeek、TeleSpeechASR、BGE-M3、FFmpeg、Tesseract
 - 前端：Vue 3 + Vite + SSE
@@ -44,12 +44,12 @@ server/src/main/java/com/example/server/
 | 优先级 | 区域                        | 关键文件                                                                           | 容易踩的坑                                                                          |
 | ------ | --------------------------- | ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
 | P0     | **Checkpoint 双写一致**     | `AgentCheckpointService`                                                           | MySQL 真源 vs Redis 热缓存不一致；恢复时读到半写入状态                              |
-| P0     | **TaskStage 状态机**        | `dto/TaskStage.java`、`VideoAnalysisConsumer`                                      | 26 个阶段之间的非法跳转；FAILED/DEAD_LETTERED 路径资源未释放                        |
-| P0     | **去重 + 限流**             | `AnalysisDispatchService`                                                          | `SETNX` + TTL 的 race；Redisson `RRateLimiter` 配置错误；Replay 时 dedup key 误命中 |
+| P0     | **TaskStage 状态机**        | `dto/TaskStage.java`、`AnalysisStagePolicy`、`VideoAnalysisConsumer`               | 28 个枚举值中的 21 个 canonical lifecycle 阶段发生非法跳转；FAILED/DEAD_LETTERED 路径资源未释放 |
+| P0     | **去重 + 限流**             | `AnalysisDispatchService`、`VideoAnalysisConsumer`、`FailedAnalysisTaskService`    | activeKey 在投递失败、MQ 重试、Replay 与终态清理时生命周期错误；`RRateLimiter` 配置错误 |
 | P0     | **AgentLoop 两轮循环**      | `AgentLoopService`、`EvidenceVerificationService`                                  | Critic 反馈循环超两轮；定向检索返回空时未短路                                       |
 | P1     | **ASR/OCR 并行分支**        | `VideoTranscriptionService`、`SegmentedTranscriptionService`、`AudioExportService` | 有界线程池异常被吞；FFmpeg 子进程未 destroy；pHash 去重边界                         |
 | P1     | **混合检索降级**            | `VideoEvidenceRetrievalService`、`QdrantVectorStore`                               | Qdrant 不可用时降级路径；embedding 服务超时；TOP_K=3 vs MAX_USER_HITS=8 混用        |
-| P1     | **分片上传 + 合并**         | `ChunkUploadService`、`MediaIngestService`                                         | Redis Set TTL 1 天的边界；411 片上限；合并后 hash 计算与 dedup 的时序               |
+| P1     | **分片上传 + 合并**         | `ChunkUploadService`、`MediaIngestService`                                         | Redis Set TTL 1 天的边界；410 片上限；合并后 hash 计算与 dedup 的时序               |
 | P1     | **Recovery vs Replay 语义** | `FailedAnalysisTaskService`                                                        | Replay 应启动新任务而非恢复旧任务——容易写反                                         |
 | P2     | **SSE 推送**                | `AnalysisStatusService`、`TaskEventService`                                        | 长连接断开后阶段丢失；客户端重连后状态对齐                                          |
 | P2     | **AI 客户端超时/重试**      | `AiService`                                                                        | `LLM_TIMEOUT_SECONDS=300` 默认值的副作用；指数退避未覆盖的失败码                    |
@@ -67,7 +67,7 @@ cd client
 npm install && npm run dev
 ```
 
-**注意：测试目录已在 `server/src/test/java/com/example/server/service/`**，目前覆盖 `AgentLoopService`（边界与 recovery round budget）和 `DeadlineContext`（ThreadLocal set/get/clear/隔离）。让 Codex 验证修复时：
+**测试位于 `server/src/test/java/com/example/server/`**，当前共有 12 个测试类，分布在 `service/`、`repository/` 与 `integration/`。覆盖 AgentLoop 两轮与恢复预算、`AgentExecutionBudget` ThreadLocal scope、EvidenceVerification、Checkpoint、AnalysisStage policy/service/transaction、Outbox repository/relay、TaskEventService，以及基于 MySQL Testcontainers 的持久化集成路径。让 Codex 验证修复时：
 
 - 优先让它**写一个最小复现测试**而不是只改代码
 - 复现不出来时，让它静态分析 + 解释为什么这是 bug
