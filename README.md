@@ -97,7 +97,9 @@ Evidence frame_000125.jpg
 
 [`benchmark/`](./benchmark/) 保存评测脚本、数据格式和历史派生结果。旧量化报告依赖未入库的原始视频、VideoContext 和 VideoChunk，无法在同一语料上复现，因此不再把其中的数字作为当前版本结论。
 
-当前检索评测以生产链路为基线，在同一批 Chunk、标签和 Embedding 上比较纯向量、纯关键词、历史公式、当前公式和完整 Query Rewrite 链路。2026-08-28 完成人工审核后，正式评测集包含 5 条长视频、67 个五分钟 Chunk 和 120 道问题；完整链路的 `Recall@3` 为 **90.83%**，`Hit@1` 为 **68.33%**，`MRR@3` 为 **0.7861**。详细分组结果、对照实验和统计限制见 [`benchmark/`](./benchmark/)。
+当前检索评测由 Node.js 脚本离线复刻生产检索使用的 Query Rewrite prompt 与 Chunk 排序公式，在同一批冻结的 VideoChunk、人工标签和 Embedding 上比较纯向量、纯关键词、历史公式、当前公式以及 Query Rewrite + 当前公式。2026-08-28 完成人工审核后，正式评测集包含 5 条长视频、67 个五分钟 Chunk 和 120 道问题；Query Rewrite + 当前公式的 `Recall@3` 为 **90.83%**，`Hit@1` 为 **68.33%**，`MRR@3` 为 **0.7861**。
+
+这些结果是以 300 秒 VideoChunk 为评分单位的离线检索排序指标，不是最终答案正确率，也不是 Java Controller、Qdrant 在线服务或完整请求链路的端到端指标。详细分组结果、对照实验和统计限制见 [`benchmark/`](./benchmark/)。
 
 最终答案层另提供一份包含 43 道保留题的冻结评测套件，公开问题、金标答案、证据摘要、引用要求和评分规则，供审查“答案如何评测”及后续复用。该文件不包含本次重新执行的系统回答或答案质量汇总分，因此不能把题目审核状态当作答案通过率；范围和使用方式见 [`benchmark/data/answer_suite_v1.json`](./benchmark/data/answer_suite_v1.json) 与 [`benchmark/README.md`](./benchmark/README.md)。
 
