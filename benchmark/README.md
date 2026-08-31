@@ -40,7 +40,38 @@ GitHub 历史数据包含 24 道检索问题、逐题排名、阶段 trace、证
 3. 不可回答题按拒答能力评分，满分 2 分；虚构事实或伪造引用应触发硬门失败。
 4. 逐题分数应按 dev/test、题型和可回答性分别聚合，同时保留系统原始回答与逐题评分，才能对外报告答案质量数字。
 
-在不重新运行系统的情况下，这份文件可以让读者审查题目覆盖、证据依据和评分方法，但不能支持新的答案正确率、通过率或端到端延迟结论。冻结 Excel 和审核报告保留在本地 `outputs/` 作为审计源，不进入 Git；JSON 中仅保留源文件名和 SHA-256 指纹。
+`data/answer_suite_v1.json` 本身只定义题目和评分口径，不能当作答案通过率。冻结 Excel 和审核报告保留在本地 `outputs/` 作为审计源，不进入 Git；JSON 中仅保留源文件名和 SHA-256 指纹。
+
+### 2026-08-31 AgentLoop 回答基线
+
+本次用生产 `AgentLoopService`、`VideoEvidenceRetrievalService` 和两轮上限执行全部 43 道保留题。初始检索优先复用冻结语料中完全匹配的 Query Rewrite 与 Embedding，否则实时生成；Critic 触发的定向补检始终实时调用模型。Qdrant 在离线评测中关闭，走生产代码已有的内存向量、关键词与 OCR 降级排序。执行预算从生产默认的 120 秒放宽到每题 300 秒、100000 估算 token，以观察完整的两轮行为。
+
+| 指标 | 结果 | 口径 |
+| --- | ---: | --- |
+| 完成率 | 42/43（97.67%） | 1 道不可回答题在 300 秒预算下超时 |
+| 归一化总分 | 61.50% | 失败题按 0 分计；仅已完成题为 61.83% |
+| 硬门通过率 | 17/43（39.53%） | 可回答题的四项硬门、不可回答题的拒答维度均为满分；失败题计未通过 |
+| 不可回答题硬门通过率 | 2/7（28.57%） | 含 1 道超时题 |
+| Critic 最终通过率 | 0/43（0%） | 42 道完成题均执行两轮，均未通过最终 Critic |
+| 定向补检恢复率 | 0/38（0%） | 38 道触发 EvidenceHit 定向补检，无样本恢复到 Critic 通过 |
+| 严格 Claim–Evidence 支持率 | 62.16% → 55.15% | 自动检查绑定关系及 ASR/OCR 原文包含关系 |
+| 无支持 Claim 率 | 37.84% → 44.85% | 从第一轮到最终轮增加 7.01 个百分点 |
+| AgentLoop 耗时 | P50 115.8 秒；P95 272.9 秒；最大 296.3 秒 | 仅统计 42 道完成题，不含超时题 |
+
+结果没有验证“第二轮定向补检能提升最终质量”，也不支持“AgentLoop 均在 90 秒内完成”的表述。归一化分数由与生成器同模型家族的 LLM judge 对照人工复审金标评分，尚未经过独立模型或人工逐题复核；它适合作为可追踪的工程基线，不应包装为独立的质量证明。公开结果见 `data/answer_suite_v1_results.json`，包含逐题回答、评分理由、证据摘要/哈希、阶段耗时和聚合结果；完整模型输出保留在被 Git 忽略的 `benchmark/local/answer-eval/`，公开文件记录其 SHA-256。
+
+本地复跑需要 JDK 21、Node.js、`.env` 中的模型配置，以及五条已冻结的 `benchmark/local/corpora/*/dataset.json`：
+
+```powershell
+$env:AGENT_MAX_DURATION_MS = '300000'
+$env:AGENT_MAX_ESTIMATED_TOKENS = '100000'
+
+node benchmark/scripts/answer_suite_eval.mjs run
+node benchmark/scripts/answer_suite_eval.mjs score
+node benchmark/scripts/answer_suite_eval.mjs validate
+```
+
+`run` 增量写入本地原始结果并支持断点续跑；`score` 缓存逐题 judge 响应并生成可提交的公开 JSON；`validate` 检查套件 ID、题目唯一性、样本数和聚合指标范围。
 
 ## 文件说明
 
@@ -54,10 +85,13 @@ benchmark/
 │   ├── retrieval_formula_ab_results.json # 当前同语料 A/B 种子结果
 │   ├── retrieval_bv*_results.json        # 四条新增视频的逐题检索结果
 │   ├── retrieval_suite_baseline.json     # 多视频聚合器的当前输出
-│   ├── answer_suite_v1.json               # 冻结答案题集、金标与评分规则
+│   ├── answer_suite_v1.json              # 冻结答案题集、金标与评分规则
+│   ├── answer_suite_v1_results.json      # AgentLoop 逐题回答、评分与聚合基线
 │   └── *_results.json / trace_*.json     # 历史派生结果，仅供审计
+├── java/                                 # 调用生产 AgentLoop 的离线评测入口
 ├── local/                                # 视频、Chunk、Embedding，不入 Git
 └── scripts/
+    ├── answer_suite_eval.mjs             # 执行、评分并校验答案评测
     ├── retrieval_formula_ab.mjs          # 构建单视频语料并运行公式 A/B
     ├── retrieval_suite_eval.mjs          # 校验、聚合多视频结果
     ├── retrieval_eval.mjs                # 历史公式评测器
