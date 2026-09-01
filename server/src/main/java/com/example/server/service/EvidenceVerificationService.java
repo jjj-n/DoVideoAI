@@ -55,8 +55,6 @@ public class EvidenceVerificationService {
     }
 
     private String normalize(String value) {
-        return value == null
-                ? ""
-                : value.toLowerCase(Locale.ROOT).replaceAll("[\\p{P}\\p{S}\\s]+", "");
+        return CitationText.normalize(value);
     }
 }
