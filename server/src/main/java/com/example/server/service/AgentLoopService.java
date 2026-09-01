@@ -30,6 +30,7 @@ public class AgentLoopService {
     private final AgentCheckpointService checkpointService;
     private final AgentTelemetry telemetry;
     private final EvidenceVerificationService evidenceVerificationService;
+    private final CitationAlignmentService citationAlignmentService;
     private final AnalysisStageService analysisStageService;
     private final int maxRounds;
     private final long maxDurationMs;
@@ -41,6 +42,7 @@ public class AgentLoopService {
                             AgentCheckpointService checkpointService,
                             AgentTelemetry telemetry,
                             EvidenceVerificationService evidenceVerificationService,
+                            CitationAlignmentService citationAlignmentService,
                             AnalysisStageService analysisStageService,
                             @Value("${agent.budget.max-rounds:2}") int maxRounds,
                             @Value("${agent.budget.max-duration-ms:120000}") long maxDurationMs,
@@ -51,6 +53,7 @@ public class AgentLoopService {
         this.checkpointService = checkpointService;
         this.telemetry = telemetry;
         this.evidenceVerificationService = evidenceVerificationService;
+        this.citationAlignmentService = citationAlignmentService;
         this.analysisStageService = analysisStageService;
         if (maxRounds < 1 || maxRounds > MAX_ALLOWED_ROUNDS
                 || maxDurationMs < 1 || maxEstimatedTokens < 1 || maxEstimatedCost < 0) {
@@ -130,7 +133,7 @@ public class AgentLoopService {
         if (state.result() != null && state.critique() == null && state.round() > 0) {
             telemetry.incrementCurrent("criticCheckpointResumes", 1);
             checkBudget(runStartedNanos, "Executor Checkpoint");
-            state = critiqueRound(mediaId, relevantContext, plan, state.result(), state.round(), profile);
+            state = critiqueRound(mediaId, context, relevantContext, plan, state.result(), state.round(), profile);
             checkBudget(runStartedNanos, "Critic");
             if (!state.critique().passed() && state.round() < maxRounds) {
                 relevantContext = contextForRetry(
@@ -142,7 +145,7 @@ public class AgentLoopService {
         for (int round = state.round() + 1; round <= maxRounds; round++) {
             checkBudget(runStartedNanos, "Agent Round " + round);
             state = executeRound(
-                    mediaId, relevantContext, plan, state.critique(), round, runStartedNanos, profile);
+                    mediaId, context, relevantContext, plan, state.critique(), round, runStartedNanos, profile);
             checkBudget(runStartedNanos, "Critic");
             if (state.critique().passed()) break;
             if (round < maxRounds) {
@@ -182,41 +185,46 @@ public class AgentLoopService {
     }
 
     private AgentState executeRound(Long mediaId,
-                                    VideoContext context,
+                                    VideoContext fullContext,
+                                    VideoContext promptContext,
                                     AgentState.AgentPlan plan,
                                     AgentState.CriticResult previousCritique,
                                     int round,
                                     long runStartedNanos,
                                     ModeProfile profile) {
-        publishStage(mediaId, context.userGoal(), modeOf(profile),
+        publishStage(mediaId, promptContext.userGoal(), modeOf(profile),
                 "Executor 正在按计划生成结构化产物", TaskStage.EXECUTOR_STARTED);
-        AnalysisResult result = deepSeekUtils.execute(context, plan, previousCritique, executeInstruction(profile));
-        AgentState draft = new AgentState(context.userGoal(), plan, result, null, round);
+        AnalysisResult result = deepSeekUtils.execute(promptContext, plan, previousCritique, executeInstruction(profile));
+        // 引用对齐:把 Executor 的换述引用修正为所引时间戳处原文的精确子串,再落盘与校验。
+        // 对全量 context 对齐(而非裁剪池),保证产物可追溯到视频本身。
+        result = citationAlignmentService.align(fullContext, result);
+        AgentState draft = new AgentState(promptContext.userGoal(), plan, result, null, round);
         if (mediaId != null) {
             checkpointService.saveExecutionState(mediaId, draft, modeOf(profile));
-            publishStage(mediaId, context.userGoal(), modeOf(profile),
+            publishStage(mediaId, promptContext.userGoal(), modeOf(profile),
                     "Executor 草稿已保存，开始校验证据", TaskStage.EXECUTOR_COMPLETED);
         }
         checkBudget(runStartedNanos, "Executor");
-        return critiqueRound(mediaId, context, plan, result, round, profile);
+        return critiqueRound(mediaId, fullContext, promptContext, plan, result, round, profile);
     }
 
     private AgentState critiqueRound(Long mediaId,
-                                     VideoContext context,
+                                     VideoContext fullContext,
+                                     VideoContext promptContext,
                                      AgentState.AgentPlan plan,
                                      AnalysisResult result,
                                      int round,
                                      ModeProfile profile) {
-        publishStage(mediaId, context.userGoal(), modeOf(profile),
+        publishStage(mediaId, promptContext.userGoal(), modeOf(profile),
                 "Critic 正在核验目标覆盖与时间戳证据", TaskStage.CRITIC_STARTED);
         AgentState.CriticResult critique = normalizeCritique(
-                deepSeekUtils.critique(context, plan, result, criticInstruction(profile)));
+                deepSeekUtils.critique(promptContext, plan, result, criticInstruction(profile)));
         critique = enforceStructureBounds(result, critique, profile);
-        critique = enforceEvidenceBounds(context, result, critique);
+        critique = enforceEvidenceBounds(fullContext, promptContext, result, critique);
         telemetry.incrementCurrent("criticRounds", 1);
         if (critique.passed()) telemetry.incrementCurrent("criticPassed", 1);
 
-        AgentState state = new AgentState(context.userGoal(), plan, result, critique, round);
+        AgentState state = new AgentState(promptContext.userGoal(), plan, result, critique, round);
         if (mediaId != null) {
             checkpointService.saveCriticState(mediaId, state, modeOf(profile));
             String message;
@@ -234,7 +242,7 @@ public class AgentLoopService {
                 message = "Critic 发现目标覆盖或结构问题，正在按反馈重写";
                 stage = TaskStage.CRITIC_RETRY_REQUIRED;
             }
-            publishStage(mediaId, context.userGoal(), modeOf(profile), message, stage);
+            publishStage(mediaId, promptContext.userGoal(), modeOf(profile), message, stage);
         }
         return state;
     }
@@ -284,51 +292,46 @@ public class AgentLoopService {
         return presentKeys.containsAll(profile.requiredSectionKeys());
     }
 
-    private AgentState.CriticResult enforceEvidenceBounds(VideoContext context,
+    /**
+     * 确定性证据边界。核验一律使用全量 context(时间戳证据属于视频而非裁剪池,且与评测口径一致),
+     * 补检相关性判断使用裁剪 prompt context。LLM Critic 声明的问题先经确定性过滤:
+     * 换述类批评不再阻断,真缺口才触发 EvidenceRefresh。
+     */
+    private AgentState.CriticResult enforceEvidenceBounds(VideoContext fullContext,
+                                                           VideoContext promptContext,
                                                            AnalysisResult result,
                                                            AgentState.CriticResult critique) {
-        critique = normalizeCritique(critique);
-        boolean hasDeclaredProblems = !critique.feedback().isEmpty()
-                || !critique.missingRequirements().isEmpty()
-                || !critique.unsupportedClaims().isEmpty()
-                || !critique.requiredTimestamps().isEmpty();
-        if (critique.passed() && hasDeclaredProblems) {
-            critique = new AgentState.CriticResult(
-                    false,
-                    critique.feedback(),
-                    critique.missingRequirements(),
-                    critique.unsupportedClaims(),
-                    critique.requiredTimestamps());
-        }
-        if (!critique.passed()
-                && critique.feedback().isEmpty()
-                && critique.missingRequirements().isEmpty()
-                && critique.unsupportedClaims().isEmpty()
-                && critique.requiredTimestamps().isEmpty()) {
-            critique = new AgentState.CriticResult(
-                    false,
-                    List.of("重新检查目标覆盖、结构完整性和证据绑定"),
-                    List.of(), List.of(), List.of());
-        }
+        critique = filterDeclaredProblems(fullContext, promptContext, result, critique);
         if (result == null || result.evidence() == null || result.evidence().isEmpty()) return critique;
         List<AnalysisResult.Evidence> invalidEvidence = result.evidence().stream()
-                .filter(evidence -> !evidenceVerificationService.supported(context, evidence))
+                .filter(evidence -> !evidenceVerificationService.supported(fullContext, evidence))
                 .toList();
         List<String> unsupportedClaims = result.conclusions().stream()
                 .filter(claim -> result.evidence().stream().noneMatch(
-                        evidence -> evidenceVerificationService.supportsClaim(context, claim, evidence)))
+                        evidence -> evidenceVerificationService.supportsClaim(fullContext, claim, evidence)))
                 .toList();
-        if (invalidEvidence.isEmpty() && unsupportedClaims.isEmpty()) return critique;
+        if (invalidEvidence.isEmpty() && unsupportedClaims.isEmpty()) {
+            // 确定性层确认无问题:覆盖 LLM 自身的 fail 判断(它可能因换述/绑定格式等原因判失败,
+            // 但这些已被 alignment 修正或被确定性核验层接管)。仅在无阻断性问题时覆盖。
+            boolean hasBlocking = !critique.missingRequirements().isEmpty()
+                    || !critique.unsupportedClaims().isEmpty()
+                    || !critique.requiredTimestamps().isEmpty();
+            if (!hasBlocking && !critique.passed()) {
+                return new AgentState.CriticResult(
+                        true, critique.feedback(), critique.missingRequirements(),
+                        critique.unsupportedClaims(), critique.requiredTimestamps());
+            }
+            return critique;
+        }
 
         List<String> unsupported = new ArrayList<>(critique.unsupportedClaims());
         unsupportedClaims.stream()
                 .filter(claim -> !unsupported.contains(claim))
                 .forEach(unsupported::add);
-        invalidEvidence.stream()
-                .map(evidence -> "证据无法在原始 ASR/OCR 中核验: " + evidence.timestampMs())
-                .forEach(unsupported::add);
         List<String> feedback = new ArrayList<>(critique.feedback());
-        feedback.add("为每条结论重新检索并绑定可核验的时间戳证据");
+        feedback.add("以下结论缺少可核验证据，请定向修复或删除: "
+                + String.join("；", unsupportedClaims.stream().limit(5).toList())
+                + "；已核验通过的结论与证据必须原样保留");
         List<Long> requiredTimestamps = new ArrayList<>(critique.requiredTimestamps());
         invalidEvidence.stream()
                 .map(AnalysisResult.Evidence::timestampMs)
@@ -340,6 +343,62 @@ public class AgentLoopService {
                 critique.missingRequirements(),
                 unsupported,
                 requiredTimestamps);
+    }
+
+    /**
+     * 过滤 LLM Critic 声明的问题,并把"passed 即附带意见"的强制翻车收窄为阻断性问题才翻:
+     * <ul>
+     *   <li>纯 feedback 是建议性意见,不再推翻 passed;</li>
+     *   <li>声明的 unsupportedClaims 逐条绑定 conclusion 并复核:对应结论实际有支持的是换述类
+     *       批评,绑定不到结论的无法定位,两者都移入 feedback,不阻断;</li>
+     *   <li>声明的 requiredTimestamps 丢弃超出全量时间轴的幻觉值,以及覆盖段已在 prompt context
+     *       内的值(Executor 已看得见的片段补检无意义)。</li>
+     * </ul>
+     */
+    private AgentState.CriticResult filterDeclaredProblems(VideoContext fullContext,
+                                                            VideoContext promptContext,
+                                                            AnalysisResult result,
+                                                            AgentState.CriticResult critique) {
+        List<String> blockingUnsupported = new ArrayList<>();
+        List<String> feedback = new ArrayList<>(critique.feedback());
+        for (String declared : critique.unsupportedClaims()) {
+            String conclusion = result == null || result.conclusions() == null ? null
+                    : citationAlignmentService.bindClaim(declared, result.conclusions());
+            boolean genuinelyUnsupported = conclusion != null
+                    && result.evidence().stream().noneMatch(evidence ->
+                            evidenceVerificationService.supportsClaim(fullContext, conclusion, evidence));
+            if (genuinelyUnsupported) {
+                blockingUnsupported.add(declared);
+            } else {
+                feedback.add("（未核验的批评）" + declared);
+            }
+        }
+        List<Long> requiredTimestamps = critique.requiredTimestamps().stream()
+                .filter(timestamp -> timestampCovered(fullContext, timestamp))
+                .filter(timestamp -> !timestampCovered(promptContext, timestamp))
+                .toList();
+        boolean hasBlockingProblems = !critique.missingRequirements().isEmpty()
+                || !blockingUnsupported.isEmpty()
+                || !requiredTimestamps.isEmpty();
+        boolean passed = critique.passed() && !hasBlockingProblems;
+        if (passed && feedback.equals(critique.feedback())) {
+            return new AgentState.CriticResult(
+                    true, critique.feedback(), critique.missingRequirements(), blockingUnsupported, requiredTimestamps);
+        }
+        if (!passed
+                && feedback.equals(critique.feedback())
+                && critique.missingRequirements().isEmpty()
+                && critique.unsupportedClaims().isEmpty()
+                && critique.requiredTimestamps().isEmpty()) {
+            feedback.add("重新检查目标覆盖、结构完整性和证据绑定");
+        }
+        return new AgentState.CriticResult(
+                passed, feedback, critique.missingRequirements(), blockingUnsupported, requiredTimestamps);
+    }
+
+    private boolean timestampCovered(VideoContext context, long timestampMs) {
+        return context != null && context.segments().stream()
+                .anyMatch(segment -> timestampMs >= segment.startMs() && timestampMs < segment.endMs());
     }
 
     private AgentState.CriticResult enforceStructureBounds(AnalysisResult result,

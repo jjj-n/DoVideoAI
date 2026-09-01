@@ -25,6 +25,7 @@ class AgentLoopServiceTest {
                 mock(AgentCheckpointService.class),
                 mock(AgentTelemetry.class),
                 mock(EvidenceVerificationService.class),
+                mock(CitationAlignmentService.class),
                 mock(AnalysisStageService.class),
                 3,
                 50_000));
@@ -39,7 +40,8 @@ class AgentLoopServiceTest {
         EvidenceVerificationService evidenceVerification = mock(EvidenceVerificationService.class);
         AnalysisStageService stages = mock(AnalysisStageService.class);
         AgentLoopService service = newService(
-                model, contextService, checkpoints, telemetry, evidenceVerification, stages, 2, 100);
+                model, contextService, checkpoints, telemetry, evidenceVerification,
+                new CitationAlignmentService(), stages, 2, 100);
 
         VideoContext context = new VideoContext(
                 "lesson.mp4",
@@ -76,7 +78,8 @@ class AgentLoopServiceTest {
                                         AgentCheckpointService checkpoints,
                                         AgentTelemetry telemetry,
                                         EvidenceVerificationService evidenceVerification,
-                                         AnalysisStageService stages,
+                                        CitationAlignmentService citationAlignment,
+                                        AnalysisStageService stages,
                                         int maxRounds,
                                         long maxEstimatedTokens) {
         return new AgentLoopService(
@@ -85,6 +88,7 @@ class AgentLoopServiceTest {
                 checkpoints,
                 telemetry,
                 evidenceVerification,
+                citationAlignment,
                 stages,
                 maxRounds,
                 120_000,

@@ -311,6 +311,14 @@ public class DeepSeekUtils {
                     4. 是否存在上下文不支持的结论；
                     5. title、conclusions、evidence、suggestions 是否完整。
 
+                    注意：结论与证据的绑定关系和原文包含关系已由系统确定性核验层复核。
+                    不要因为措辞、大小写、标点或同义改写报告 unsupportedClaims；
+                    结论可以使用规范措辞，证据 content 保持 ASR/OCR 原样即可，两者不必逐字一致；
+                    不要要求迁就 ASR 口误或修正拼写，也不要要求拆分或改写已覆盖计划任务的结论。
+                    requiredTimestamps 只在 VideoContext 确实缺少必要片段时填写；
+                    时间戳所在片段已出现在 VideoContext 中时不要填写。
+                    上述可核验维度全部满足时应返回 passed=true；改进建议只写入 feedback，不影响 passed。
+
                     只有全部满足时 passed 才能为 true。
                     feedback 只填写能够基于当前 VideoContext 直接重写的修改动作。
                     missingRequirements 填写未覆盖的用户目标或 Planner 任务。
