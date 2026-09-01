@@ -256,7 +256,25 @@ public class DeepSeekUtils {
                                   AgentState.AgentPlan plan,
                                   AgentState.CriticResult previousCritique,
                                   String modeInstruction) {
+        return execute(context, plan, previousCritique, null, modeInstruction);
+    }
+
+    public AnalysisResult execute(VideoContext context,
+                                  AgentState.AgentPlan plan,
+                                  AgentState.CriticResult previousCritique,
+                                  AnalysisResult previousDraft,
+                                  String modeInstruction) {
         try {
+            String previousDraftSection = "";
+            if (previousDraft != null) {
+                previousDraftSection = """
+
+                        PreviousDraft(上一轮草稿):
+                        以下结论与证据在上一轮已通过核验,你必须逐字保留(含 timestampMs),不得改写、合并或重新检索。
+                        只为 Critic 指出的缺口新增结论和证据。
+                        """ + objectMapper.writeValueAsString(previousDraft);
+            }
+
             String prompt = """
                     你是 Video Agent 的 Executor。按照计划分析 VideoContext 并生成结构化产物。
                     逐项执行 Plan 中的任务，最终产物必须覆盖全部任务。
@@ -279,7 +297,7 @@ public class DeepSeekUtils {
                     """ + objectMapper.writeValueAsString(plan) + """
 
                     PreviousCritique:
-                    """ + objectMapper.writeValueAsString(previousCritique) + """
+                    """ + objectMapper.writeValueAsString(previousCritique) + previousDraftSection + """
 
                     VideoContext:
                     """ + objectMapper.writeValueAsString(context)

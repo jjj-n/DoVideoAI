@@ -31,6 +31,7 @@ public class AgentLoopService {
     private final AgentTelemetry telemetry;
     private final EvidenceVerificationService evidenceVerificationService;
     private final CitationAlignmentService citationAlignmentService;
+    private final AgentResultMerge agentResultMerge;
     private final AnalysisStageService analysisStageService;
     private final int maxRounds;
     private final long maxDurationMs;
@@ -43,6 +44,7 @@ public class AgentLoopService {
                             AgentTelemetry telemetry,
                             EvidenceVerificationService evidenceVerificationService,
                             CitationAlignmentService citationAlignmentService,
+                            AgentResultMerge agentResultMerge,
                             AnalysisStageService analysisStageService,
                             @Value("${agent.budget.max-rounds:2}") int maxRounds,
                             @Value("${agent.budget.max-duration-ms:120000}") long maxDurationMs,
@@ -54,6 +56,7 @@ public class AgentLoopService {
         this.telemetry = telemetry;
         this.evidenceVerificationService = evidenceVerificationService;
         this.citationAlignmentService = citationAlignmentService;
+        this.agentResultMerge = agentResultMerge;
         this.analysisStageService = analysisStageService;
         if (maxRounds < 1 || maxRounds > MAX_ALLOWED_ROUNDS
                 || maxDurationMs < 1 || maxEstimatedTokens < 1 || maxEstimatedCost < 0) {
@@ -145,7 +148,8 @@ public class AgentLoopService {
         for (int round = state.round() + 1; round <= maxRounds; round++) {
             checkBudget(runStartedNanos, "Agent Round " + round);
             state = executeRound(
-                    mediaId, context, relevantContext, plan, state.critique(), round, runStartedNanos, profile);
+                    mediaId, context, relevantContext, plan, state.critique(), state.result(),
+                    round, runStartedNanos, profile);
             checkBudget(runStartedNanos, "Critic");
             if (state.critique().passed()) break;
             if (round < maxRounds) {
@@ -189,15 +193,21 @@ public class AgentLoopService {
                                     VideoContext promptContext,
                                     AgentState.AgentPlan plan,
                                     AgentState.CriticResult previousCritique,
+                                    AnalysisResult previousResult,
                                     int round,
                                     long runStartedNanos,
                                     ModeProfile profile) {
         publishStage(mediaId, promptContext.userGoal(), modeOf(profile),
                 "Executor 正在按计划生成结构化产物", TaskStage.EXECUTOR_STARTED);
-        AnalysisResult result = deepSeekUtils.execute(promptContext, plan, previousCritique, executeInstruction(profile));
+        AnalysisResult result = deepSeekUtils.execute(
+                promptContext, plan, previousCritique, previousResult, executeInstruction(profile));
         // 引用对齐:把 Executor 的换述引用修正为所引时间戳处原文的精确子串,再落盘与校验。
         // 对全量 context 对齐(而非裁剪池),保证产物可追溯到视频本身。
         result = citationAlignmentService.align(fullContext, result);
+        // 二轮定向修补:保留一轮已核验通过的结论与证据,只让 LLM 修复缺口。
+        if (round > 1 && previousResult != null) {
+            result = agentResultMerge.merge(previousResult, result, fullContext, evidenceVerificationService);
+        }
         AgentState draft = new AgentState(promptContext.userGoal(), plan, result, null, round);
         if (mediaId != null) {
             checkpointService.saveExecutionState(mediaId, draft, modeOf(profile));

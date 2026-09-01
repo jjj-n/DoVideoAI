@@ -10,6 +10,7 @@ import com.example.server.service.AgentEvaluationService;
 import com.example.server.service.AgentLoopService;
 import com.example.server.service.AgentTelemetry;
 import com.example.server.service.AnalysisStageService;
+import com.example.server.service.AgentResultMerge;
 import com.example.server.service.CitationAlignmentService;
 import com.example.server.service.EvidenceVerificationService;
 import com.example.server.service.LongVideoContextService;
@@ -338,9 +339,10 @@ public final class AgentLoopAnswerBenchmark {
             EvidenceVerificationService verification = new EvidenceVerificationService();
             // 引用对齐使用生产实例:离线评测必须观测到与线上一致的确定性对齐行为。
             CitationAlignmentService alignment = new CitationAlignmentService();
+            AgentResultMerge merge = new AgentResultMerge();
             AnalysisStageService stages = mock(AnalysisStageService.class);
             AgentLoopService loop = new AgentLoopService(
-                    deepSeek, longContext, checkpoint, telemetry, verification, alignment, stages,
+                    deepSeek, longContext, checkpoint, telemetry, verification, alignment, merge, stages,
                     2, maxDurationMs, maxEstimatedTokens, 0);
             AgentEvaluationService evaluation = new AgentEvaluationService(checkpoint, verification);
             return new BenchmarkRuntime(deepSeek, loop, telemetry, evaluation, verification);
@@ -374,8 +376,9 @@ public final class AgentLoopAnswerBenchmark {
         public AnalysisResult execute(VideoContext context,
                                       AgentState.AgentPlan plan,
                                       AgentState.CriticResult previousCritique,
+                                      AnalysisResult previousDraft,
                                       String modeInstruction) {
-            AnalysisResult result = super.execute(context, plan, previousCritique, modeInstruction);
+            AnalysisResult result = super.execute(context, plan, previousCritique, previousDraft, modeInstruction);
             captures.add(new ExecutionCapture(captures.size() + 1, context, result));
             return result;
         }

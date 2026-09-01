@@ -26,6 +26,7 @@ class AgentLoopServiceTest {
                 mock(AgentTelemetry.class),
                 mock(EvidenceVerificationService.class),
                 mock(CitationAlignmentService.class),
+                mock(AgentResultMerge.class),
                 mock(AnalysisStageService.class),
                 3,
                 50_000));
@@ -41,7 +42,7 @@ class AgentLoopServiceTest {
         AnalysisStageService stages = mock(AnalysisStageService.class);
         AgentLoopService service = newService(
                 model, contextService, checkpoints, telemetry, evidenceVerification,
-                new CitationAlignmentService(), stages, 2, 100);
+                new CitationAlignmentService(), new AgentResultMerge(), stages, 2, 100);
 
         VideoContext context = new VideoContext(
                 "lesson.mp4",
@@ -58,7 +59,7 @@ class AgentLoopServiceTest {
 
         when(contextService.selectRelevant(7L, context)).thenReturn(context);
         when(model.plan(context, "")).thenReturn(plan);
-        when(model.execute(context, plan, null, "")).thenReturn(result);
+        when(model.execute(context, plan, null, null, "")).thenReturn(result);
         when(model.critique(context, plan, result, "")).thenReturn(critique);
         when(evidenceVerification.supported(eq(context), any())).thenReturn(true);
         when(evidenceVerification.supportsClaim(eq(context), anyString(), any())).thenReturn(true);
@@ -79,6 +80,7 @@ class AgentLoopServiceTest {
                                         AgentTelemetry telemetry,
                                         EvidenceVerificationService evidenceVerification,
                                         CitationAlignmentService citationAlignment,
+                                        AgentResultMerge agentResultMerge,
                                         AnalysisStageService stages,
                                         int maxRounds,
                                         long maxEstimatedTokens) {
@@ -89,6 +91,7 @@ class AgentLoopServiceTest {
                 telemetry,
                 evidenceVerification,
                 citationAlignment,
+                agentResultMerge,
                 stages,
                 maxRounds,
                 120_000,
