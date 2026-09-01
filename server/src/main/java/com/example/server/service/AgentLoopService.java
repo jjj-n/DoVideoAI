@@ -286,10 +286,12 @@ public class AgentLoopService {
     }
 
     private boolean isResultValid(AnalysisResult result, ModeProfile profile) {
+        boolean refusal = result != null && Boolean.TRUE.equals(result.refusal());
         boolean commonFieldsValid = result != null
                 && result.title() != null && !result.title().isBlank()
                 && result.conclusions() != null && !result.conclusions().isEmpty()
-                && result.evidence() != null && !result.evidence().isEmpty();
+                // 拒答结论允许空 evidence:拒答型产物本就无可绑定的证据。
+                && (refusal || (result.evidence() != null && !result.evidence().isEmpty()));
         if (!commonFieldsValid || profile == null || profile.requiredSectionKeys().isEmpty()) {
             return commonFieldsValid;
         }
@@ -415,6 +417,7 @@ public class AgentLoopService {
                                                             AgentState.CriticResult critique,
                                                             ModeProfile profile) {
         critique = normalizeCritique(critique);
+        boolean refusal = result != null && Boolean.TRUE.equals(result.refusal());
         List<String> feedback = new ArrayList<>(critique.feedback());
         if (result == null || result.title() == null || result.title().isBlank()) {
             feedback.add("补充明确的产物标题");
@@ -422,7 +425,7 @@ public class AgentLoopService {
         if (result == null || result.conclusions() == null || result.conclusions().isEmpty()) {
             feedback.add("补充覆盖 Planner 任务的核心结论");
         }
-        if (result == null || result.evidence() == null || result.evidence().isEmpty()) {
+        if (!refusal && (result == null || result.evidence() == null || result.evidence().isEmpty())) {
             feedback.add("为核心结论补充带时间戳的 ASR 或 OCR 证据");
         }
         List<String> missingSections = missingSectionKeys(result, profile);

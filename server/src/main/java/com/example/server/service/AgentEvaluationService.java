@@ -56,10 +56,12 @@ public class AgentEvaluationService {
     }
 
     private boolean structuredValid(AnalysisResult result) {
-        return result != null
-                && result.title() != null && !result.title().isBlank()
+        if (result == null) return false;
+        boolean refusal = Boolean.TRUE.equals(result.refusal());
+        return result.title() != null && !result.title().isBlank()
                 && result.conclusions() != null && !result.conclusions().isEmpty()
-                && result.evidence() != null && !result.evidence().isEmpty();
+                // 拒答型产物允许空 evidence:不可回答问题是合法产物。
+                && (refusal || (result.evidence() != null && !result.evidence().isEmpty()));
     }
 
     private double evidenceSupportRate(VideoContext context, AnalysisResult result) {

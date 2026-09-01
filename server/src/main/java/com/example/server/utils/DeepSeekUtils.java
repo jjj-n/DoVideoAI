@@ -283,6 +283,12 @@ public class DeepSeekUtils {
                     不得使用视频上下文之外的事实。
                     如果存在 Critic 反馈，只修正被指出的问题，并保留已经核验通过的结论和证据。
 
+                    拒答规则:如果 VideoContext 中的证据不足以回答某项任务,
+                    不要猜测或硬答。把 JSON 顶层 "refusal" 设为 true,
+                    在 conclusions 中逐条写明"视频证据不足以回答 <问题要点>"并简述缺失的证据类型。
+                    拒答型结论不需要绑定 evidence(可为空数组),也不要引用与问题无关的片段来凑证据。
+                    仅当检索到的上下文确实缺少相关证据时才拒答,证据充分时必须正常作答。
+
                     只返回 JSON：
                     {
                       "title": "产物标题",
@@ -290,7 +296,8 @@ public class DeepSeekUtils {
                       "evidence": [
                         {"timestampMs": 120000, "source": "ASR", "content": "原始证据内容", "claim": "结论"}
                       ],
-                      "suggestions": ["建议"]
+                      "suggestions": ["建议"],
+                      "refusal": false
                     }
 
                     Plan:
@@ -336,6 +343,10 @@ public class DeepSeekUtils {
                     requiredTimestamps 只在 VideoContext 确实缺少必要片段时填写；
                     时间戳所在片段已出现在 VideoContext 中时不要填写。
                     上述可核验维度全部满足时应返回 passed=true；改进建议只写入 feedback，不影响 passed。
+
+                    拒答判定:若产物顶层 refusal=true 且各条结论均声明"视频证据不足以回答",
+                    未虚构内容、未引用无关片段,则视为合法拒答,不因缺少 evidence 判定失败。
+                    若 refusal=true 但仍出现虚构内容或引用无关片段,则判为不通过。
 
                     只有全部满足时 passed 才能为 true。
                     feedback 只填写能够基于当前 VideoContext 直接重写的修改动作。

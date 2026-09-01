@@ -10,7 +10,8 @@ public record AnalysisResult(
         List<String> conclusions,
         List<Evidence> evidence,
         List<String> suggestions,
-        List<Section> sections
+        List<Section> sections,
+        Boolean refusal
 ) {
     public AnalysisResult {
         title = title == null ? "未命名分析" : title.trim();
@@ -19,6 +20,14 @@ public record AnalysisResult(
         suggestions = suggestions == null ? List.of() : List.copyOf(suggestions);
         // 模式化产物段落。GENERAL 模式不产出,反序列化缺省时为 null → 归一为空 → 渲染与原来一致。
         sections = sections == null ? List.of() : List.copyOf(sections);
+        // 旧 checkpoint JSON / 旧调用方缺省该字段时归一为 false,保证向后兼容。
+        refusal = refusal == null ? Boolean.FALSE : refusal;
+    }
+
+    /** 5 参构造器:旧调用方不感知 refusal 字段时使用,默认为 false。 */
+    public AnalysisResult(String title, List<String> conclusions, List<Evidence> evidence,
+                          List<String> suggestions, List<Section> sections) {
+        this(title, conclusions, evidence, suggestions, sections, false);
     }
 
     public record Evidence(
