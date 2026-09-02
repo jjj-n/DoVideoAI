@@ -19,8 +19,14 @@
     "scoring": "LLM-as-judge against frozen human-reviewed gold labels; 0/1/2 per rubric dimension",
     "hardGatePassRule": "all applicable hard-gate dimensions must score 2",
     "rawArtifactSha256": "db1d9f9425093d520ad706b45bf36427947013da8db37494bbeae550cf9edc5e",
-    "suiteSha256": "manual-fix",
-    "corpusSha256": "manual-fix"
+    "suiteSha256": "00a5287f56b81af8680585c3bdd586c9677f4f16d0fc017ea8e7da14a93753e8",
+    "corpusSha256": {
+      "bv1ah4y1s7nx-all-p": "18830522166d2a16fcd3577ccbf55f1556b57b19c46794e6b2005c3fbd98a6ff",
+      "bv1fj6vbfenu-all-p": "43447755f8900bbaae9138d113df6c4080b9e71fd35bf249549b9d6cca5c3e7a",
+      "bv1ryuy6weds-full": "757fa290eead833b3d22e71cedf93d629bdde5e918552d6c4b2e7ccb029bed3b",
+      "bv1sg8c6jefw-full": "0d6f1aff51e4c6962798e23318bb74828eedf915ebb85ee42bb7196e4940c451",
+      "bv1xhovyzetu-60m": "bb188b8c680e9b7450b27dc8c5f0b479bd766a6ef0a0b42896fa61ca9d771a6d"
+    }
   },
   "summary": {
     "total": 43,
