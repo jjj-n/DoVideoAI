@@ -50,6 +50,22 @@ public class CitationAlignmentService {
     private static final Pattern ELLIPSIS = Pattern.compile("[.。]{2,}|…");
     private static final Pattern CLAIM_SPLIT = Pattern.compile("[；;。]");
 
+    /**
+     * 对 AnalysisResult 中的所有 evidence 进行确定性对齐。
+     *
+     * <p>对齐流程：
+     * <ol>
+     *   <li>对每条 evidence 调用 {@link #alignEvidence}，把 content 修正为原文精确子串</li>
+     *   <li>对每条对齐后的 evidence 调用 {@link #bindClaim}，把 claim 绑定到对应 conclusion 的原文</li>
+     *   <li>若对齐后结果与原结果相同（无任何修改），返回原对象；否则返回新对象</li>
+     * </ol>
+     *
+     * <p>对齐失败的 evidence 保持原样，继续被 {@link EvidenceVerificationService} 判为 unsupported。
+     *
+     * @param fullContext 全量 VideoContext，包含所有 VideoSegment
+     * @param result Executor 输出的 AnalysisResult
+     * @return 对齐后的 AnalysisResult，若无需修改则返回原对象
+     */
     public AnalysisResult align(VideoContext fullContext, AnalysisResult result) {
         if (fullContext == null || result == null || result.evidence().isEmpty()) return result;
         List<VideoContext.VideoSegment> timeline = sortedTimeline(fullContext);
@@ -121,6 +137,17 @@ public class CitationAlignmentService {
         return null;
     }
 
+    /**
+     * 对单条 evidence 进行对齐。
+     *
+     * <p>处理流程：
+     * <ol>
+     *   <li>检查是否为 ASR+OCR 合并格式（含通道标签），若是则拆分为多条独立 evidence</li>
+     *   <li>否则调用 {@link #alignContent} 把 content 对齐到原文精确子串</li>
+     * </ol>
+     *
+     * <p>对齐失败时返回原 evidence，保持原样以便后续 EVS 判为 unsupported。
+     */
     private List<AnalysisResult.Evidence> alignEvidence(List<VideoContext.VideoSegment> timeline,
                                                         Map<String, CitationText.NormalizedView> viewCache,
                                                         AnalysisResult.Evidence evidence) {
@@ -221,6 +248,18 @@ public class CitationAlignmentService {
         return order;
     }
 
+    /**
+     * 把 content 对齐到原文精确子串。
+     *
+     * <p>对齐策略：
+     * <ol>
+     *   <li>在覆盖 timestampMs 的段内搜索（精确包含优先，然后容错匹配）</li>
+     *   <li>若覆盖段内无匹配，在相邻段（±1）内搜索，并标记 relocated=true</li>
+     *   <li>省略号引用时，源端跳过阈值放宽到 400 字符</li>
+     * </ol>
+     *
+     * <p>返回 null 表示对齐失败，evidence 保持原样。
+     */
     private Alignment alignContent(List<VideoContext.VideoSegment> timeline,
                                    Map<String, CitationText.NormalizedView> viewCache,
                                    long timestampMs,
@@ -235,6 +274,17 @@ public class CitationAlignmentService {
                 viewCache, channels, content, sourceSlack, true);
     }
 
+    /**
+     * 在给定 segments 内搜索最佳对齐。
+     *
+     * <p>搜索顺序：
+     * <ol>
+     *   <li>按 channels 顺序（ASR/OCR/ASR+OCR）逐通道搜索</li>
+     *   <li>每通道内先尝试精确包含（归一化后 indexOf）</li>
+     *   <li>若失败且归一化长度 ≥ 8，使用 k-gram 块偏移投票 + 走廊对齐</li>
+     *   <li>覆盖率 ≥ 0.75 时接受</li>
+     * </ol>
+     */
     private Alignment bestAlignment(List<VideoContext.VideoSegment> segments,
                                     Map<String, CitationText.NormalizedView> viewCache,
                                     List<String> channels,
@@ -243,6 +293,21 @@ public class CitationAlignmentService {
         return bestAlignment(segments, viewCache, channels, content, sourceSlack, false);
     }
 
+    /**
+     * 在给定 segments 内搜索最佳对齐（带 relocated 标记）。
+     *
+     * <p>容错匹配算法：
+     * <ol>
+     *   <li>把 query 切成 ≤16 个等长块（每块 ≥12 字符）</li>
+     *   <li>对每个块，在 view.normalized() 中搜索所有出现位置，记录 offset 投票</li>
+     *   <li>取票数最高的前 3 个 offset 作为候选</li>
+     *   <li>对每个候选 offset 调用 {@link #corridorAlign}，计算覆盖率</li>
+     *   <li>覆盖率 ≥ 0.75 时接受，返回原文精确子串</li>
+     * </ol>
+     *
+     * @param relocated 是否标记为重定位（相邻段匹配）
+     * @return 最佳对齐结果，若无匹配或覆盖率不足则返回 null
+     */
     private Alignment bestAlignment(List<VideoContext.VideoSegment> segments,
                                     Map<String, CitationText.NormalizedView> viewCache,
                                     List<String> channels,
