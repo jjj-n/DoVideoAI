@@ -22,6 +22,12 @@ Critic 检查每条 `CitedEvidence` 是否能追溯到所声明时间戳上的�
 
 避免只使用：证据校验、grounding check。
 
+### CitationAlignment
+
+Executor 输出后、Critic 校验前的确定性对齐层。它把 LLM 生成的换述、概括、省略或 ASR 口误纠正等非逐字引用，修正为所引时间戳处 ASR/OCR 原文的精确子串。`CitationAlignmentService` 实现这一逻辑，搜索空间硬限定为覆盖 `timestampMs` 的段及其相邻段，防止错引。真正无法在原文中定位的引用保持原样，继续被 `EvidenceVerificationService` 判为 unsupported——质量门不放松。
+
+避免只使用：引用对齐、citation alignment、evidence alignment。
+
 ## Time-aligned video objects
 
 ### TranscriptSegment
@@ -138,7 +144,7 @@ ASR 的原始文本输出：`startMs`、`endMs`、`text`。它是 `VideoSegment`
 
 ### AnalysisResult
 
-`AnalysisTask` 的结构化输出：`title`、`conclusions`、`evidence`（`CitedEvidence` 列表）、`suggestions`、`sections`。Executor 产出它，Critic 校验它。
+`AnalysisTask` 的结构化输出：`title`、`conclusions`、`evidence`（`CitedEvidence` 列表）、`suggestions`、`sections`、`refusal`。Executor 产出它，Critic 校验它。`refusal` 是布尔值，表示该结论是否因为视频证据不足而拒绝回答。当 `refusal=true` 时，允许 `evidence` 为空数组，`conclusions` 应明确说明缺失的证据类型。
 
 ## Runtime mechanisms
 
