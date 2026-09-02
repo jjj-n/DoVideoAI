@@ -389,6 +389,12 @@ public class AgentLoopService {
                 .filter(timestamp -> timestampCovered(fullContext, timestamp))
                 .filter(timestamp -> !timestampCovered(promptContext, timestamp))
                 .toList();
+        // 如果所有 claims 都已被确定性层确认支持,则 requiredTimestamps 降级为 feedback
+        // (LLM 想要更多证据,但现有证据已足够)
+        if (blockingUnsupported.isEmpty() && !requiredTimestamps.isEmpty()) {
+            feedback.add("（未核验的批评,现有证据已足够）Critic 请求补检时间戳: " + requiredTimestamps);
+            requiredTimestamps = List.of();
+        }
         boolean hasBlockingProblems = !critique.missingRequirements().isEmpty()
                 || !blockingUnsupported.isEmpty()
                 || !requiredTimestamps.isEmpty();
