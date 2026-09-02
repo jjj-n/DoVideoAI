@@ -12,6 +12,7 @@ import com.example.server.service.AgentTelemetry;
 import com.example.server.service.AnalysisStageService;
 import com.example.server.service.AgentResultMerge;
 import com.example.server.service.CitationAlignmentService;
+import com.example.server.service.EvidenceGatePolicy;
 import com.example.server.service.EvidenceVerificationService;
 import com.example.server.service.LongVideoContextService;
 import com.example.server.service.QdrantVectorStore;
@@ -340,9 +341,10 @@ public final class AgentLoopAnswerBenchmark {
             // 引用对齐使用生产实例:离线评测必须观测到与线上一致的确定性对齐行为。
             CitationAlignmentService alignment = new CitationAlignmentService();
             AgentResultMerge merge = new AgentResultMerge();
+            EvidenceGatePolicy gatePolicy = new EvidenceGatePolicy(alignment, verification);
             AnalysisStageService stages = mock(AnalysisStageService.class);
             AgentLoopService loop = new AgentLoopService(
-                    deepSeek, longContext, checkpoint, telemetry, verification, alignment, merge, stages,
+                    deepSeek, longContext, checkpoint, telemetry, verification, alignment, merge, gatePolicy, stages,
                     2, maxDurationMs, maxEstimatedTokens, 0);
             AgentEvaluationService evaluation = new AgentEvaluationService(checkpoint, verification);
             return new BenchmarkRuntime(deepSeek, loop, telemetry, evaluation, verification);

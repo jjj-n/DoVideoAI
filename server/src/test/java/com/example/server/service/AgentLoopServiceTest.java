@@ -8,13 +8,17 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import org.mockito.ArgumentCaptor;
 
 class AgentLoopServiceTest {
 
@@ -28,6 +32,7 @@ class AgentLoopServiceTest {
                 mock(EvidenceVerificationService.class),
                 mock(CitationAlignmentService.class),
                 mock(AgentResultMerge.class),
+                mock(EvidenceGatePolicy.class),
                 mock(AnalysisStageService.class),
                 3,
                 50_000));
@@ -40,10 +45,13 @@ class AgentLoopServiceTest {
         AgentCheckpointService checkpoints = mock(AgentCheckpointService.class);
         AgentTelemetry telemetry = mock(AgentTelemetry.class);
         EvidenceVerificationService evidenceVerification = mock(EvidenceVerificationService.class);
+        CitationAlignmentService citationAlignment = new CitationAlignmentService();
+        AgentResultMerge agentResultMerge = new AgentResultMerge();
+        EvidenceGatePolicy evidenceGatePolicy = new EvidenceGatePolicy(citationAlignment, evidenceVerification);
         AnalysisStageService stages = mock(AnalysisStageService.class);
         AgentLoopService service = newService(
                 model, contextService, checkpoints, telemetry, evidenceVerification,
-                new CitationAlignmentService(), new AgentResultMerge(), stages, 2, 100);
+                citationAlignment, agentResultMerge, evidenceGatePolicy, stages, 2, 100);
 
         VideoContext context = new VideoContext(
                 "lesson.mp4",
@@ -84,10 +92,11 @@ class AgentLoopServiceTest {
         EvidenceVerificationService evidenceVerification = mock(EvidenceVerificationService.class);
         CitationAlignmentService citationAlignment = new CitationAlignmentService();
         AgentResultMerge merge = new AgentResultMerge();
+        EvidenceGatePolicy evidenceGatePolicy = new EvidenceGatePolicy(citationAlignment, evidenceVerification);
         AnalysisStageService stages = mock(AnalysisStageService.class);
         AgentLoopService service = newService(
                 model, contextService, checkpoints, telemetry, evidenceVerification,
-                citationAlignment, merge, stages, 2, 100_000);
+                citationAlignment, merge, evidenceGatePolicy, stages, 2, 100_000);
 
         // 设计：fullContext 包含 [0,60000) 和 [60000,120000)
         //       promptContext 只包含 [0,60000)
@@ -143,6 +152,7 @@ class AgentLoopServiceTest {
                                         EvidenceVerificationService evidenceVerification,
                                         CitationAlignmentService citationAlignment,
                                         AgentResultMerge agentResultMerge,
+                                        EvidenceGatePolicy evidenceGatePolicy,
                                         AnalysisStageService stages,
                                         int maxRounds,
                                         long maxEstimatedTokens) {
@@ -154,6 +164,7 @@ class AgentLoopServiceTest {
                 evidenceVerification,
                 citationAlignment,
                 agentResultMerge,
+                evidenceGatePolicy,
                 stages,
                 maxRounds,
                 120_000,
