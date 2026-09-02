@@ -26,6 +26,35 @@ public class AgentResultMerge {
     private static final double MIN_CONCLUSION_LENGTH_RATIO = 0.6;
     private static final double MAX_CONCLUSION_LENGTH_RATIO = 1.6;
 
+    /**
+     * 把一轮已核验的证据与结论合并到二轮 draft 中。
+     *
+     * <p>合并策略：
+     * <ol>
+     *   <li>收集一轮已核验的证据：通过 EVS 校验且绑定到某条结论的 evidence</li>
+     *   <li>合并结论：
+     *     <ul>
+     *       <li>对 draft 中每条结论，若与某条已核验结论近重复（Dice ≥ 0.8），用一轮原文顶替</li>
+     *       <li>补回被 draft 丢弃的已核验结论</li>
+     *     </ul>
+     *   </li>
+     *   <li>合并证据：
+     *     <ul>
+     *       <li>对 draft 中每条 evidence，若与某条已核验 evidence 的 timestamp+source 匹配，用一轮原文顶替</li>
+     *       <li>补回 draft 中缺失的已核验 evidence（去重）</li>
+     *     </ul>
+     *   </li>
+     * </ol>
+     *
+     * <p>构造性保证：一轮通过 EVS 核验的证据与结论，只要其目标仍在最终产物中，
+     * 就会以原文形式出现在合并结果里。
+     *
+     * @param previous 一轮 AnalysisResult
+     * @param draft 二轮 AnalysisResult（LLM 输出）
+     * @param fullContext 全量 VideoContext
+     * @param evs EvidenceVerificationService，用于校验 evidence
+     * @return 合并后的 AnalysisResult
+     */
     public AnalysisResult merge(AnalysisResult previous, AnalysisResult draft,
                                 VideoContext fullContext, EvidenceVerificationService evs) {
         if (previous == null || previous.evidence().isEmpty() || draft == null) return draft;
@@ -85,6 +114,15 @@ public class AgentResultMerge {
     private record VerifiedConclusion(String originalText) {
     }
 
+    /**
+     * 收集一轮已核验的证据：通过 EVS 校验且绑定到某条结论的 evidence。
+     *
+     * <p>判定标准：
+     * <ul>
+     *   <li>evidence 通过 {@link EvidenceVerificationService#supported} 校验</li>
+     *   <li>evidence.claim 归一化后与某条 conclusion 归一化后相等</li>
+     * </ul>
+     */
     private List<VerifiedEvidence> collectVerified(AnalysisResult previous,
                                                     VideoContext context,
                                                     EvidenceVerificationService evs) {
@@ -105,6 +143,17 @@ public class AgentResultMerge {
         return seen.stream().map(VerifiedConclusion::new).toList();
     }
 
+    /**
+     * 查找与 draftConclusion 匹配的已核验结论。
+     *
+     * <p>匹配顺序：
+     * <ol>
+     *   <li>归一化后完全相等</li>
+     *   <li>bigram Dice 系数 ≥ 0.8 且长度比在 [0.6, 1.6] 范围内</li>
+     * </ol>
+     *
+     * @return 匹配的已核验结论，若无匹配则返回 null
+     */
     private VerifiedConclusion findMatchingConclusion(String draftConclusion,
                                                        List<VerifiedEvidence> verified) {
         String normalizedDraft = CitationText.normalize(draftConclusion);
@@ -122,6 +171,14 @@ public class AgentResultMerge {
         return null;
     }
 
+    /**
+     * 把 draftEvidence 替换为匹配的已核验 evidence。
+     *
+     * <p>匹配条件：timestampMs 和 source 都匹配。
+     * <p>替换内容：使用已核验 evidence 的原文，并把 claim 重新绑定到合并后的结论。
+     *
+     * @return 替换后的 evidence，若无匹配则返回原 evidence
+     */
     private AnalysisResult.Evidence replaceFromVerified(AnalysisResult.Evidence draftEvidence,
                                                          List<VerifiedEvidence> verified,
                                                          List<String> mergedConclusions) {
@@ -148,6 +205,14 @@ public class AgentResultMerge {
         return false;
     }
 
+    /**
+     * 把 draftClaim 重新绑定到合并后的结论。
+     *
+     * <p>绑定逻辑：若 draftClaim 原本绑定到 verifiedBound，则查找 mergedConclusions 中
+     * 与 verifiedBound 近重复的结论，返回其原文。
+     *
+     * @return 重新绑定后的 claim，若无匹配则返回原 draftClaim
+     */
     private String rebindClaim(String draftClaim, List<String> mergedConclusions, String verifiedBound) {
         // 如果 draft claim 绑定的是 verified 那条结论,则替换为合并后的对应结论原文
         String normalizedDraft = CitationText.normalize(draftClaim);
