@@ -34,16 +34,46 @@ public class EvidenceGatePolicy {
     }
 
     /**
-     * 过滤 LLM Critic 声明的问题，并把"passed 即附带意见"的强制翻车收窄为阻断性问题才翻:
-     * <ul>
-     *   <li>纯 feedback 是建议性意见,不再推翻 passed;</li>
-     *   <li>声明的 unsupportedClaims 逐条绑定 conclusion 并复核:对应结论实际有支持的是换述类
-     *       批评,绑定不到结论的无法定位,两者都移入 feedback,不阻断;</li>
-     *   <li>声明的 requiredTimestamps 丢弃超出全量时间轴的幻觉值,以及覆盖段已在 prompt context
-     *       内的值(Executor 已看得见的片段补检无意义)。</li>
-     *   <li>当所有 claims 都已被确定性层确认支持时,requiredTimestamps 降级为 feedback
-     *       (LLM 想要更多证据,但现有证据已足够)</li>
-     * </ul>
+     * 过滤 LLM Critic 声明的问题，并把"passed 即附带意见"的强制翻车收窄为阻断性问题才翻。
+     *
+     * <p>处理流程：
+     * <ol>
+     *   <li><b>过滤 unsupportedClaims</b>：
+     *     <ul>
+     *       <li>用 {@link CitationAlignmentService#bindClaim} 绑定到对应 conclusion</li>
+     *       <li>若绑定成功，用 {@link EvidenceVerificationService#supportsClaim} 复核</li>
+     *       <li>若复核通过（实际有支持）：降级为 feedback，前缀"（未核验的批评）"</li>
+     *       <li>若绑定失败或复核不通过：保留为 blocking</li>
+     *     </ul>
+     *   </li>
+     *   <li><b>过滤 requiredTimestamps</b>：
+     *     <ul>
+     *       <li>丢弃超出全量 context 时间轴的幻觉值</li>
+     *       <li>丢弃已在 prompt context 内的值（Executor 已能看到，补检无意义）</li>
+     *     </ul>
+     *   </li>
+     *   <li><b>降级逻辑</b>：
+     *     <ul>
+     *       <li>检查所有 claims 是否都已被确定性层确认支持</li>
+     *       <li>若是且无 blocking unsupportedClaims：requiredTimestamps 整体降级为 feedback</li>
+     *     </ul>
+     *   </li>
+     *   <li><b>计算 passed</b>：
+     *     <ul>
+     *       <li>若 critique.passed()=true 且无阻断性问题：保持 passed=true</li>
+     *       <li>否则：passed=false</li>
+     *     </ul>
+     *   </li>
+     * </ol>
+     *
+     * <p>注意：本方法不负责覆盖 LLM 的 fail 判断。passed 覆盖在
+     * {@link AgentLoopService#enforceEvidenceBounds} 中完成。
+     *
+     * @param fullContext 全量 VideoContext，用于 EVS 复核
+     * @param promptContext Executor 看到的裁剪 VideoContext，用于过滤已在视野内的时间戳
+     * @param result Executor 输出的 AnalysisResult，用于绑定 claim
+     * @param critique LLM Critic 输出的 CriticResult
+     * @return 过滤后的 CriticResult
      */
     public AgentState.CriticResult filterDeclaredProblems(VideoContext fullContext,
                                                           VideoContext promptContext,
@@ -52,7 +82,8 @@ public class EvidenceGatePolicy {
         List<String> blockingUnsupported = new ArrayList<>();
         List<String> feedback = new ArrayList<>(critique.feedback());
 
-        // 处理 unsupportedClaims
+        // Step 1: 处理 unsupportedClaims
+        // 逐条绑定到 conclusion 并用 EVS 复核，区分真缺口与换述类批评
         for (String declared : critique.unsupportedClaims()) {
             String conclusion = result == null || result.conclusions() == null ? null
                     : citationAlignmentService.bindClaim(declared, result.conclusions());
@@ -66,14 +97,16 @@ public class EvidenceGatePolicy {
             }
         }
 
-        // 处理 requiredTimestamps
+        // Step 2: 处理 requiredTimestamps
+        // 过滤掉幻觉值和已在 prompt context 内的值
         List<Long> requiredTimestamps = critique.requiredTimestamps().stream()
                 .filter(timestamp -> timestampCovered(fullContext, timestamp))
                 .filter(timestamp -> !timestampCovered(promptContext, timestamp))
                 .toList();
 
-        // 降级逻辑：如果所有 claims 都已被确定性层确认支持,则 requiredTimestamps 降级为 feedback
-        // 检查方式：result 中每个 conclusion 都有至少一个 evidence 被 EVS 确认支持
+        // Step 3: 降级逻辑
+        // 检查所有 claims 是否都已被确定性层确认支持
+        // 若是且无 blocking unsupportedClaims：requiredTimestamps 整体降级为 feedback
         boolean allClaimsSupported = result != null && result.conclusions() != null
                 && result.conclusions().stream().allMatch(conclusion ->
                         result.evidence().stream().anyMatch(evidence ->
@@ -84,6 +117,9 @@ public class EvidenceGatePolicy {
             requiredTimestamps = List.of();
         }
 
+        // Step 4: 计算 passed
+        // 若 critique.passed()=true 且无阻断性问题：保持 passed=true
+        // 否则：passed=false
         boolean hasBlockingProblems = !critique.missingRequirements().isEmpty()
                 || !blockingUnsupported.isEmpty()
                 || !requiredTimestamps.isEmpty();
