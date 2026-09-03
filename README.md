@@ -102,7 +102,7 @@ Evidence frame_000125.jpg
 
 这些结果是以 300 秒 VideoChunk 为评分单位的离线检索排序指标，不是最终答案正确率，也不是 Java Controller、Qdrant 在线服务或完整请求链路的端到端指标。详细分组结果、对照实验和统计限制见 [`benchmark/`](./benchmark/)。
 
-最终答案层在 43 道冻结题（36 道可回答、7 道不可回答）上重新执行生产 AgentLoop。300 秒评测预算下完成 42 道、1 道超时；失败题按 0 分计时，LLM judge 对照人工复审金标得到归一化总分 **61.50%**，硬门通过率 **39.53%（17/43）**。42 道完成题均进入第二轮但最终 Critic 通过数为 0，严格 Claim–Evidence 支持率由第一轮 **62.16%** 降至最终轮 **55.15%**；完成题耗时 P50 为 **115.8 秒**、P95 为 **272.9 秒**。因此，这组结果是暴露当前质量和时延问题的基线，不支持“定向补检已提升答案质量”或“AgentLoop 均在 90 秒内完成”的结论。
+最终答案层在 43 道冻结题（36 道可回答、7 道不可回答）上执行生产 AgentLoop。Phase 1-4 改进后（Citation Alignment、证据门控、二轮定向修补、拒答路径），归一化总分 **61.50% → 78.07%**，硬门通过率 **39.53% → 65.12%**，Critic 通过率 **0% → 51.16%**，严格 Claim-Evidence 支持率 **55.15% → 70.45%**，P50 延迟 **115.8s → 65.1s**（-44%）。详细对比与局限说明见 [`benchmark/README.md`](./benchmark/)。
 
 本次生成器与 judge 使用同一模型家族，Qdrant 在离线评测中关闭并走生产内存检索降级，答案分数尚未经过独立人工复核。逐题结果、评分理由、运行预算、聚合口径和复现命令见 [`benchmark/data/answer_suite_v1_results.json`](./benchmark/data/answer_suite_v1_results.json) 与 [`benchmark/README.md`](./benchmark/README.md)；冻结题目与金标见 [`benchmark/data/answer_suite_v1.json`](./benchmark/data/answer_suite_v1.json)。
 
